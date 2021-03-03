@@ -1,0 +1,12 @@
+.tribe-common .tribe-common-h5, .tribe-common .tribe-common-h6 {
+	margin: 2em 0 .5em;
+	font: 700 1em/1.75 'Montserrat', 'OpenSans', Arial, sans-serif;
+	letter-spacing: -0.034em;
+	font-size: 1.125em;
+	line-height: 2;
+}
+
+.tribe-common .tribe-common-h6 {
+  font-size: 100%;
+
+}

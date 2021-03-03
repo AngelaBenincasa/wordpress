@@ -1,0 +1,6154 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Amelia\n"
+"POT-Creation-Date: 2021-02-09 13:49+0100\n"
+"PO-Revision-Date: 2021-02-09 13:49+0100\n"
+"Last-Translator: \n"
+"Language-Team: Amelia\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-Basepath: ../../src/Infrastructure/WP/Translations\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;gettext;gettext_noop;_\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: BackendStrings.php:24 FrontendStrings.php:331
+msgid "Add Date"
+msgstr "إضافة تاريخ"
+
+#: BackendStrings.php:25
+msgid "All"
+msgstr "كل"
+
+#: BackendStrings.php:26
+msgid "All Locations"
+msgstr "كل المواقع"
+
+#: BackendStrings.php:27
+msgid "All Packages"
+msgstr ""
+
+#: BackendStrings.php:28
+msgid "All Services"
+msgstr "كل الخدمات"
+
+#: BackendStrings.php:29 BackendStrings.php:665 FrontendStrings.php:70
+#: FrontendStrings.php:171
+msgid "Appointment"
+msgstr "موعد"
+
+#: BackendStrings.php:30 BackendStrings.php:189 FrontendStrings.php:71
+#: FrontendStrings.php:342
+msgid "Appointments"
+msgstr "المواعيد"
+
+#: BackendStrings.php:31 FrontendStrings.php:344
+msgid "Approved"
+msgstr "وافق"
+
+#: BackendStrings.php:32 BackendStrings.php:1404 FrontendStrings.php:80
+#: FrontendStrings.php:357
+msgid "Cancel"
+msgstr "الغاء"
+
+#: BackendStrings.php:33 FrontendStrings.php:81 FrontendStrings.php:361
+msgid "Canceled"
+msgstr "ألغيت"
+
+#: BackendStrings.php:34
+msgid "Close"
+msgstr "إغلاق"
+
+#: BackendStrings.php:35 BackendStrings.php:1331 FrontendStrings.php:84
+msgid "Closed"
+msgstr "مغلق"
+
+#: BackendStrings.php:36
+msgid "Create"
+msgstr "إنشاء"
+
+#: BackendStrings.php:37
+msgid "Select Delimiter"
+msgstr "اختر المحدد"
+
+#: BackendStrings.php:38
+msgid "Comma (,)"
+msgstr "فاصلة (،)"
+
+#: BackendStrings.php:39
+msgid "Semicolon (;)"
+msgstr "فاصلة منقوطة (؛)"
+
+#: BackendStrings.php:40 BackendStrings.php:660 FrontendStrings.php:95
+msgid "Customer"
+msgstr "عميل"
+
+#: BackendStrings.php:41 FrontendStrings.php:271
+msgid "Specific Date"
+msgstr ""
+
+#: BackendStrings.php:42 BackendStrings.php:1431 FrontendStrings.php:174
+msgid "Day"
+msgstr "يوم"
+
+#: BackendStrings.php:43 FrontendStrings.php:175
+msgid "Days"
+msgstr ""
+
+#: BackendStrings.php:44 BackendStrings.php:1441 FrontendStrings.php:176
+msgid "Week"
+msgstr "اسبوع"
+
+#: BackendStrings.php:45 FrontendStrings.php:177
+msgid "Weeks"
+msgstr ""
+
+#: BackendStrings.php:46 BackendStrings.php:1434 FrontendStrings.php:178
+msgid "Month"
+msgstr "شهر"
+
+#: BackendStrings.php:47 FrontendStrings.php:179
+msgid "Months"
+msgstr ""
+
+#: BackendStrings.php:48 FrontendStrings.php:97 FrontendStrings.php:387
+msgid "Date"
+msgstr "التاريخ"
+
+#: BackendStrings.php:49 BackendStrings.php:845 FrontendStrings.php:402
+msgid "Delete"
+msgstr "حذف"
+
+#: BackendStrings.php:50 FrontendStrings.php:314 FrontendStrings.php:406
+msgid "Description"
+msgstr "وصف"
+
+#: BackendStrings.php:51 FrontendStrings.php:407
+msgid "Details"
+msgstr "تفاصيل"
+
+#: BackendStrings.php:52 BackendStrings.php:430 FrontendStrings.php:408
+msgid "Disabled"
+msgstr "معاق"
+
+#: BackendStrings.php:53
+msgid "Discount (%)"
+msgstr "خصم(٪)"
+
+#: BackendStrings.php:54 FrontendStrings.php:410
+msgid "Duration"
+msgstr "المدة الزمنية"
+
+#: BackendStrings.php:55 FrontendStrings.php:411
+msgid "Edit"
+msgstr "تعديل"
+
+#: BackendStrings.php:56 BackendStrings.php:1118 FrontendStrings.php:104
+msgid "example@mail.com"
+msgstr "‫example@mail.com"
+
+#: BackendStrings.php:57 BackendStrings.php:312 BackendStrings.php:662
+msgid "Employee"
+msgstr "الموظف"
+
+#: BackendStrings.php:58 BackendStrings.php:313
+msgid "Employees"
+msgstr "المختصون"
+
+#: BackendStrings.php:59 FrontendStrings.php:107 FrontendStrings.php:418
+msgid "Please enter email"
+msgstr "الرجاء إدخال البريد الإلكتروني"
+
+#: BackendStrings.php:60 BackendStrings.php:555 FrontendStrings.php:111
+#: FrontendStrings.php:423
+msgid "Please enter a valid email address"
+msgstr "من فضلك أدخل بريد أليكترونى صحيح"
+
+#: BackendStrings.php:61 FrontendStrings.php:424
+msgid "Error"
+msgstr "خطأ"
+
+#: BackendStrings.php:62 BackendStrings.php:666 BackendStrings.php:1333
+#: FrontendStrings.php:289
+msgid "Event"
+msgstr "حدث"
+
+#: BackendStrings.php:63 BackendStrings.php:259 FrontendStrings.php:290
+msgid "Events"
+msgstr "أحداث"
+
+#: BackendStrings.php:64 FrontendStrings.php:468
+msgid "Export"
+msgstr "تصدير"
+
+#: BackendStrings.php:65 FrontendStrings.php:316 FrontendStrings.php:470
+msgid "Extras"
+msgstr "إضافيات"
+
+#: BackendStrings.php:66
+msgid "Google Calendar"
+msgstr "تقويم جوجل"
+
+#: BackendStrings.php:67
+msgid "Outlook Calendar"
+msgstr ""
+
+#: BackendStrings.php:68 FrontendStrings.php:120
+msgid "h"
+msgstr "س"
+
+#: BackendStrings.php:69
+msgid "ID"
+msgstr ""
+
+#: BackendStrings.php:70 BackendStrings.php:664 FrontendStrings.php:128
+msgid "Location"
+msgstr "موقع"
+
+#: BackendStrings.php:71
+msgid "Locations"
+msgstr "مواقع"
+
+#: BackendStrings.php:72 FrontendStrings.php:131
+msgid "min"
+msgstr "دقيقة"
+
+#: BackendStrings.php:73 BackendStrings.php:347 FrontendStrings.php:132
+msgid "Name"
+msgstr "الاسم"
+
+#: BackendStrings.php:74 BackendStrings.php:986 FrontendStrings.php:196
+msgid "Name Ascending"
+msgstr "الاسم تصاعدي"
+
+#: BackendStrings.php:75 BackendStrings.php:987 FrontendStrings.php:197
+msgid "Name Descending"
+msgstr "الاسم تنازلي"
+
+#: BackendStrings.php:76
+msgid "Need Help"
+msgstr "تحتاج مساعدة"
+
+#: BackendStrings.php:77 FrontendStrings.php:133
+msgid "No"
+msgstr "لا"
+
+#: BackendStrings.php:78
+msgid "You don't have any employees here yet..."
+msgstr "ليس لديك أي مختصين هنا حتى الآن ..."
+
+#: BackendStrings.php:79 FrontendStrings.php:513
+msgid "There are no results..."
+msgstr "لا توجد نتائج ..."
+
+#: BackendStrings.php:80
+msgid "You don't have any packages here yet..."
+msgstr ""
+
+#: BackendStrings.php:81
+msgid "You don't have any services here yet..."
+msgstr "ليس لديك أي خدمات هنا حتى الآن ..."
+
+#: BackendStrings.php:82 BackendStrings.php:1109 FrontendStrings.php:516
+msgid "Note"
+msgstr "ملحوظة"
+
+#: BackendStrings.php:83 BackendStrings.php:1126 FrontendStrings.php:517
+msgid "Note (Internal)"
+msgstr "ملاحظة (داخلي)"
+
+#: BackendStrings.php:84
+msgid "Notification"
+msgstr "إشعار"
+
+#: BackendStrings.php:85 FrontendStrings.php:200
+msgid "of"
+msgstr "من"
+
+#: BackendStrings.php:86
+msgid "OK"
+msgstr "موافقة"
+
+#: BackendStrings.php:87 FrontendStrings.php:135
+msgid "On-site"
+msgstr "بالموقع"
+
+#: BackendStrings.php:88
+msgid "Here you can enable/disable On-Site payments for this service"
+msgstr ""
+
+#: BackendStrings.php:89 FrontendStrings.php:137
+msgid "Opened"
+msgstr "مفتوح"
+
+#: BackendStrings.php:90 FrontendStrings.php:138
+msgid "out of"
+msgstr ""
+
+#: BackendStrings.php:91 BackendStrings.php:661 FrontendStrings.php:139
+msgid "Package"
+msgstr ""
+
+#: BackendStrings.php:92
+msgid "Packages"
+msgstr ""
+
+#: BackendStrings.php:93
+msgid "Package Price"
+msgstr ""
+
+#: BackendStrings.php:94 BackendStrings.php:1176 BackendStrings.php:1217
+msgid "Paid"
+msgstr "دفع"
+
+#: BackendStrings.php:95 FrontendStrings.php:532
+msgid "Payment"
+msgstr "دفع"
+
+#: BackendStrings.php:96
+msgid ""
+"Here you can select which payment methods will be available.<br/>If you "
+"disable all payment methods,<br/>then the default payment method from general "
+"settings will be used."
+msgstr ""
+
+#: BackendStrings.php:97
+msgid ""
+"You have disabled all available payment methods. This means that default "
+"payment method from general settings will be used."
+msgstr ""
+
+#: BackendStrings.php:98
+msgid ""
+"Some services/events have all payment methods disabled. This means that "
+"default payment method will be used for those services/events."
+msgstr ""
+
+#: BackendStrings.php:99 BackendStrings.php:1180 FrontendStrings.php:535
+msgid "Pending"
+msgstr "قيد الانتظار"
+
+#: BackendStrings.php:100
+msgid "Period"
+msgstr "فترة"
+
+#: BackendStrings.php:101 FrontendStrings.php:146
+msgid "Phone"
+msgstr "موبايل"
+
+#: BackendStrings.php:102
+msgid ""
+"<p>The <strong>Amelia</strong> plugin requires PHP version 5.5 or greater.</p>"
+msgstr ""
+"<p> يتطلب المكون الإضافي <strong> Amelia </strong> إصدار PHP 5.5 أو أحدث. </ "
+"p>"
+
+#: BackendStrings.php:103
+msgid "Plugin Activation Error"
+msgstr "خطأ تنشيط البرنامج المساعد"
+
+#: BackendStrings.php:104
+msgid "Pick a date range"
+msgstr "اختيار نطاق التاريخ"
+
+#: BackendStrings.php:105 FrontendStrings.php:551
+msgid "Recurring"
+msgstr ""
+
+#: BackendStrings.php:106 BackendStrings.php:1573 FrontendStrings.php:259
+msgid "Daily"
+msgstr "يومياً"
+
+#: BackendStrings.php:107 BackendStrings.php:1575 FrontendStrings.php:261
+#: FrontendStrings.php:554
+msgid "Monthly"
+msgstr "شهرياً"
+
+#: BackendStrings.php:108 BackendStrings.php:1574 FrontendStrings.php:260
+#: FrontendStrings.php:555
+msgid "Weekly"
+msgstr "أسبوعياً"
+
+#: BackendStrings.php:109 FrontendStrings.php:556
+msgid "Yearly"
+msgstr "سنوياً"
+
+#: BackendStrings.php:110 FrontendStrings.php:559
+msgid "Rejected"
+msgstr "مرفوض"
+
+#: BackendStrings.php:111
+msgid "Package Appointments"
+msgstr ""
+
+#: BackendStrings.php:112 FrontendStrings.php:563
+msgid "Save"
+msgstr "حفظ"
+
+#: BackendStrings.php:113 FrontendStrings.php:571
+msgid "Please select date"
+msgstr "يرجى تحديد التاريخ"
+
+#: BackendStrings.php:114 FrontendStrings.php:580
+msgid "Select Time"
+msgstr "اختر الوقت"
+
+#: BackendStrings.php:115 FrontendStrings.php:581
+msgid "Please select time"
+msgstr "يرجى اختيار الوقت"
+
+#: BackendStrings.php:116 BackendStrings.php:314
+msgid "Service"
+msgstr "الخدمات"
+
+#: BackendStrings.php:117 BackendStrings.php:315 FrontendStrings.php:155
+msgid "Services"
+msgstr "خدمات"
+
+#: BackendStrings.php:118
+msgid "Settings has been saved"
+msgstr "تم حفظ الإعدادات"
+
+#: BackendStrings.php:119 FrontendStrings.php:212
+msgid "Showing"
+msgstr "عرض"
+
+#: BackendStrings.php:120
+msgid "Sort"
+msgstr "فرز"
+
+#: BackendStrings.php:121 BackendStrings.php:1038 FrontendStrings.php:599
+msgid "Status"
+msgstr "الحالة"
+
+#: BackendStrings.php:122 BackendStrings.php:725
+msgid "Status:"
+msgstr "الحالة:"
+
+#: BackendStrings.php:123 FrontendStrings.php:601
+msgid "Success"
+msgstr "نجاح"
+
+#: BackendStrings.php:124 FrontendStrings.php:214
+msgid "to"
+msgstr "الى"
+
+#: BackendStrings.php:125 BackendStrings.php:1438 FrontendStrings.php:603
+msgid "Today"
+msgstr "اليوم"
+
+#: BackendStrings.php:126 FrontendStrings.php:604
+msgid "Tomorrow"
+msgstr "غدا"
+
+#: BackendStrings.php:127 BackendStrings.php:1439 FrontendStrings.php:605
+msgid "Total"
+msgstr "مجموع"
+
+#: BackendStrings.php:128
+msgid "View"
+msgstr "رأي"
+
+#: BackendStrings.php:129 FrontendStrings.php:610
+msgid "Friday"
+msgstr "الجمعة"
+
+#: BackendStrings.php:130 FrontendStrings.php:611
+msgid "Monday"
+msgstr "الإثنين"
+
+#: BackendStrings.php:131 FrontendStrings.php:612
+msgid "Saturday"
+msgstr "يوم السبت"
+
+#: BackendStrings.php:132 FrontendStrings.php:613
+msgid "Sunday"
+msgstr "الأحد"
+
+#: BackendStrings.php:133 FrontendStrings.php:614
+msgid "Thursday"
+msgstr "الخميس"
+
+#: BackendStrings.php:134 FrontendStrings.php:615
+msgid "Tuesday"
+msgstr "الثلاثاء"
+
+#: BackendStrings.php:135 FrontendStrings.php:616
+msgid "Wednesday"
+msgstr "الأربعاء"
+
+#: BackendStrings.php:136 FrontendStrings.php:622
+msgid "Yes"
+msgstr "نعم"
+
+#: BackendStrings.php:137 FrontendStrings.php:623
+msgid "Zoom"
+msgstr ""
+
+#: BackendStrings.php:138 FrontendStrings.php:172 FrontendStrings.php:624
+msgid "Join Zoom Meeting"
+msgstr ""
+
+#: BackendStrings.php:139 FrontendStrings.php:173 FrontendStrings.php:625
+msgid "Start Zoom Meeting"
+msgstr ""
+
+#: BackendStrings.php:140 FrontendStrings.php:626
+msgid "Zoom Join Link (Participants)"
+msgstr ""
+
+#: BackendStrings.php:141 FrontendStrings.php:629
+msgid "Zoom Start Link (Host)"
+msgstr ""
+
+#: BackendStrings.php:142 FrontendStrings.php:630
+msgid "Zoom User"
+msgstr ""
+
+#: BackendStrings.php:143 FrontendStrings.php:631
+msgid "Select Zoom User"
+msgstr ""
+
+#: BackendStrings.php:144 FrontendStrings.php:241
+msgid "Unlimited"
+msgstr ""
+
+#: BackendStrings.php:156
+msgid "Activate"
+msgstr "فعل"
+
+#: BackendStrings.php:157
+msgid "Activation"
+msgstr "تفعيل"
+
+#: BackendStrings.php:158
+msgid "Plugin has been activated"
+msgstr "تم تفعيل الإضافة"
+
+#: BackendStrings.php:159
+msgid "Plugin has been deactivated"
+msgstr "تم تعطيل الإضافة"
+
+#: BackendStrings.php:160
+msgid ""
+"It seems that Envato API is currently busy (please try again) or you don't "
+"have a valid purchase of Amelia"
+msgstr ""
+
+#: BackendStrings.php:161
+msgid "Activation Settings"
+msgstr "إعدادات التفعيل"
+
+#: BackendStrings.php:162
+msgid ""
+"Use this setting to activate the plugin code so you can have access to auto "
+"updates of Amelia"
+msgstr ""
+"استعمل هذه الإعدادات لتفعيل كود الإضافة كي تستطيع الحصول على التحديثات "
+"التلقائية لأميليا"
+
+#: BackendStrings.php:163
+msgid "You have reached maximum number of registered domains"
+msgstr "لقد وصلت إلى الحد الأقصى من المواقع المسجلة"
+
+#: BackendStrings.php:164
+msgid "Activate the plugin by entering Purchase code or using Envato API."
+msgstr "فعل الإضافة بإدخال كود الشراء أو استعمل Envato API."
+
+#: BackendStrings.php:165
+msgid "The purchase code is invalid or it has expired"
+msgstr "كود الشراء غير صالح أو منته"
+
+#: BackendStrings.php:166
+msgid "Add New MetaData"
+msgstr ""
+
+#: BackendStrings.php:167
+msgid "Add New Role"
+msgstr "إضافة دور جديد"
+
+#: BackendStrings.php:168
+msgid "Add New Web Hook"
+msgstr ""
+
+#: BackendStrings.php:169
+msgid "Show Add To Calendar option to customers"
+msgstr "إظهار خيار \"إضافة إلى التقويم\" للعملاء"
+
+#: BackendStrings.php:170
+msgid ""
+"Suggest customers to add an appointment to their calendar<br/>when booking is "
+"finalized."
+msgstr ""
+"اقترح على العملاء إضافة موعد إلى التقويم الخاص بهم <br/> عند الانتهاء من "
+"الحجز."
+
+#: BackendStrings.php:171 BackendStrings.php:863
+msgid "Address"
+msgstr "عنوان"
+
+#: BackendStrings.php:172
+msgid "After"
+msgstr "بعد"
+
+#: BackendStrings.php:173
+msgid "After with space"
+msgstr "بعد مع الفراغ"
+
+#: BackendStrings.php:174
+msgid "Allow booking below minimum capacity"
+msgstr "اسمح بالحجز تحت الحد الأدنى"
+
+#: BackendStrings.php:175
+msgid "Configure their days off"
+msgstr "تكوين أيام العطلة الخاصة بهم"
+
+#: BackendStrings.php:176
+msgid "Configure their services"
+msgstr ""
+
+#: BackendStrings.php:177
+msgid "Configure their schedule"
+msgstr "تكوين جدولهم الزمني"
+
+#: BackendStrings.php:178
+msgid "Configure their special days"
+msgstr "تكوين أيامهم الخاصة"
+
+#: BackendStrings.php:179
+msgid "Allow booking above maximum capacity"
+msgstr "اسمح بالحجز فوق الحد الأقصى"
+
+#: BackendStrings.php:180
+msgid ""
+"If this is disabled, your front-end customers won't be able to book "
+"appointment with Pending status above the maximum capacity.<br/>Once the "
+"maximum capacity is reached appointment will close and time slot will become "
+"unavailable."
+msgstr ""
+"إن كان هذا معطلاً، فإن الواجهة الأمامية للعملاء لن تتمكن من حجز مواعيد بحالة "
+"(الانتظار) فوق السعة القصوى.<br/>بمجرد اكتمال الحد الأقصى من المواعيد سيتم "
+"إغلاق الحجز ولن تصبح هذه البقعة الزمنية متاحة."
+
+#: BackendStrings.php:181
+msgid ""
+"If this is disabled, your front-end customers won't be able to submit a "
+"booking unless they fill in the minimum service capacity,<br/>but once they "
+"book for any capacity above minimum, the time slot will become unavailable "
+"for booking for others.<br/>If enabled, multiple customers will be able to "
+"book the same time slot, without having to fill in the minimum capacity."
+msgstr ""
+"‫إن كان هذا معطلاً، فإن الواجهة الأمامية للعملاء لن تتمكن من حجز مواعيد حتى "
+"يملؤوا الحد الأدنى المطلوب للخدمة،<br/>لكن بمجرد تجاوزهم الحد الأدنى، لن تكون "
+"تلك النقطة الزمنية متاحة لحجز الآخرين.<br/>إذا كان هذا الخيار مفعلاً، يمكن "
+"لعدة عملاء حجز نفس النقطة الزمنية بدون الحاجة لملء  الحد الأدنى."
+
+#: BackendStrings.php:182
+msgid "Allow customers to reschedule their own appointments"
+msgstr "السماح للعملاء بإعادة جدولة المواعيد الخاصة بهم"
+
+#: BackendStrings.php:183
+msgid ""
+"Enable this option if you want to allow your customers to reschedule their "
+"own appointments."
+msgstr ""
+"قم بتمكين هذا الخيار إذا كنت تريد السماح لعملائك بإعادة جدولة المواعيد الخاصة "
+"بهم."
+
+#: BackendStrings.php:184
+msgid "Allow customers to delete their profile"
+msgstr ""
+
+#: BackendStrings.php:185
+msgid ""
+"Enable this option if you want to allow your customers to delete their "
+"profile data (bookings won't be deleted)."
+msgstr ""
+
+#: BackendStrings.php:186
+msgid "Manage their appointments"
+msgstr "إدارة مواعيدهم"
+
+#: BackendStrings.php:187
+msgid "Manage their events"
+msgstr "إدارة أحداثهم"
+
+#: BackendStrings.php:188
+msgid "Amelia Role"
+msgstr "دور Amelia"
+
+#: BackendStrings.php:190
+msgid "Appointments Settings"
+msgstr "إعدادات المواعيد"
+
+#: BackendStrings.php:191
+msgid "Use these settings to manage frontend bookings"
+msgstr "استعمل هذه الإعدادات لإدارة حجوزات الواجهة الأمامية"
+
+#: BackendStrings.php:192
+msgid "Automatically create Amelia Customer user"
+msgstr "إنشاء مستخدم Amelia عميل تلقائيًا"
+
+#: BackendStrings.php:193
+msgid ""
+"If you enable this option every time a new customer schedules the "
+"appointment<br/>he will get Amelia Customer user role and automatic email "
+"with login details."
+msgstr ""
+"إذا قمت بتمكين هذا الخيار في كل مرة يحدد فيها عميل جديد الموعد <br/> فسيحصل "
+"على دور مستخدم عميل Amelia والبريد الإلكتروني التلقائي مع تفاصيل تسجيل الدخول."
+
+#: BackendStrings.php:194
+msgid "Support Amelia by enabling this option"
+msgstr ""
+
+#: BackendStrings.php:195
+msgid ""
+"Allow the short description below the booking form to support<br/>Amelia "
+"Booking Plugin and spread the word about it."
+msgstr ""
+
+#: BackendStrings.php:196
+msgid "Send all notifications to additional addresses"
+msgstr ""
+
+#: BackendStrings.php:197
+msgid "Please enter email address"
+msgstr "رجاء إدخال عنوان البريد الإلكتروني"
+
+#: BackendStrings.php:198
+msgid ""
+"Here you can enter additional email addresses where all notifications will be "
+"sent.<br/>To add an address click Enter."
+msgstr ""
+
+#: BackendStrings.php:199
+msgid "Before"
+msgstr "قبل"
+
+#: BackendStrings.php:200
+msgid "Before with space"
+msgstr "قبل مع فراغ"
+
+#: BackendStrings.php:201
+msgid "Include service buffer time in time slots"
+msgstr ""
+
+#: BackendStrings.php:202
+msgid ""
+"If this option is enabled<br>time slots will be shown with included service "
+"buffer time"
+msgstr ""
+
+#: BackendStrings.php:203 BackendStrings.php:1429
+msgid "Calendar"
+msgstr "تقويم"
+
+#: BackendStrings.php:204
+msgid "Unsuccessful Cancellation Redirect URL"
+msgstr "عنوان URL لإعادة التوجيه غير الناجح"
+
+#: BackendStrings.php:205
+msgid ""
+"URL on which will user be redirected if appointment can't be canceled<br/"
+">because of 'Minimum time required before canceling' value"
+msgstr ""
+"عنوان URL الذي سيتم إعادة توجيه المستخدم إليه إذا تعذر إلغاء الموعد <br/> "
+"بسبب قيمة \"الحد الأدنى للوقت المطلوب قبل الإلغاء\""
+
+#: BackendStrings.php:206
+msgid "Successful Cancellation Redirect URL"
+msgstr "عنوان URL لإعادة الإلغاء الناجح"
+
+#: BackendStrings.php:207
+msgid "Please enter URL"
+msgstr "الرجاء إدخال عنوان URL"
+
+#: BackendStrings.php:208
+msgid "CodeCanyon Purchase Code"
+msgstr "CodeCanyon رمز الشراء"
+
+#: BackendStrings.php:209
+msgid "Comma-Dot"
+msgstr "فاصلة دوت"
+
+#: BackendStrings.php:210 BackendStrings.php:659
+msgid "Company"
+msgstr "شركة"
+
+#: BackendStrings.php:211
+msgid "Company Settings"
+msgstr "اعدادت الشركة"
+
+#: BackendStrings.php:212
+msgid ""
+"Use these settings to set up picture, name, address, phone and website of "
+"your company"
+msgstr "استخدم هذه الإعدادات لإعداد صورة واسم شركتك وعنوانها وموقعها الإلكتروني"
+
+#: BackendStrings.php:213 BackendStrings.php:1155
+msgid "Coupons"
+msgstr "كوبونات"
+
+#: BackendStrings.php:214
+msgid "Currency"
+msgstr "دقة"
+
+#: BackendStrings.php:215 BackendStrings.php:1257 BackendStrings.php:1465
+#: FrontendStrings.php:94 FrontendStrings.php:381
+msgid "Custom Fields"
+msgstr "حقول مخصصة"
+
+#: BackendStrings.php:216
+msgid "Add/edit custom fields"
+msgstr "إضافة / تحرير الحقول المخصصة"
+
+#: BackendStrings.php:217
+msgid "Custom fields settings"
+msgstr "اعدادات الحقول المخصصة"
+
+#: BackendStrings.php:218
+msgid "Add Event's Attendees"
+msgstr "إضافة الحاضرين الحدث"
+
+#: BackendStrings.php:219
+msgid ""
+"Enable this option if you want your employees to see<br/>in the event "
+"customers that attend the appointment."
+msgstr ""
+"قم بتمكين هذا الخيار إذا كنت ترغب في رؤية المختصين <br/> في حالة العملاء "
+"الذين يحضرون الموعد."
+
+#: BackendStrings.php:220
+msgid "Customer Panel Page URL"
+msgstr ""
+
+#: BackendStrings.php:221
+msgid "Employee Panel Page URL"
+msgstr ""
+
+#: BackendStrings.php:222
+msgid ""
+"Enter here URL of the page with [ameliacustomerpanel] shortcode if you want "
+"to send it to your customers in notifications.<br/>Make sure to also add the "
+"placeholder in notification so the URL can be sent."
+msgstr ""
+
+#: BackendStrings.php:223
+msgid ""
+"Enter here URL of the page with [ameliaemployeepanel] shortcode if you want "
+"to send it to your employees in notifications.<br/>Make sure to also add the "
+"placeholder in notification so the URL can be sent."
+msgstr ""
+
+#: BackendStrings.php:224 BackendStrings.php:770
+msgid "Dashboard"
+msgstr "لوحة القيادة"
+
+#: BackendStrings.php:225 FrontendStrings.php:389
+msgid "1 day"
+msgstr "1 يوم"
+
+#: BackendStrings.php:226 FrontendStrings.php:392
+msgid "2 days"
+msgstr "2يوم"
+
+#: BackendStrings.php:227 FrontendStrings.php:393
+msgid "3 days"
+msgstr "3يوم"
+
+#: BackendStrings.php:228 FrontendStrings.php:394
+msgid "4 days"
+msgstr "4يوم"
+
+#: BackendStrings.php:229 FrontendStrings.php:395
+msgid "5 days"
+msgstr "5 يوم"
+
+#: BackendStrings.php:230 FrontendStrings.php:396
+msgid "6 days"
+msgstr "6 يوم"
+
+#: BackendStrings.php:231
+msgid "Days Off Settings"
+msgstr "اعدادات أيام العطل"
+
+#: BackendStrings.php:232
+msgid ""
+"Use these settings to set company working hours and days off which will be "
+"applied for every employee"
+msgstr ""
+"استخدم هذه الإعدادات لتعيين ساعات عمل الشركة وأيام العطلات التي سيتم تطبيقها "
+"على كل المختصين"
+
+#: BackendStrings.php:233
+msgid "Deactivate"
+msgstr "تعطيل"
+
+#: BackendStrings.php:234
+msgid "Default Appointment Status"
+msgstr "حالة الموعد الافتراضي"
+
+#: BackendStrings.php:235
+msgid "All appointments will be scheduled with the<br/>status you choose here."
+msgstr "سيتم جدولة جميع المواعيد مع الحالة <br/> التي تختارها هنا."
+
+#: BackendStrings.php:236
+msgid "Default items per page"
+msgstr "العناصر الافتراضية لكل صفحة"
+
+#: BackendStrings.php:237
+msgid "Default page on back-end"
+msgstr "الصفحة الافتراضية في النهاية الخلفية"
+
+#: BackendStrings.php:238
+msgid "Default Payment Method"
+msgstr "طريقه تسديد افتراضية"
+
+#: BackendStrings.php:239
+msgid "Default phone country code"
+msgstr "رمز البلد الافتراضي للهاتف"
+
+#: BackendStrings.php:240
+msgid "Default Time Slot Step"
+msgstr "الوقت الافتراضي فتحة الخطوة"
+
+#: BackendStrings.php:241
+msgid ""
+"The Time Slot Step you define here will be applied<br/>for all time slots in "
+"the plugin."
+msgstr ""
+"سيتم تطبيق الخطوة الزمنية التي تحددها هنا <br/> لجميع فتحات الوقت في المكون "
+"الإضافي."
+
+#: BackendStrings.php:242
+msgid "Delete plugin tables"
+msgstr ""
+
+#: BackendStrings.php:243
+msgid ""
+"Enable this option if you want to delete plugin tables<br>when deleting the "
+"plugin from plugins page"
+msgstr ""
+
+#: BackendStrings.php:244
+msgid "Description for PayPal"
+msgstr ""
+
+#: BackendStrings.php:245
+msgid "Description for Stripe"
+msgstr ""
+
+#: BackendStrings.php:246
+msgid "Description for WooCommerce"
+msgstr ""
+
+#: BackendStrings.php:247
+msgid "Dot-Comma"
+msgstr "دوت فاصلة"
+
+#: BackendStrings.php:248
+msgid "Enable Labels Settings"
+msgstr "تمكين إعدادات التسميات"
+
+#: BackendStrings.php:249
+msgid ""
+"Disable this option if you want to translate these<br/>strings using the "
+"third party translation plugin."
+msgstr ""
+"قم بتعطيل هذا الخيار إذا كنت تريد ترجمة هذه السلاسل <br/> باستخدام المكون "
+"الإضافي لترجمة الطرف الثالث."
+
+#: BackendStrings.php:250
+msgid "Enable Customer Panel"
+msgstr ""
+
+#: BackendStrings.php:251
+msgid "Enable Employee Panel"
+msgstr ""
+
+#: BackendStrings.php:252
+msgid "Enabled"
+msgstr "تمكين"
+
+#: BackendStrings.php:253
+msgid "Endpoint"
+msgstr ""
+
+#: BackendStrings.php:254
+msgid "Enter here an endpoint if you are using Mailgun from EU countries"
+msgstr ""
+
+#: BackendStrings.php:255
+msgid "Please enter a valid URL with protocol (http:// or https://)"
+msgstr "يرجى إدخال عنوان URL صالح مع بروتوكول (http: // أو https: //)"
+
+#: BackendStrings.php:256
+msgid "Envato API"
+msgstr "Envato API"
+
+#: BackendStrings.php:257
+msgid "Activate with Envato"
+msgstr "‫فعل باستخدام إنفاتو"
+
+#: BackendStrings.php:258
+msgid "Activated with Envato"
+msgstr "‫تفعيل باستخدام إنفاتو"
+
+#: BackendStrings.php:260
+msgid "Event Description"
+msgstr "وصف الحدث"
+
+#: BackendStrings.php:261
+msgid ""
+"Description of the event that will be displayed in the Google Calendar.<br/"
+">You can find available placeholders on the Notifications page."
+msgstr ""
+"وصف الحدث الذي سيتم عرضه في تقويم Google. <br/> يمكنك العثور على العناصر "
+"النائبة المتاحة في صفحة الإشعارات."
+
+#: BackendStrings.php:262
+msgid ""
+"Description of the event that will be displayed in the Outlook Calendar.<br/"
+">You can find available placeholders on the Notifications page."
+msgstr ""
+
+#: BackendStrings.php:263
+msgid "Event Title"
+msgstr "عنوان الحدث"
+
+#: BackendStrings.php:264
+msgid ""
+"Title of the event that will be displayed in the Google Calendar.<br/>You can "
+"find available placeholders on the Notifications page."
+msgstr ""
+"عنوان الحدث الذي سيتم عرضه في تقويم Google. <br/> يمكنك العثور على العناصر "
+"النائبة المتاحة في صفحة الإشعارات."
+
+#: BackendStrings.php:265
+msgid ""
+"Title of the event that will be displayed in the Outlook Calendar.<br/>You "
+"can find available placeholders on the Notifications page."
+msgstr ""
+
+#: BackendStrings.php:266
+msgid "Meeting Title"
+msgstr ""
+
+#: BackendStrings.php:267
+msgid ""
+"Title of the meeting that will be displayed in the Zoom.<br/>You can find "
+"available placeholders on the Notifications page."
+msgstr ""
+
+#: BackendStrings.php:268
+msgid "Meeting Agenda"
+msgstr ""
+
+#: BackendStrings.php:269
+msgid ""
+"Agenda of the meeting that will be displayed in the Zoom.<br/>You can find "
+"available placeholders on the Notifications page."
+msgstr ""
+
+#: BackendStrings.php:270 FrontendStrings.php:472
+msgid "General"
+msgstr "عام"
+
+#: BackendStrings.php:271
+msgid "General Settings"
+msgstr "الاعدادات العامة"
+
+#: BackendStrings.php:272
+msgid ""
+"Use these settings to define plugin general settings and default settings for "
+"your services and appointments"
+msgstr ""
+"استخدم هذه الإعدادات لتحديد الإعدادات العامة للمكونات الإضافية والإعدادات "
+"الافتراضية للخدمات والمواعيد"
+
+#: BackendStrings.php:273
+msgid "Google Map API Key"
+msgstr "خريطة جوجل"
+
+#: BackendStrings.php:274
+msgid ""
+"Add Google Map API Key to show Google static map on<br/>\"Locations\" page."
+msgstr "أضف API خريطة جوجل لإظهار الخريطة الاستاتيكية لجوجل في<br/>صفحة الموقع."
+
+#: BackendStrings.php:275
+msgid "Google Calendar Settings"
+msgstr "اعدادات تقويم جوجل"
+
+#: BackendStrings.php:276
+msgid ""
+"Allow synchronizing employee's calendar with Google Calendar for smoother "
+"personal scheduling"
+msgstr "السماح بمزامنة تقويم المختص مع تقويم Google لجدولة شخصية أكثر سلاسة"
+
+#: BackendStrings.php:277
+msgid "Zoom Settings"
+msgstr ""
+
+#: BackendStrings.php:278
+msgid "Client ID"
+msgstr "ID العميل"
+
+#: BackendStrings.php:279 BackendStrings.php:281 BackendStrings.php:289
+msgid "Client Secret"
+msgstr "سر العميل"
+
+#: BackendStrings.php:280
+msgid "Application (client) ID"
+msgstr ""
+
+#: BackendStrings.php:282
+msgid "Click here to see how to obtain<br/>Google Client ID and Secret"
+msgstr "انقر هنا لمعرفة كيفية الحصول على <br/> معرف عميل Google والسرية"
+
+#: BackendStrings.php:283
+msgid ""
+"Click here to see how to obtain<br/>Outlook Application (client) ID and Secret"
+msgstr ""
+
+#: BackendStrings.php:284 BackendStrings.php:286
+msgid "Redirect URI"
+msgstr "إعادة توجيه URI"
+
+#: BackendStrings.php:285
+msgid ""
+"This is the path in your application that users are redirected to after<br/"
+">they have authenticated with Google. Add this URI in your Google<br/>project "
+"credentials under \"Authorized redirect URIs\"."
+msgstr ""
+"هذا هو المسار في تطبيقك الذي تتم إعادة توجيه المستخدمين إليه بعد <br/> قاموا "
+"بالمصادقة مع Google. أضف URI في Google <br/> بيانات اعتماد المشروع ضمن \"URIs "
+"لإعادة التوجيه المعتمد\"."
+
+#: BackendStrings.php:287
+msgid ""
+"This is the path in your application that users are redirected to after<br/"
+">they have authenticated with Outlook. Add this URI in your Outlook<br/"
+">application under \"Redirect URIs\"."
+msgstr ""
+
+#: BackendStrings.php:288
+msgid "Client Key"
+msgstr ""
+
+#: BackendStrings.php:290
+msgid "Click here to see how to obtain<br/>Zoom API Key and Secret"
+msgstr ""
+
+#: BackendStrings.php:291
+msgid "Integrations"
+msgstr ""
+
+#: BackendStrings.php:292
+msgid ""
+"Manage Google Calendar Integration, Outlook Calendar Integration, Zoom "
+"Integration and Web Hooks"
+msgstr ""
+
+#: BackendStrings.php:293 FrontendStrings.php:473
+msgid "1h"
+msgstr "1 ساعة"
+
+#: BackendStrings.php:294 FrontendStrings.php:474
+msgid "10h"
+msgstr "10 ساعة"
+
+#: BackendStrings.php:295 FrontendStrings.php:475
+msgid "11h"
+msgstr "11 ساعة"
+
+#: BackendStrings.php:296 FrontendStrings.php:476
+msgid "12h"
+msgstr "12 ساعة"
+
+#: BackendStrings.php:297 FrontendStrings.php:477
+msgid "1h 30min"
+msgstr "1 ساعة ونصف"
+
+#: BackendStrings.php:298 FrontendStrings.php:478
+msgid "2h"
+msgstr "2ساعة"
+
+#: BackendStrings.php:299 FrontendStrings.php:479
+msgid "3h"
+msgstr "3ساعة"
+
+#: BackendStrings.php:300 FrontendStrings.php:480
+msgid "4h"
+msgstr "4ساعة"
+
+#: BackendStrings.php:301 FrontendStrings.php:481
+msgid "6h"
+msgstr "6ساعة"
+
+#: BackendStrings.php:302 FrontendStrings.php:482
+msgid "8h"
+msgstr "8ساعة"
+
+#: BackendStrings.php:303 FrontendStrings.php:483
+msgid "9h"
+msgstr "9ساعة"
+
+#: BackendStrings.php:304
+msgid "Identify country code by user's IP address"
+msgstr ""
+
+#: BackendStrings.php:305
+msgid "Insert Pending Appointments"
+msgstr "إدراج في انتظار المواعيد"
+
+#: BackendStrings.php:306
+msgid ""
+"Enable this option if you want your employees to see<br/>appointments with "
+"pending status in their calendar."
+msgstr ""
+"قم بتمكين هذا الخيار إذا كنت تريد أن يرى المختصون لديك <br/> المواعيد ذات "
+"الحالة المعلقة في التقويم الخاص بهم."
+
+#: BackendStrings.php:307
+msgid "Create Meetings For Pending Appointments"
+msgstr ""
+
+#: BackendStrings.php:308
+msgid ""
+"Enable this option if you want to create zoom meetings for appointments with "
+"pending status."
+msgstr ""
+
+#: BackendStrings.php:309
+msgid "Check customer's name for existing email when booking"
+msgstr "تحقق من اسم العميل لمعرفة البريد الإلكتروني الحالي عند الحجز"
+
+#: BackendStrings.php:310
+msgid ""
+"Enable this option if you don't want to allow \"existing customer\"<br/>to "
+"use different first and last name when booking."
+msgstr ""
+"قم بتمكين هذا الخيار إذا كنت لا ترغب في السماح \"للعميل الحالي\" <br/> "
+"باستخدام الاسم الأول والأخير المختلف عند الحجز."
+
+#: BackendStrings.php:311
+msgid "Instructions"
+msgstr "تعليمات"
+
+#: BackendStrings.php:316
+msgid "Labels"
+msgstr "ملصقات"
+
+#: BackendStrings.php:317
+msgid "Labels Settings"
+msgstr "اعدادات اللواصق"
+
+#: BackendStrings.php:318
+msgid "Use these settings to change labels on frontend pages"
+msgstr "استخدم هذه الإعدادات لتغيير التصنيفات على صفحات الواجهة الأمامية"
+
+#: BackendStrings.php:319
+msgid ""
+"Use these settings to register URLs to which booking information will be sent "
+"when booking action occurs."
+msgstr ""
+
+#: BackendStrings.php:320
+msgid "Limit Number of Fetched Events"
+msgstr "الحد من عدد الأحداث التي تم جلبها"
+
+#: BackendStrings.php:321
+msgid "Live Client ID"
+msgstr "معرف عميل مباشر"
+
+#: BackendStrings.php:322
+msgid "Live Publishable Key"
+msgstr "مفتاح للنشر المباشر"
+
+#: BackendStrings.php:323
+msgid "Live Secret"
+msgstr "كلمة سر النشر المباشر"
+
+#: BackendStrings.php:324
+msgid "Live Secret Key"
+msgstr "مفتاح سر النشر الحي"
+
+#: BackendStrings.php:325
+msgid "Mail Service"
+msgstr "سيرفر البريد الالكتروني"
+
+#: BackendStrings.php:326
+msgid "Mailgun"
+msgstr "Mailgun"
+
+#: BackendStrings.php:327
+msgid "Mailgun API Key"
+msgstr "Mailgun API Key"
+
+#: BackendStrings.php:328
+msgid "Please enter Mailgun API key"
+msgstr "يرجى إدخال مفتاح واجهة برمجة تطبيقات Mailgun"
+
+#: BackendStrings.php:329
+msgid "Mailgun Domain"
+msgstr "Mailgun Domain"
+
+#: BackendStrings.php:330
+msgid "Please enter Mailgun Domain"
+msgstr "الرجاء إدخال Mailgun المجال"
+
+#: BackendStrings.php:331
+msgid "You can find available placeholders on the Notifications page"
+msgstr ""
+
+#: BackendStrings.php:332 FrontendStrings.php:491
+msgid "1min"
+msgstr "دقيقة واحدة"
+
+#: BackendStrings.php:333 FrontendStrings.php:492
+msgid "10min"
+msgstr "10 دقيقة"
+
+#: BackendStrings.php:334 FrontendStrings.php:493
+msgid "12min"
+msgstr "12 دقيقة"
+
+#: BackendStrings.php:335 FrontendStrings.php:494
+msgid "15min"
+msgstr "15 دقيقة"
+
+#: BackendStrings.php:336 FrontendStrings.php:495
+msgid "2min"
+msgstr "دقيقتان"
+
+#: BackendStrings.php:337 FrontendStrings.php:496
+msgid "20min"
+msgstr "20دقيقة"
+
+#: BackendStrings.php:338 FrontendStrings.php:497
+msgid "30min"
+msgstr "30دقيقة"
+
+#: BackendStrings.php:339 FrontendStrings.php:498
+msgid "45min"
+msgstr "45دقيقة"
+
+#: BackendStrings.php:340 FrontendStrings.php:499
+msgid "5min"
+msgstr "5دقيقة"
+
+#: BackendStrings.php:341
+msgid "Minimum time required before booking"
+msgstr "الحد الأدنى للوقت المطلوب قبل الحجز"
+
+#: BackendStrings.php:342
+msgid ""
+"Set the time before the appointment when customers<br/>will not be able to "
+"book the appointment."
+msgstr "حدد الوقت قبل الموعد الذي لن يتمكن فيه العملاء <br/> من حجز الموعد."
+
+#: BackendStrings.php:343 FrontendStrings.php:501
+msgid "Minimum time required before canceling/rescheduling"
+msgstr ""
+
+#: BackendStrings.php:344 FrontendStrings.php:502
+msgid ""
+"Set the time before the appointment when customers<br/>will not be able to "
+"cancel/reschedule the appointment."
+msgstr ""
+
+#: BackendStrings.php:345 FrontendStrings.php:503
+msgid "3 months"
+msgstr "٣ أشهر"
+
+#: BackendStrings.php:346 FrontendStrings.php:504
+msgid "6 months"
+msgstr "٦ أشهر"
+
+#: BackendStrings.php:348
+msgid "Notification Settings"
+msgstr "اعدادات الاشعارات"
+
+#: BackendStrings.php:349
+msgid ""
+"Use these settings to set your mail settings which will be used to notify "
+"your customers and employees"
+msgstr ""
+"استخدم هذه الإعدادات لتعيين إعدادات البريد الخاصة بك والتي سيتم استخدامها "
+"لإعلام العملاء والمختصين"
+
+#: BackendStrings.php:350
+msgid "Notify the customer(s) by default"
+msgstr "إخطار العميل (العملاء) افتراضيًا"
+
+#: BackendStrings.php:351
+msgid "Maximum Number Of Events Returned"
+msgstr "الحد الأقصى لعدد الأحداث التي تم إرجاعها"
+
+#: BackendStrings.php:352
+msgid ""
+"Maximum number of events returned on one result page.<br/>It is recommended "
+"to use smaller number of returned<br/>events if your server performance is "
+"not so good."
+msgstr ""
+"الحد الأقصى لعدد الأحداث التي يتم إرجاعها على صفحة نتيجة واحدة. <br/> يوصى "
+"باستخدام عدد أقل من الأحداث التي تم إرجاعها إذا كان أداء خادمك غير جيد."
+
+#: BackendStrings.php:353 BackendStrings.php:1178 FrontendStrings.php:534
+msgid "Payments"
+msgstr "المدفوعات"
+
+#: BackendStrings.php:354
+msgid "Payments Settings"
+msgstr "أعدادات الدفعات"
+
+#: BackendStrings.php:355
+msgid ""
+"Use these settings to set price format, payment method and coupons that will "
+"be used in all bookings"
+msgstr ""
+"استخدم هذه الإعدادات لتعيين تنسيق السعر وطريقة الدفع والقسائم التي سيتم "
+"استخدامها في جميع الحجوزات"
+
+#: BackendStrings.php:356 BackendStrings.php:589 FrontendStrings.php:141
+msgid "PayPal"
+msgstr "بايبال"
+
+#: BackendStrings.php:357
+msgid "Please enter live ClientId"
+msgstr "الرجاء إدخال ClientId مباشرة"
+
+#: BackendStrings.php:358
+msgid "Please enter live Secret"
+msgstr "الرجاء إدخال سر لايف"
+
+#: BackendStrings.php:359
+msgid "PayPal Service"
+msgstr "خدمة PayPal"
+
+#: BackendStrings.php:360
+msgid "Please enter test ClientId"
+msgstr "الرجاء إدخال اختبار ClientId"
+
+#: BackendStrings.php:361
+msgid "Please enter test Secret"
+msgstr "الرجاء إدخال اختبار السري"
+
+#: BackendStrings.php:362
+msgid "Period available for booking in advance"
+msgstr "الفترة المتاحة للحجز مقدما"
+
+#: BackendStrings.php:363
+msgid "Set how far customers can book."
+msgstr "حدد المدى الذي يمكن للعملاء حجزه."
+
+#: BackendStrings.php:364
+msgid "PHP Mail"
+msgstr "PHP بريد الكتروني"
+
+#: BackendStrings.php:365
+#, php-format
+msgid ""
+"To receive automatic updates license activation is required. Please visit %s "
+"to activate Amelia."
+msgstr ""
+"لتلقي التحديثات التلقائية يجب إدخال رخصة التفعيل. يرجى زيارة %s لتفعيل أميليا."
+
+#: BackendStrings.php:366
+msgid "Price Number Of Decimals"
+msgstr "سعر عدد الكسور العشرية"
+
+#: BackendStrings.php:367
+msgid "Price Separator"
+msgstr "سعر فاصل"
+
+#: BackendStrings.php:368
+msgid "Price Symbol Position"
+msgstr "موقف رمز السعر"
+
+#: BackendStrings.php:369
+msgid "Purchase code"
+msgstr "كود الشراء"
+
+#: BackendStrings.php:370
+msgid "Provider Details"
+msgstr ""
+
+#: BackendStrings.php:371
+msgid "Use this setting to configure provider details"
+msgstr ""
+
+#: BackendStrings.php:372
+msgid "Enable Google reCAPTCHA"
+msgstr ""
+
+#: BackendStrings.php:373
+msgid ""
+"Enable this option if you want to add Google reCAPTCHA on the front-end "
+"booking forms"
+msgstr ""
+
+#: BackendStrings.php:374
+msgid "Add \"Invisible Google reCaptcha\""
+msgstr ""
+
+#: BackendStrings.php:375
+msgid ""
+"If you enable this option Google reCAPTCHA will stay visible in the bottom "
+"right corner<br>but the plugin will check the user automatically, without the "
+"need to mark the checkbox."
+msgstr ""
+
+#: BackendStrings.php:376
+msgid "Google reCAPTCHA Site Key"
+msgstr ""
+
+#: BackendStrings.php:377
+msgid ""
+"Paste here the Site Key that you have got once you have signed up for the API "
+"key pair on Google reCAPTCHA."
+msgstr ""
+
+#: BackendStrings.php:378
+msgid "Google reCAPTCHA Secret Key"
+msgstr ""
+
+#: BackendStrings.php:379
+msgid ""
+"Paste here the Secret Key that you have got once you have signed up for the "
+"API key pair on Google reCAPTCHA."
+msgstr ""
+
+#: BackendStrings.php:380
+msgid "Please enter site key"
+msgstr ""
+
+#: BackendStrings.php:381
+msgid "Please enter secret"
+msgstr ""
+
+#: BackendStrings.php:382 FrontendStrings.php:557
+msgid "Redirect URL After Booking"
+msgstr ""
+
+#: BackendStrings.php:383 FrontendStrings.php:558
+msgid ""
+"Customer will be redirected to this URL once he schedules the appointment."
+msgstr "سيتم إعادة توجيه العميل إلى عنوان URL هذا بمجرد تحديد الموعد."
+
+#: BackendStrings.php:384
+msgid "Remove Google Calendar Busy Slots"
+msgstr "إزالة جوجل فتحات مشغول التقويم"
+
+#: BackendStrings.php:385
+msgid ""
+"Enable this option if you want to remove busy slots in<br/>Google Calendar "
+"from Employee's working schedule."
+msgstr ""
+"قم بتمكين هذا الخيار إذا كنت تريد إزالة فتحات الانشغال في <br/> تقويم Google "
+"من جدول عمل المختص."
+
+#: BackendStrings.php:386
+msgid "Remove Outlook Calendar Busy Slots"
+msgstr ""
+
+#: BackendStrings.php:387
+msgid ""
+"Enable this option if you want to remove busy slots in<br/>Outlook Calendar "
+"from Employee's working schedule."
+msgstr ""
+
+#: BackendStrings.php:388
+msgid "Include Buffer time in Google events"
+msgstr ""
+
+#: BackendStrings.php:389
+msgid ""
+"If you disable this option buffer time for scheduled appointments<br/>will "
+"not be added to the Google Calendar events."
+msgstr ""
+
+#: BackendStrings.php:390
+msgid "Include Buffer time in Outlook events"
+msgstr ""
+
+#: BackendStrings.php:391
+msgid ""
+"If you disable this option buffer time for scheduled appointments<br/>will "
+"not be added to the Outlook Calendar events."
+msgstr ""
+
+#: BackendStrings.php:392
+msgid "Package placeholders"
+msgstr ""
+
+#: BackendStrings.php:393
+msgid ""
+"Placeholders for package appointments that will be sent in email.<br/>You can "
+"find available placeholders on the Notifications page."
+msgstr ""
+
+#: BackendStrings.php:394
+msgid "Recurring placeholders"
+msgstr ""
+
+#: BackendStrings.php:395
+msgid ""
+"Placeholders for recurring appointments that will be sent in email.<br/>You "
+"can find available placeholders on the Notifications page."
+msgstr ""
+
+#: BackendStrings.php:396
+msgid "Require password for login"
+msgstr ""
+
+#: BackendStrings.php:397
+msgid ""
+"If you disable this option, your customers will be able to access customer "
+"panel with link that is sent to their email account."
+msgstr ""
+
+#: BackendStrings.php:398
+msgid "Set email as a mandatory field"
+msgstr "اجعل إدخال البريد الإلكتروني إجبارياً"
+
+#: BackendStrings.php:399
+msgid "Set a phone number as a mandatory field"
+msgstr "اضبط رقم الهاتف كحقل إلزامي"
+
+#: BackendStrings.php:400
+msgid "Rest App Client ID"
+msgstr "رست ID عميل التطبيق"
+
+#: BackendStrings.php:401
+msgid "Rest App Secret"
+msgstr "بقية التطبيق سر"
+
+#: BackendStrings.php:402
+msgid "Roles Settings"
+msgstr "إعدادات الأدوار"
+
+#: BackendStrings.php:403
+msgid ""
+"Use these settings to define settings that will be applied for the specific "
+"Amelia roles"
+msgstr ""
+"استعمل هذه الإعدادات لتعريف الإعدادات التي ستنطبق على كل دور من أدوار أميليا"
+
+#: BackendStrings.php:404
+msgid "Sandbox Mode"
+msgstr "وضع صندوق الحماية"
+
+#: BackendStrings.php:405
+msgid "Send Event Invitation Email"
+msgstr "إرسال دعوة الحدث البريد الإلكتروني"
+
+#: BackendStrings.php:406
+msgid ""
+"Enable this option if you want your customers to<br/>receive an email about "
+"the event."
+msgstr ""
+"قم بتمكين هذا الخيار إذا كنت تريد أن يتلقى عملاؤك <br/> رسالة بريد إلكتروني "
+"حول الحدث."
+
+#: BackendStrings.php:407
+msgid "Send ics file in the notifications"
+msgstr ""
+
+#: BackendStrings.php:408
+msgid "Enable this option if you want to send ics file in email after booking."
+msgstr ""
+
+#: BackendStrings.php:409
+msgid "Sender Email"
+msgstr "البريد الإلكتروني المرسل"
+
+#: BackendStrings.php:410
+msgid "Please enter sender email"
+msgstr "الرجاء إدخال البريد الإلكتروني للمرسل"
+
+#: BackendStrings.php:411
+msgid "Sender Name"
+msgstr "اسم المرسل"
+
+#: BackendStrings.php:412
+msgid "Please enter sender name"
+msgstr "الرجاء إدخال اسم المرسل"
+
+#: BackendStrings.php:413
+msgid "Use service duration for booking a time slot"
+msgstr "استخدم مدة الخدمة لحجز فترة زمنية"
+
+#: BackendStrings.php:414
+msgid ""
+"Enable this option if you want to make time slot step<br/>the same as service "
+"duration in the booking process"
+msgstr ""
+"قم بتمكين هذا الخيار إذا كنت ترغب في جعل خطوة الفاصل الزمني <br/> هي نفس مدة "
+"الخدمة في عملية الحجز"
+
+#: BackendStrings.php:415
+msgid "Set MetaData and Description"
+msgstr ""
+
+#: BackendStrings.php:416 FrontendStrings.php:591
+msgid "Settings"
+msgstr "الإعدادات"
+
+#: BackendStrings.php:417
+msgid "settings"
+msgstr "إعدادات"
+
+#: BackendStrings.php:418
+msgid "Allow customers to see other attendees"
+msgstr "اسمح للعملاء برؤية الحضور الآخرين"
+
+#: BackendStrings.php:419
+msgid ""
+"Enable this option if you want your customers to see<br/>all attendees in the "
+"appointment in their google calendar."
+msgstr ""
+"قم بتفعيل هذا الخيار إذا أردت أن يرى عملاؤك<br/>جميع الحاضرين في الموعد في "
+"تقويم جوجل."
+
+#: BackendStrings.php:420
+msgid "Show booking slots in client time zone"
+msgstr "إظهار فتحات الحجز في المنطقة الزمنية للعميل"
+
+#: BackendStrings.php:421
+msgid ""
+"Enable this option if you want to show booking slots<br/>in client time zone."
+msgstr ""
+"قم بتمكين هذا الخيار إذا كنت تريد إظهار فتحات الحجز <br/> في منطقة زمنية "
+"العميل."
+
+#: BackendStrings.php:422
+msgid "SMTP"
+msgstr "SMTP"
+
+#: BackendStrings.php:423
+msgid "SMTP Host"
+msgstr "مضيف SMTP"
+
+#: BackendStrings.php:424
+msgid "Please enter SMTP host"
+msgstr "الرجاء إدخال مضيف SMTP"
+
+#: BackendStrings.php:425
+msgid "SMTP Password"
+msgstr "كلمة مرور SMTP"
+
+#: BackendStrings.php:426
+msgid "Please enter SMTP password"
+msgstr "الرجاء إدخال كلمة مرور SMTP"
+
+#: BackendStrings.php:427
+msgid "SMTP Port"
+msgstr "منفذ SMTP"
+
+#: BackendStrings.php:428
+msgid "Please enter SMTP port"
+msgstr "الرجاء إدخال منفذ SMTP"
+
+#: BackendStrings.php:429
+msgid "SMTP Secure"
+msgstr "تأمين SMTP"
+
+#: BackendStrings.php:431
+msgid "SSL"
+msgstr "SSL"
+
+#: BackendStrings.php:432
+msgid "TLS"
+msgstr "‫TLS"
+
+#: BackendStrings.php:433
+msgid "SMTP Username"
+msgstr "اسم مستخدم SMTP"
+
+#: BackendStrings.php:434
+msgid "Please enter SMTP username"
+msgstr "الرجاء إدخال اسم مستخدم SMTP"
+
+#: BackendStrings.php:435
+msgid "Space-Comma"
+msgstr "مساحة فاصلة"
+
+#: BackendStrings.php:436
+msgid "Space-Dot"
+msgstr "مساحة دوت"
+
+#: BackendStrings.php:437 FrontendStrings.php:157
+msgid "Stripe"
+msgstr "شريط"
+
+#: BackendStrings.php:438
+msgid "Please enter live publishable key"
+msgstr "الرجاء إدخال مفتاح النشر المباشر"
+
+#: BackendStrings.php:439
+msgid "Please enter live secret key"
+msgstr "الرجاء إدخال المفتاح السري المباشر"
+
+#: BackendStrings.php:440
+msgid "Stripe Service"
+msgstr "خدمة الشريط"
+
+#: BackendStrings.php:441
+msgid ""
+"SSL (HTTPS) is not enabled. You will not be able to process live Stripe "
+"transactions until SSL is enabled."
+msgstr ""
+"لم يتم تمكين SSL (HTTPS). لن تتمكن من معالجة معاملات Stripe المباشرة حتى يتم "
+"تمكين SSL."
+
+#: BackendStrings.php:442
+msgid ""
+"SSL (HTTPS) is not enabled. You will not be able to use Outlook Calendat "
+"integration until SSL is enabled."
+msgstr ""
+
+#: BackendStrings.php:443
+msgid "Please enter test publishable key"
+msgstr "الرجاء إدخال مفتاح publishable"
+
+#: BackendStrings.php:444
+msgid "Please enter test secret key"
+msgstr "الرجاء إدخال مفتاح الاختبار السري"
+
+#: BackendStrings.php:445
+msgid "Template for Event Title"
+msgstr "قالب لعنوان الحدث"
+
+#: BackendStrings.php:446
+msgid "Test Client ID"
+msgstr "اختبار ID العميل"
+
+#: BackendStrings.php:447
+msgid "Test Mode"
+msgstr "وضع الاختبار"
+
+#: BackendStrings.php:448
+msgid "Test Publishable Key"
+msgstr "اختبار Publishable مفتاح"
+
+#: BackendStrings.php:449
+msgid "Test Secret"
+msgstr "سر الاختبار"
+
+#: BackendStrings.php:450
+msgid "Test Secret Key"
+msgstr "اختبار المفتاح السري"
+
+#: BackendStrings.php:451
+msgid "2 Way Sync"
+msgstr "2 طريقة المزامنة"
+
+#: BackendStrings.php:452
+msgid "Unable to deactivate plugin. Please try again later."
+msgstr "غير قادرين على تفعيل الإضافة. رجاء المحاولة مرة أخرى لاحقاً."
+
+#: BackendStrings.php:453 BackendStrings.php:1003
+msgid "Update for all"
+msgstr "تحديث للجميع"
+
+#: BackendStrings.php:454
+msgid "URL"
+msgstr ""
+
+#: BackendStrings.php:455
+msgid "Attachment upload path"
+msgstr ""
+
+#: BackendStrings.php:456
+msgid ""
+"If you leave this field empty, all attachments will be uploaded into the "
+"Wordpress uploads folder."
+msgstr ""
+
+#: BackendStrings.php:457
+msgid "Value"
+msgstr ""
+
+#: BackendStrings.php:458
+msgid "View Activation Settings"
+msgstr "عرض إعدادات التفعيل"
+
+#: BackendStrings.php:459
+msgid "View Appointments Settings"
+msgstr "عرض إعدادات المواعيد"
+
+#: BackendStrings.php:460
+msgid "View Company Settings"
+msgstr "عرض إعدادات الشركة"
+
+#: BackendStrings.php:461
+msgid "View Working Hours & Days Off Settings"
+msgstr "عرض ساعات العمل وأيام العطلة الإعدادات"
+
+#: BackendStrings.php:462
+msgid "View General Settings"
+msgstr "عرض الإعدادات العامة"
+
+#: BackendStrings.php:463
+msgid "View Google Calendar Settings"
+msgstr "عرض إعدادات تقويم Google"
+
+#: BackendStrings.php:464
+msgid "View Integrations Settings"
+msgstr ""
+
+#: BackendStrings.php:465
+msgid "View Labels Settings"
+msgstr "عرض إعدادات التسميات"
+
+#: BackendStrings.php:466
+msgid "View Notifications Settings"
+msgstr "عرض إعدادات الإشعارات"
+
+#: BackendStrings.php:467
+msgid "View Payments Settings"
+msgstr "عرض إعدادات المدفوعات"
+
+#: BackendStrings.php:468
+msgid "View Provider Details Settings"
+msgstr ""
+
+#: BackendStrings.php:469
+msgid "View Roles Settings"
+msgstr "عرض إعدادات الأدوار"
+
+#: BackendStrings.php:470
+msgid "View Web Hooks Settings"
+msgstr ""
+
+#: BackendStrings.php:471
+msgid "Enable integration with WooCommerce"
+msgstr "تفعيل التكامل مع ووكومرس"
+
+#: BackendStrings.php:472
+msgid "Select WooCommerce product"
+msgstr ""
+
+#: BackendStrings.php:473
+msgid ""
+"Here you can choose the product that will be used for WooCommerce integration."
+msgstr ""
+
+#: BackendStrings.php:474
+msgid "WooCommerce Service"
+msgstr ""
+
+#: BackendStrings.php:475
+msgid "Hide WooCommerce cart when price is 0"
+msgstr ""
+
+#: BackendStrings.php:476
+msgid "Website"
+msgstr "الموقع الالكتروني"
+
+#: BackendStrings.php:477
+msgid "Web Hooks"
+msgstr ""
+
+#: BackendStrings.php:478
+msgid "Web Hooks Settings"
+msgstr ""
+
+#: BackendStrings.php:479
+msgid "Are you sure you want to delete this web hook"
+msgstr ""
+
+#: BackendStrings.php:480
+msgid "Action"
+msgstr ""
+
+#: BackendStrings.php:481
+msgid "Please select action"
+msgstr ""
+
+#: BackendStrings.php:482 BackendStrings.php:816 BackendStrings.php:871
+#: BackendStrings.php:934 BackendStrings.php:1383 FrontendStrings.php:400
+#: FrontendStrings.php:420
+msgid "Please enter name"
+msgstr "من فضلك ادخل الاسم"
+
+#: BackendStrings.php:483 BackendStrings.php:739
+msgid "Type"
+msgstr "نوع"
+
+#: BackendStrings.php:484
+msgid "Please enter booking type"
+msgstr ""
+
+#: BackendStrings.php:485
+msgid "Booking Completed"
+msgstr ""
+
+#: BackendStrings.php:486
+msgid "Booking Rescheduled"
+msgstr ""
+
+#: BackendStrings.php:487
+msgid "Booking Canceled"
+msgstr ""
+
+#: BackendStrings.php:488
+msgid "Booking Status Changed"
+msgstr ""
+
+#: BackendStrings.php:489 FrontendStrings.php:609
+msgid "1 week"
+msgstr "1 اسبوع"
+
+#: BackendStrings.php:490 FrontendStrings.php:617
+msgid "2 weeks"
+msgstr "2اسبوع"
+
+#: BackendStrings.php:491 FrontendStrings.php:618
+msgid "3 weeks"
+msgstr "3اسبوع"
+
+#: BackendStrings.php:492 FrontendStrings.php:619
+msgid "4 weeks"
+msgstr "4اسبوع"
+
+#: BackendStrings.php:493
+msgid "Working Hours & Days Off"
+msgstr "ساعات العمل وايام العطل"
+
+#: BackendStrings.php:494
+msgid "WP Mail"
+msgstr "WP Mail"
+
+#: BackendStrings.php:495
+msgid "WP Role"
+msgstr "WP Role"
+
+#: BackendStrings.php:496
+msgid "Hide Currency Symbol on the booking form"
+msgstr ""
+
+#: BackendStrings.php:508
+msgid "Accepted"
+msgstr "وافقت"
+
+#: BackendStrings.php:509
+msgid "Already have an account?"
+msgstr "هل لديك حساب?"
+
+#: BackendStrings.php:510
+msgid "Amelia SMS"
+msgstr "خدمة الرسائل القصيرة من أميليا"
+
+#: BackendStrings.php:511
+msgid "Amount:"
+msgstr "كمية:"
+
+#: BackendStrings.php:512
+msgid "Balance:"
+msgstr "توازن:"
+
+#: BackendStrings.php:513
+msgid "Your balance has been recharged"
+msgstr "لقد تم إعادة شحن رصيدك"
+
+#: BackendStrings.php:514
+msgid "This payment cannot be completed"
+msgstr "لا يمكن إكمال هذا الدفع"
+
+#: BackendStrings.php:515
+msgid "This payment cannot be completed and your account has not been charged"
+msgstr "لا يمكن إتمام هذه الدفعة ولم يتم تحميل حسابك"
+
+#: BackendStrings.php:516
+msgid "Carrier:"
+msgstr "الناقل:"
+
+#: BackendStrings.php:517
+msgid "Change Alpha Sender ID"
+msgstr "تغيير ID مرسل المرسل"
+
+#: BackendStrings.php:518 FrontendStrings.php:364
+msgid "Change Password"
+msgstr "تغير الباسورد"
+
+#: BackendStrings.php:519
+msgid "Configure placeholder"
+msgstr ""
+
+#: BackendStrings.php:520
+msgid "Cost:"
+msgstr "الكلفة:"
+
+#: BackendStrings.php:521
+msgid "To send this notification please add the following line in your cron"
+msgstr "لإرسال هذا الإشعار ، يرجى إضافة السطر التالي في cron الخاص بك"
+
+#: BackendStrings.php:522
+msgid "Current Password:"
+msgstr "كلمة المرور الحالي:"
+
+#: BackendStrings.php:523
+msgid "Please enter current password"
+msgstr "الرجاء إدخال كلمة المرور الحالية"
+
+#: BackendStrings.php:524
+msgid "Custom Amount"
+msgstr "المبلغ المخصص"
+
+#: BackendStrings.php:525 BackendStrings.php:675
+msgid "Appointment Approved"
+msgstr "تمت الموافقة على الموعد"
+
+#: BackendStrings.php:526 BackendStrings.php:676 FrontendStrings.php:337
+msgid "Appointment Canceled"
+msgstr "تم الغاء الموعد"
+
+#: BackendStrings.php:527
+msgid "Appointment Follow Up"
+msgstr "متابعة موعد"
+
+#: BackendStrings.php:528 BackendStrings.php:677
+msgid "Appointment Next Day Reminder"
+msgstr "تعيين في اليوم التالي تذكير"
+
+#: BackendStrings.php:529 BackendStrings.php:680
+msgid "Appointment Pending"
+msgstr "موعد معلق"
+
+#: BackendStrings.php:530 BackendStrings.php:681
+msgid "Appointment Rejected"
+msgstr "تم رفض الموعد"
+
+#: BackendStrings.php:531 BackendStrings.php:682
+msgid "Appointment Rescheduled"
+msgstr "موعد إعادة جدولة"
+
+#: BackendStrings.php:532
+msgid "Customer Panel Access"
+msgstr ""
+
+#: BackendStrings.php:533
+msgid "Birthday Greeting"
+msgstr "تهنئة بعيد ميلاد"
+
+#: BackendStrings.php:534 BackendStrings.php:683
+msgid "Event Booked"
+msgstr "تم حجز الحدث"
+
+#: BackendStrings.php:535 BackendStrings.php:684
+msgid "Event Canceled By Attendee"
+msgstr "إلغاء الحدث من قبل أحد الحضور"
+
+#: BackendStrings.php:536
+msgid "Event Follow Up"
+msgstr "متابعة بعد الحدث"
+
+#: BackendStrings.php:537 BackendStrings.php:685
+msgid "Event Next Day Reminder"
+msgstr "تذكرة قبل الحدث بيوم"
+
+#: BackendStrings.php:538 BackendStrings.php:686
+msgid "Event Canceled By Admin"
+msgstr "إلغاء الحدث من قبل الأدمن"
+
+#: BackendStrings.php:539 BackendStrings.php:687
+msgid "Event Rescheduled"
+msgstr "إعادة جدولة الحدث"
+
+#: BackendStrings.php:540 BackendStrings.php:541
+msgid "Other"
+msgstr ""
+
+#: BackendStrings.php:542 BackendStrings.php:678
+msgid "Package Purchased"
+msgstr ""
+
+#: BackendStrings.php:543
+msgid "Customize SMS"
+msgstr "تخصيص الرسائل القصيرة"
+
+#: BackendStrings.php:544 FrontendStrings.php:98
+msgid "Date:"
+msgstr "التاريخ:"
+
+#: BackendStrings.php:545
+msgid "Delivered"
+msgstr "تم التوصيل"
+
+#: BackendStrings.php:546
+msgid "Don't have an account?"
+msgstr "ليس لديك حساب?"
+
+#: BackendStrings.php:547 BackendStrings.php:1016 FrontendStrings.php:414
+msgid "Email"
+msgstr "البريد الالكتروني"
+
+#: BackendStrings.php:548 FrontendStrings.php:101
+msgid "Email:"
+msgstr "البريد الالكتروني:"
+
+#: BackendStrings.php:549
+msgid "Email Notifications"
+msgstr "اشعارات البريد الالكتروني"
+
+#: BackendStrings.php:550
+msgid "Email Placeholders"
+msgstr "البريد الإلكتروني العناصر النائبة"
+
+#: BackendStrings.php:551
+msgid "This email address is already being used"
+msgstr "عنوان البريد الإلكتروني هذا مستخدم بالفعل"
+
+#: BackendStrings.php:552 FrontendStrings.php:422
+msgid "Please enter password"
+msgstr "الرجاء إدخال كلمة المرور"
+
+#: BackendStrings.php:553
+msgid "Please enter recipient email"
+msgstr "الرجاء إدخال البريد الإلكتروني للمستلم"
+
+#: BackendStrings.php:554
+msgid "Please enter recipient phone"
+msgstr "الرجاء إدخال هاتف المستلم"
+
+#: BackendStrings.php:556 FrontendStrings.php:112
+msgid "Please enter a valid phone number"
+msgstr "يرجى إدخال رقم هاتف صالح"
+
+#: BackendStrings.php:557
+msgid "Failed"
+msgstr "فشل"
+
+#: BackendStrings.php:558 FrontendStrings.php:471
+msgid "Forgot Password?"
+msgstr "فقدان كلمة السر?"
+
+#: BackendStrings.php:559
+msgid "You have entered an incorrect email"
+msgstr "لقد أدخلت بريدًا إلكترونيًا غير صحيح"
+
+#: BackendStrings.php:560
+msgid "You have entered an incorrect password"
+msgstr "لقد أدخلت كلمة مرور غير صحيحة"
+
+#: BackendStrings.php:561
+msgid "Insert email placeholders"
+msgstr ""
+
+#: BackendStrings.php:562
+msgid ""
+"Choose one of the placeholders from the lists below, click on it to copy and "
+"then paste into the template."
+msgstr ""
+
+#: BackendStrings.php:563
+msgid "Invalid Token"
+msgstr "رمز غير صالح"
+
+#: BackendStrings.php:564
+msgid "Loading..."
+msgstr "تحميل..."
+
+#: BackendStrings.php:565 FrontendStrings.php:489
+msgid "Logout"
+msgstr "خروج"
+
+#: BackendStrings.php:566
+msgid "Message:"
+msgstr "رسالة:"
+
+#: BackendStrings.php:567
+msgid "messages"
+msgstr "رسائل"
+
+#: BackendStrings.php:568 FrontendStrings.php:509
+msgid "New Password:"
+msgstr "كلمة مرور جديدة:"
+
+#: BackendStrings.php:569 FrontendStrings.php:511
+msgid "Please enter new password"
+msgstr "الرجاء إدخال كلمة مرور جديدة"
+
+#: BackendStrings.php:570
+msgid "There are no SMS messages..."
+msgstr "لا توجد رسائل SMS ..."
+
+#: BackendStrings.php:571
+msgid "Notification has not been saved"
+msgstr "لم يتم حفظ الإشعار"
+
+#: BackendStrings.php:572
+msgid "Notification has been saved"
+msgstr "تم حفظ الإشعار"
+
+#: BackendStrings.php:573
+msgid "Notification Template"
+msgstr "نماذج الاشعارات"
+
+#: BackendStrings.php:574
+msgid "Notifications"
+msgstr "اشعارات"
+
+#: BackendStrings.php:575
+msgid "Package Appointments List"
+msgstr ""
+
+#: BackendStrings.php:576
+msgid "Paddle"
+msgstr ""
+
+#: BackendStrings.php:577 BackendStrings.php:1088 FrontendStrings.php:529
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: BackendStrings.php:578
+msgid "Password:"
+msgstr "كلمة المرور:"
+
+#: BackendStrings.php:579 FrontendStrings.php:530
+msgid "Password has been changed"
+msgstr "تم تغير كلمة المرور"
+
+#: BackendStrings.php:580
+msgid "Password must have a length between 5 and 40 characters"
+msgstr "يجب أن يكون طول كلمة المرور بين 5 و 40 حرفًا"
+
+#: BackendStrings.php:581
+msgid "Your password has been reset successfully"
+msgstr "تم إعادة تعيين كلمة المرور الخاصة بك بنجاح"
+
+#: BackendStrings.php:582
+msgid "Password must not contain whitespace"
+msgstr "يجب ألا تحتوي كلمة المرور على مسافة بيضاء"
+
+#: BackendStrings.php:583 FrontendStrings.php:531
+msgid "Passwords do not match"
+msgstr "كلمة المرور غير مطابقة"
+
+#: BackendStrings.php:584
+msgid "Payment History"
+msgstr "تاريخ الدفع"
+
+#: BackendStrings.php:585
+msgid "Unable to retrieve payments results"
+msgstr "غير قادر على استرداد نتائج المدفوعات"
+
+#: BackendStrings.php:586
+msgid "Payment ID"
+msgstr "ID الدفع"
+
+#: BackendStrings.php:587
+msgid "Payment ID:"
+msgstr "ID الدفع:"
+
+#: BackendStrings.php:588 BackendStrings.php:1179
+msgid "payments"
+msgstr "المدفوعات"
+
+#: BackendStrings.php:590
+msgid "Cancel Appointment Link"
+msgstr "إلغاء رابط الموعد"
+
+#: BackendStrings.php:591
+msgid "Date of the appointment"
+msgstr "تاريخ الموعد"
+
+#: BackendStrings.php:592
+msgid "Date & Time of the appointment"
+msgstr "تاريخ ووقت الموعد"
+
+#: BackendStrings.php:593
+msgid "Duration of the appointment"
+msgstr ""
+
+#: BackendStrings.php:594
+msgid "End time of the appointment"
+msgstr "وقت انتهاء الموعد"
+
+#: BackendStrings.php:595
+msgid "Appointment notes"
+msgstr "ملاحظات الموعد"
+
+#: BackendStrings.php:596
+msgid "Appointment price"
+msgstr "سعر الموعد"
+
+#: BackendStrings.php:597
+msgid "Status of the appointment"
+msgstr ""
+
+#: BackendStrings.php:598
+msgid "Start time of the appointment"
+msgstr "وقت بدء الموعد"
+
+#: BackendStrings.php:599
+msgid "Attendee code"
+msgstr "كود الحضور"
+
+#: BackendStrings.php:600
+msgid "Booked Customer (full name, email, phone)"
+msgstr ""
+
+#: BackendStrings.php:601 BackendStrings.php:1336 FrontendStrings.php:294
+msgid "Number of persons"
+msgstr "عدد الأشخاص"
+
+#: BackendStrings.php:602
+msgid "Category name"
+msgstr "اسم التصنيف"
+
+#: BackendStrings.php:603
+msgid "Company address"
+msgstr "عنوان الشركة"
+
+#: BackendStrings.php:604
+msgid "Company name"
+msgstr "اسم الشركة"
+
+#: BackendStrings.php:605
+msgid "Company phone"
+msgstr "هاتف الشركة"
+
+#: BackendStrings.php:606
+msgid "Company website"
+msgstr "موقع الشركة"
+
+#: BackendStrings.php:607
+msgid "Used Coupon"
+msgstr ""
+
+#: BackendStrings.php:608
+msgid "Customer Panel Access Link"
+msgstr ""
+
+#: BackendStrings.php:609
+msgid "Customer email"
+msgstr "البريد الإلكتروني للعملاء"
+
+#: BackendStrings.php:610
+msgid "Employee Panel Access Link"
+msgstr ""
+
+#: BackendStrings.php:611
+msgid "Customer first name"
+msgstr "الاسم الأول للعميل"
+
+#: BackendStrings.php:612
+msgid "Customer full name"
+msgstr "الاسم الكامل للعميل"
+
+#: BackendStrings.php:613
+msgid "Customer last name"
+msgstr "الاسم الأخير للعميل"
+
+#: BackendStrings.php:614
+msgid "Customer note"
+msgstr ""
+
+#: BackendStrings.php:615
+msgid "Customer phone"
+msgstr "هاتف العميل"
+
+#: BackendStrings.php:616
+msgid "Employee email"
+msgstr "ايميل المختص"
+
+#: BackendStrings.php:617
+msgid "Employee first name"
+msgstr "اسم المختص الأول"
+
+#: BackendStrings.php:618
+msgid "Employee full name"
+msgstr "اسم المختص الكامل"
+
+#: BackendStrings.php:619
+msgid "Employee last name"
+msgstr "اسم المختص الأخير"
+
+#: BackendStrings.php:620
+msgid "Employee name, email & phone"
+msgstr "اسم المختص، والبريد الإلكتروني، والهاتف"
+
+#: BackendStrings.php:621
+msgid "Employee note"
+msgstr ""
+
+#: BackendStrings.php:622
+msgid "Employee phone"
+msgstr "تلفون المختص"
+
+#: BackendStrings.php:623
+msgid "Employee photo"
+msgstr "صور المختص"
+
+#: BackendStrings.php:624
+msgid "Cancel Event Link"
+msgstr "رابط إلغاء الحدث"
+
+#: BackendStrings.php:625
+msgid "Event description"
+msgstr "وصف الحدث"
+
+#: BackendStrings.php:626
+msgid "End date of the event"
+msgstr "تاريخ الانتهاء"
+
+#: BackendStrings.php:627
+msgid "End date & time of the event"
+msgstr "تاريخ ووقت الانتهاء"
+
+#: BackendStrings.php:628
+msgid "End time of the event"
+msgstr ""
+
+#: BackendStrings.php:629
+msgid "Event name"
+msgstr "اسم الحدث"
+
+#: BackendStrings.php:630
+msgid "Date period of the event"
+msgstr "تاريخ مدة الحدث"
+
+#: BackendStrings.php:631
+msgid "Date & Time period of the event"
+msgstr "تاريخ ووقت مدة الحدث"
+
+#: BackendStrings.php:632
+msgid "Event price"
+msgstr "السعر"
+
+#: BackendStrings.php:633
+msgid "Start date of the event"
+msgstr "تاريخ البدء"
+
+#: BackendStrings.php:634
+msgid "Start date & time of the event"
+msgstr "تاريخ ووقت البدء"
+
+#: BackendStrings.php:635
+msgid "Start time of the event"
+msgstr ""
+
+#: BackendStrings.php:636
+msgid "Location address"
+msgstr "عنوان الموقع"
+
+#: BackendStrings.php:637
+msgid "Location description"
+msgstr ""
+
+#: BackendStrings.php:638
+msgid "Location name"
+msgstr "اسم الموقع"
+
+#: BackendStrings.php:639
+msgid "Location phone"
+msgstr ""
+
+#: BackendStrings.php:640
+msgid "Package appointments details"
+msgstr ""
+
+#: BackendStrings.php:641
+msgid "Package name"
+msgstr ""
+
+#: BackendStrings.php:642
+msgid "Package description"
+msgstr ""
+
+#: BackendStrings.php:643
+msgid "Package duration"
+msgstr ""
+
+#: BackendStrings.php:644
+msgid "Package price description"
+msgstr ""
+
+#: BackendStrings.php:645
+msgid "Recurring appointments details"
+msgstr ""
+
+#: BackendStrings.php:646
+msgid "Service or Event description"
+msgstr ""
+
+#: BackendStrings.php:647
+msgid "Service or Event name"
+msgstr ""
+
+#: BackendStrings.php:648
+msgid "Service description"
+msgstr "وصف الخدمة"
+
+#: BackendStrings.php:649
+msgid "Service duration"
+msgstr "مدة الخدمة"
+
+#: BackendStrings.php:650
+msgid "Service name"
+msgstr "اسم الخدمة"
+
+#: BackendStrings.php:651
+msgid "Service price"
+msgstr "سعر الخدمة"
+
+#: BackendStrings.php:652
+msgid "Zoom Start Meeting (Hosts) Link"
+msgstr ""
+
+#: BackendStrings.php:653
+msgid "Date periods of the event with Zoom start links"
+msgstr ""
+
+#: BackendStrings.php:654
+msgid "Date & Time periods of the event with Zoom start links"
+msgstr ""
+
+#: BackendStrings.php:655
+msgid "Zoom Join Meeting (Participants) Link"
+msgstr ""
+
+#: BackendStrings.php:656
+msgid "Date periods of the event with Zoom join links"
+msgstr ""
+
+#: BackendStrings.php:657
+msgid "Date & Time periods of the event with Zoom join links"
+msgstr ""
+
+#: BackendStrings.php:658 FrontendStrings.php:147
+msgid "Phone:"
+msgstr "موبايل:"
+
+#: BackendStrings.php:663 BackendStrings.php:909
+msgid "Category"
+msgstr "التصنيفات"
+
+#: BackendStrings.php:667
+msgid "Custom fields"
+msgstr ""
+
+#: BackendStrings.php:668
+msgid "Extra"
+msgstr ""
+
+#: BackendStrings.php:669
+msgid "Coupon"
+msgstr ""
+
+#: BackendStrings.php:670
+msgid "Placeholders"
+msgstr ""
+
+#: BackendStrings.php:671
+msgid "Prepared"
+msgstr "أعدت"
+
+#: BackendStrings.php:672 BackendStrings.php:961 BackendStrings.php:1082
+#: BackendStrings.php:1394 FrontendStrings.php:544
+msgid "Price"
+msgstr "سعر"
+
+#: BackendStrings.php:673
+msgid "Pricing"
+msgstr "التسعير"
+
+#: BackendStrings.php:674
+msgid "Unable to retrieve pricing"
+msgstr "غير قادر على استرداد الأسعار"
+
+#: BackendStrings.php:679
+msgid "Employee Panel Access"
+msgstr ""
+
+#: BackendStrings.php:688
+msgid "Queued"
+msgstr "في قائمة الانتظار"
+
+#: BackendStrings.php:689 FrontendStrings.php:549
+msgid "Please enter new password again"
+msgstr "الرجاء إدخال كلمة مرور جديدة مرة أخرى"
+
+#: BackendStrings.php:690
+msgid "Recharge"
+msgstr "تعبئة رصيد"
+
+#: BackendStrings.php:691
+msgid "Recharge Balance"
+msgstr "إعادة شحن الرصيد"
+
+#: BackendStrings.php:692
+msgid "Recharge Custom Amount"
+msgstr "شحن المبلغ المخصص"
+
+#: BackendStrings.php:693
+msgid "Recipient Email"
+msgstr "البريد الإلكتروني المستلم"
+
+#: BackendStrings.php:694
+msgid "Recipient Phone"
+msgstr "هاتف المستلم"
+
+#: BackendStrings.php:695
+msgid "Account recovery email has been sent"
+msgstr "تم إرسال البريد الإلكتروني لاسترداد الحساب"
+
+#: BackendStrings.php:696
+msgid "Refresh"
+msgstr "تحديث"
+
+#: BackendStrings.php:697
+msgid "Requires Scheduling Setup"
+msgstr "يتطلب إعداد الجدولة"
+
+#: BackendStrings.php:698
+msgid "Reset Password"
+msgstr "إعادة تعيين كلمة المرور"
+
+#: BackendStrings.php:699 FrontendStrings.php:562
+msgid "Re-type New Password:"
+msgstr "أعد كتابة كلمة السر الجديدة:"
+
+#: BackendStrings.php:700
+msgid "Scheduled After Appointment"
+msgstr "المقرر بعد التعيين"
+
+#: BackendStrings.php:701
+msgid "Scheduled For Before Appointment"
+msgstr "من المقرر قبل التعيين"
+
+#: BackendStrings.php:702
+msgid "Scheduled For"
+msgstr "المقرر ل"
+
+#: BackendStrings.php:703
+msgid "Security"
+msgstr "الأمان"
+
+#: BackendStrings.php:704
+msgid "Segments:"
+msgstr "قطاعات:"
+
+#: BackendStrings.php:705
+msgid "Please select email template"
+msgstr "يرجى اختيار قالب البريد الإلكتروني"
+
+#: BackendStrings.php:706 FrontendStrings.php:583
+msgid "Send"
+msgstr "إرسال"
+
+#: BackendStrings.php:707
+msgid "Send Recovery Email"
+msgstr "إرسال البريد الإلكتروني الاسترداد"
+
+#: BackendStrings.php:708
+msgid "Send Test Email"
+msgstr "إرسال اختبار البريد الإلكتروني"
+
+#: BackendStrings.php:709
+msgid "Send Test SMS"
+msgstr "إرسال اختبار الرسائل القصيرة"
+
+#: BackendStrings.php:710
+msgid "Alpha Sender ID:"
+msgstr "ID مرسل المرسل:"
+
+#: BackendStrings.php:711
+msgid "Special characters are not allowed"
+msgstr "يمنع استعمال الرموز"
+
+#: BackendStrings.php:712
+msgid "Sender ID supports up to 11 characters"
+msgstr "ID المرسل يدعم ما يصل إلى 11 حرفًا"
+
+#: BackendStrings.php:713
+msgid "Your ID must include at least one letter"
+msgstr "يجب أن يتضمن هويتك رقمًا واحدًا على الأقل"
+
+#: BackendStrings.php:714
+msgid "Alpha Sender ID can't be empty"
+msgstr "لا يمكن أن يكون ID المرسل فارغًا"
+
+#: BackendStrings.php:715
+msgid "Alpha Sender ID has been saved"
+msgstr "تم حفظ ID مرسل المرسل"
+
+#: BackendStrings.php:716
+msgid "Sent"
+msgstr "أرسلت"
+
+#: BackendStrings.php:717
+msgid "</> Show Email Placeholders"
+msgstr "</> إظهار العناصر النائبة للبريد الإلكتروني"
+
+#: BackendStrings.php:718
+msgid "</> Show SMS Placeholders"
+msgstr "</> إظهار العناصر النائبة SMS"
+
+#: BackendStrings.php:719 FrontendStrings.php:592
+msgid "Sign In"
+msgstr "تسجيل الدخول"
+
+#: BackendStrings.php:720
+msgid "Sign Up"
+msgstr "سجل"
+
+#: BackendStrings.php:721
+msgid "SMS History"
+msgstr "تاريخ الرسائل القصيرة"
+
+#: BackendStrings.php:722
+msgid "SMS Notifications"
+msgstr "إشعارات الرسائل القصيرة"
+
+#: BackendStrings.php:723
+msgid "SMS Placeholders"
+msgstr "العناصر النائبة SMS"
+
+#: BackendStrings.php:724
+msgid ""
+"If you are from a country where VAT or GST applies, a VAT/GST charge will be "
+"added to the transaction."
+msgstr ""
+
+#: BackendStrings.php:726
+msgid "Subject"
+msgstr "موضوع"
+
+#: BackendStrings.php:727
+msgid "Email has not been sent"
+msgstr "البريد لم يتم ارساله"
+
+#: BackendStrings.php:728
+msgid "Email has been sent"
+msgstr "البريد تم ارساله"
+
+#: BackendStrings.php:729
+msgid ""
+"To be able to send test email please configure \"Sender Email\" in "
+"Notification Settings."
+msgstr ""
+"لتتمكن من إرسال بريد إلكتروني تجريبي ، يرجى تهيئة \"البريد الإلكتروني للمرسل"
+"\" في إعدادات الإشعارات."
+
+#: BackendStrings.php:730
+msgid "SMS has not been sent"
+msgstr "SMS has not been sent"
+
+#: BackendStrings.php:731
+msgid "SMS has been sent"
+msgstr "تم ارسال الرسائل القصيرة"
+
+#: BackendStrings.php:732
+msgid "To be able to send test SMS please recharge your balance."
+msgstr "لتتمكن من إرسال رسالة اختبار SMS ، يرجى إعادة شحن رصيدك."
+
+#: BackendStrings.php:733
+msgid "Text:"
+msgstr "نص:"
+
+#: BackendStrings.php:734 BackendStrings.php:782 BackendStrings.php:1302
+#: BackendStrings.php:1397 FrontendStrings.php:159 FrontendStrings.php:602
+msgid "Time"
+msgstr "زمن"
+
+#: BackendStrings.php:735 BackendStrings.php:1361 FrontendStrings.php:456
+msgid "Time:"
+msgstr "زمن:"
+
+#: BackendStrings.php:736
+msgid "To Customer"
+msgstr "إلى العملاء"
+
+#: BackendStrings.php:737
+msgid "To Employee"
+msgstr "إلى المختص"
+
+#: BackendStrings.php:738
+msgid "Token has been expired"
+msgstr "لقد انتهت صلاحية الرمز"
+
+#: BackendStrings.php:740
+msgid "Type:"
+msgstr "نوع:"
+
+#: BackendStrings.php:741
+msgid "Undelivered"
+msgstr "غير المسلمة"
+
+#: BackendStrings.php:742
+msgid "User:"
+msgstr "المستخدم:"
+
+#: BackendStrings.php:743 FrontendStrings.php:608
+msgid "User Profile"
+msgstr "ملف تعريفي للمستخدم"
+
+#: BackendStrings.php:744
+msgid "View Message"
+msgstr "شاهد الرساله"
+
+#: BackendStrings.php:745
+msgid "View pricing for:"
+msgstr "عرض السعر لـ:"
+
+#: BackendStrings.php:746
+msgid "View Profile"
+msgstr "عرض الصفحة الشخصية"
+
+#: BackendStrings.php:759
+msgid "# of appointments"
+msgstr "عدد المواعيد"
+
+#: BackendStrings.php:760
+msgid "Sum of payments"
+msgstr "مجموع المدفوعات"
+
+#: BackendStrings.php:761
+msgid "# of Hours in appointment"
+msgstr "عدد الساعات في الموعد"
+
+#: BackendStrings.php:762
+#, php-format
+msgid "% of load"
+msgstr "٪ من السعة"
+
+#: BackendStrings.php:763
+msgid "Approved Appointments"
+msgstr "المواعيد المعتمدة"
+
+#: BackendStrings.php:764
+msgid ""
+"Indicates the number of approved appointments<br/>for a chosen date range."
+msgstr "يشير إلى عدد المواعيد المعتمدة <br/> للنطاق الزمني المختار."
+
+#: BackendStrings.php:765
+msgid "Average Bookings"
+msgstr "متوسط الحجوزات"
+
+#: BackendStrings.php:766
+msgid ""
+"Shows the average number of bookings per day<br/>for the selected date range."
+msgstr "يعرض متوسط عدد الحجوزات في اليوم <br/> للنطاق الزمني المحدد."
+
+#: BackendStrings.php:767
+msgid "Interests / Conversions"
+msgstr "الاهتمامات / التحويلات"
+
+#: BackendStrings.php:768
+msgid ""
+"Shows the number of views for the employee/service/location<br/>vs. the "
+"number of times they were booked during<br/>the selected date range."
+msgstr ""
+"يعرض عدد مرات المشاهدة للموظف / الخدمة / الموقع <br/> مقابل عدد مرات حجزهم "
+"خلال <br/> النطاق الزمني المحدد."
+
+#: BackendStrings.php:769 FrontendStrings.php:385
+msgid ""
+"Indicates the number of new and returning customers<br/>for the selected date "
+"range."
+msgstr "يشير إلى عدد العملاء الجدد والعائدين <br/> لنطاق التاريخ المحدد."
+
+#: BackendStrings.php:771
+msgid "New"
+msgstr "جديد"
+
+#: BackendStrings.php:772
+msgid "There are no appointments for today"
+msgstr "لا توجد مواعيد لهذا اليوم"
+
+#: BackendStrings.php:773
+msgid "You don't have any upcoming appointments yet"
+msgstr "ليس لديك أية مواعيد قادمة بعد"
+
+#: BackendStrings.php:774
+msgid "Times bought"
+msgstr ""
+
+#: BackendStrings.php:775 BackendStrings.php:1127
+msgid "Pending Appointments"
+msgstr "في انتظار المواعيد"
+
+#: BackendStrings.php:776
+msgid "Shows the number of pending appointments<br/>in the selected date range."
+msgstr "أظهر عدد المواعيد المنتظرة<br/>في الإطار الزمني المختار."
+
+#: BackendStrings.php:777
+msgid "Percentage of Load"
+msgstr "نسبة مئوية من السعة"
+
+#: BackendStrings.php:778
+msgid ""
+"Indicates the percentage of occupied time against available time for "
+"appointments<br/>in the chosen date range."
+msgstr ""
+"تشير إلى النسبة المئوية للوقت المحجوز مقابل الوقت المتاح<br/>في نطاق التاريخ "
+"المختار."
+
+#: BackendStrings.php:779
+msgid "Returning"
+msgstr "عودة"
+
+#: BackendStrings.php:780
+msgid "Revenue"
+msgstr "إيرادات"
+
+#: BackendStrings.php:781
+msgid ""
+"Shows the total income for paid appointments<br/>in the chosen date range."
+msgstr ""
+"يُظهر إجمالي الإيرادات من المواعيد المدفوعة<br/>في الإطار الزمني المختار."
+
+#: BackendStrings.php:783
+msgid "Today's appointments"
+msgstr "مواعيد اليوم"
+
+#: BackendStrings.php:784
+msgid "Views"
+msgstr "الآراء"
+
+#: BackendStrings.php:785
+msgid "Hello"
+msgstr "مرحباً"
+
+#: BackendStrings.php:786
+msgid "You have"
+msgstr "لديك"
+
+#: BackendStrings.php:787
+msgid "and"
+msgstr "و"
+
+#: BackendStrings.php:788
+msgid "for today"
+msgstr "اليوم"
+
+#: BackendStrings.php:789
+msgid "Upcoming appointments"
+msgstr "مواعيد قادمة"
+
+#: BackendStrings.php:801
+msgid "Add Break"
+msgstr "أضف استراحة"
+
+#: BackendStrings.php:802 BackendStrings.php:814 FrontendStrings.php:332
+#: FrontendStrings.php:398
+msgid "Add Day Off"
+msgstr "اضافة يوم عطلة"
+
+#: BackendStrings.php:803 FrontendStrings.php:333
+msgid "Enter holiday or day off name"
+msgstr "أدخل عطلة أو يوم إجازة الاسم"
+
+#: BackendStrings.php:804 FrontendStrings.php:334
+msgid "Add Period"
+msgstr "إضافة الفترة"
+
+#: BackendStrings.php:805 FrontendStrings.php:335
+msgid "Add Special Day"
+msgstr "أضف يوم خاص"
+
+#: BackendStrings.php:806 FrontendStrings.php:336
+msgid "Apply to All Days"
+msgstr "تنطبق على كل الأيام"
+
+#: BackendStrings.php:807 FrontendStrings.php:355
+msgid "Breaks"
+msgstr "فواصل"
+
+#: BackendStrings.php:808 FrontendStrings.php:366
+msgid "Company Days off"
+msgstr "أيام عطل الشركة"
+
+#: BackendStrings.php:809
+msgid "Company Days Off Settings"
+msgstr "اعدادت أيام عطل الشركة"
+
+#: BackendStrings.php:810
+msgid "Company Working Hours Settings"
+msgstr "اعدادت ساعات عمل الشركة"
+
+#: BackendStrings.php:811
+msgid ""
+"You will change working hours setting which is also set for each employee "
+"separately. Do you want to update it for all employees?"
+msgstr ""
+"سوف تقوم بتغيير إعداد ساعات العمل والذي يتم تعيينه أيضًا لكل مختص على حدة. هل "
+"تريد تحديثه لجميع المختصين؟"
+
+#: BackendStrings.php:812 FrontendStrings.php:390
+msgid "Day Off name"
+msgstr "اسم يوم عطلة"
+
+#: BackendStrings.php:813 FrontendStrings.php:397
+msgid "Days Off"
+msgstr "أيام العطل"
+
+#: BackendStrings.php:815 BackendStrings.php:828 FrontendStrings.php:399
+#: FrontendStrings.php:593
+msgid "Please enter date"
+msgstr "الرجاء إدخال التاريخ"
+
+#: BackendStrings.php:817 FrontendStrings.php:401
+msgid "Repeat Yearly"
+msgstr "كرر سنويا"
+
+#: BackendStrings.php:818
+msgid "Edit Company Days off"
+msgstr "تعديل أيام عطل الشركة"
+
+#: BackendStrings.php:819 FrontendStrings.php:416
+msgid "Employee Days off"
+msgstr "عطل المختص"
+
+#: BackendStrings.php:820 FrontendStrings.php:520
+msgid "Once Off"
+msgstr "مرة واحدة قبالة"
+
+#: BackendStrings.php:821 FrontendStrings.php:542
+msgid "Pick a date or range"
+msgstr "اختر التاريخ أو النطاق"
+
+#: BackendStrings.php:822 FrontendStrings.php:543
+msgid "Pick a year"
+msgstr "اختر سنة"
+
+#: BackendStrings.php:823
+msgid "Reflects on"
+msgstr "يعكس على"
+
+#: BackendStrings.php:824 FrontendStrings.php:560
+msgid "Repeat Every Year"
+msgstr "كرر كل عام"
+
+#: BackendStrings.php:825 FrontendStrings.php:566
+msgid "Save Special Day"
+msgstr "حفظ يوم خاص"
+
+#: BackendStrings.php:826
+msgid "Set Break Time"
+msgstr "ضبط وقت الاستراحة"
+
+#: BackendStrings.php:827
+msgid "Set Work Time"
+msgstr "ضبط وقت العمل"
+
+#: BackendStrings.php:829 FrontendStrings.php:594
+msgid "Please enter end time"
+msgstr "يرجى إدخال وقت الانتهاء"
+
+#: BackendStrings.php:830 FrontendStrings.php:595
+msgid "Please enter start time"
+msgstr "يرجى إدخال وقت البدء"
+
+#: BackendStrings.php:831 FrontendStrings.php:620
+msgid "Work Hours"
+msgstr "ساعات العمل"
+
+#: BackendStrings.php:832 FrontendStrings.php:354
+msgid "Break Hours"
+msgstr ""
+
+#: BackendStrings.php:833
+msgid "Working Hours & Days Off Settings"
+msgstr "اعدادات ساعات العمل وايام العطل"
+
+#: BackendStrings.php:846
+msgid "Duplicate"
+msgstr "مكرر"
+
+#: BackendStrings.php:847 FrontendStrings.php:148 FrontendStrings.php:485
+msgid "Please Wait"
+msgstr "ارجوك انتظر"
+
+#: BackendStrings.php:848
+msgid "Hide"
+msgstr "إخفاء"
+
+#: BackendStrings.php:849 BackendStrings.php:1518
+msgid "Show"
+msgstr "تبين"
+
+#: BackendStrings.php:850
+msgid "Visible"
+msgstr "مرئي"
+
+#: BackendStrings.php:862 BackendStrings.php:1419
+msgid "Add Location"
+msgstr "اضافة موقع"
+
+#: BackendStrings.php:864
+msgid "Start by clicking the Add Location button"
+msgstr "ابدأ بالنقر فوق الزر \"إضافة موقع\""
+
+#: BackendStrings.php:865
+msgid "Are you sure you want to delete this location?"
+msgstr "هل أنت متأكد أنك تريد حذف هذا الموقع?"
+
+#: BackendStrings.php:866
+msgid "Are you sure you want to duplicate this location?"
+msgstr "هل تريد بالتأكيد تكرار هذا الموقع?"
+
+#: BackendStrings.php:867
+msgid "Are you sure you want to hide this location?"
+msgstr "هل أنت متأكد أنك تريد إخفاء هذا الموقع?"
+
+#: BackendStrings.php:868
+msgid "Are you sure you want to show this location?"
+msgstr "هل أنت متأكد أنك تريد عرض هذا الموقع?"
+
+#: BackendStrings.php:869
+msgid "Edit Location"
+msgstr "تعدل الموقع"
+
+#: BackendStrings.php:870
+msgid "Please enter address"
+msgstr "من فضلك ادخل العنوان"
+
+#: BackendStrings.php:872
+msgid "Latitude"
+msgstr "خط العرض"
+
+#: BackendStrings.php:873
+msgid "Location Address"
+msgstr "عنوان الموقع"
+
+#: BackendStrings.php:874
+msgid "Location has been deleted"
+msgstr "تم حذف الموقع"
+
+#: BackendStrings.php:875
+msgid "Your Location is hidden"
+msgstr "موقعك مخفي"
+
+#: BackendStrings.php:876
+msgid "Location has been saved"
+msgstr "تم حفظ الموقع"
+
+#: BackendStrings.php:877
+msgid "Your Location is visible"
+msgstr "موقعك مرئي"
+
+#: BackendStrings.php:878
+msgid "locations"
+msgstr "مواقع"
+
+#: BackendStrings.php:879
+msgid "Search Locations..."
+msgstr "البحث عن المواقع ..."
+
+#: BackendStrings.php:880
+msgid "Longitude"
+msgstr "خط الطول"
+
+#: BackendStrings.php:881
+msgid "Map"
+msgstr "خارطة"
+
+#: BackendStrings.php:882
+msgid "New Location"
+msgstr "موقع جديد"
+
+#: BackendStrings.php:883
+msgid "You don't have any locations here yet..."
+msgstr "ليس لديك أي مواقع هنا حتى الآن ..."
+
+#: BackendStrings.php:884
+msgid "This is not the right address?"
+msgstr "هذا ليس العنوان الصحيح?"
+
+#: BackendStrings.php:885
+msgid "Pin Icon"
+msgstr "أيقونة دبوس"
+
+#: BackendStrings.php:897
+msgid "Add Category"
+msgstr "إضافة تصنيف"
+
+#: BackendStrings.php:898 BackendStrings.php:1454
+msgid "Add Extra"
+msgstr "إضافة اضافية"
+
+#: BackendStrings.php:899
+msgid "Add Image"
+msgstr "اضافة صورة"
+
+#: BackendStrings.php:900
+msgid "Add Package"
+msgstr ""
+
+#: BackendStrings.php:901 BackendStrings.php:1420
+msgid "Add Service"
+msgstr "اضافة خدمة"
+
+#: BackendStrings.php:902
+msgid "Available Images"
+msgstr "الصور المتاحة"
+
+#: BackendStrings.php:903
+msgid "Show \"Bringing anyone with you\" option"
+msgstr "إظهار خيار \"إحضار أي شخص معك\""
+
+#: BackendStrings.php:904
+msgid ""
+"Hide this option to allow only individual people to<br/>book a group "
+"appointment without the possibility<br/>to come with somebody."
+msgstr ""
+"إخفاء هذا الخيار للسماح للأشخاص الفرديين فقط <br/> بحجز موعد في المجموعة دون "
+"إمكانية <br/> الحضور مع شخص ما."
+
+#: BackendStrings.php:905 FrontendStrings.php:312
+msgid "Categories"
+msgstr "الأقسام"
+
+#: BackendStrings.php:906
+msgid "Unable to delete category"
+msgstr "غير قادر على حذف التصنيف"
+
+#: BackendStrings.php:907
+msgid "Categories positions has been saved"
+msgstr "تم حفظ وظائف التصنيفات"
+
+#: BackendStrings.php:908
+msgid "Unable to save categories positions"
+msgstr "غير قادر على حفظ وظائف التصنيفات"
+
+#: BackendStrings.php:910
+msgid "Unable to add category"
+msgstr "غير قادر على إضافة فئة"
+
+#: BackendStrings.php:911
+msgid "Category has been deleted"
+msgstr "تم حذف التصنيفات"
+
+#: BackendStrings.php:912
+msgid "Category has been duplicated"
+msgstr "تم تكرار التصنيف"
+
+#: BackendStrings.php:913
+msgid "Category has been saved"
+msgstr "تم حفظ التصنيف"
+
+#: BackendStrings.php:914
+msgid "Unable to save category"
+msgstr "غير قادر على حفظ التصنيفات"
+
+#: BackendStrings.php:915
+msgid "Start by clicking the Add Category button"
+msgstr "ابدأ بالنقر فوق الزر \"إضافة فئة\""
+
+#: BackendStrings.php:916
+msgid "Start by clicking the Add Package button"
+msgstr ""
+
+#: BackendStrings.php:917
+msgid "Start by clicking the Add Service button"
+msgstr "ابدأ بالنقر فوق الزر \"إضافة خدمة\""
+
+#: BackendStrings.php:918
+msgid "Are you sure you want to delete this service?"
+msgstr "هل أنت متأكد أنك تريد حذف هذه الخدمة?"
+
+#: BackendStrings.php:919
+msgid "Are you sure you want to duplicate this service?"
+msgstr "هل تريد بالتأكيد تكرار هذه الخدمة?"
+
+#: BackendStrings.php:920
+msgid ""
+"You will change a setting which is also set for each employee separately. Do "
+"you want to update it for all employees?"
+msgstr ""
+"سوف تقوم بتغيير الإعداد الذي تم تعيينه أيضًا لكل مختص على حدة. هل تريد تحديثه "
+"لجميع المختصين؟"
+
+#: BackendStrings.php:921
+msgid "Are you sure you want to hide this service?"
+msgstr "هل أنت متأكد أنك تريد إخفاء هذه الخدمة?"
+
+#: BackendStrings.php:922
+msgid "Are you sure you want to show this service?"
+msgstr "هل أنت متأكد أنك تريد عرض هذه الخدمة?"
+
+#: BackendStrings.php:923
+msgid "Are you sure you want to delete this package?"
+msgstr ""
+
+#: BackendStrings.php:924
+msgid "Are you sure you want to duplicate this package?"
+msgstr ""
+
+#: BackendStrings.php:925
+msgid "Are you sure you want to hide this package?"
+msgstr ""
+
+#: BackendStrings.php:926
+msgid "Are you sure you want to show this package?"
+msgstr ""
+
+#: BackendStrings.php:927
+msgid "Are you sure you want to delete this category"
+msgstr "هل أنت متأكد أنك تريد حذف هذه التصنيف"
+
+#: BackendStrings.php:928
+msgid "Are you sure you want to delete this extra"
+msgstr "هل أنت متأكد من أنك تريد حذف هذا إضافي"
+
+#: BackendStrings.php:929
+msgid "Edit Package"
+msgstr ""
+
+#: BackendStrings.php:930
+msgid "Edit Service"
+msgstr "تعديل الخدمات"
+
+#: BackendStrings.php:931
+msgid "Please enter extra name"
+msgstr "الرجاء إدخال اسم إضافي"
+
+#: BackendStrings.php:932
+msgid "Please enter extra price"
+msgstr "الرجاء إدخال سعر إضافي"
+
+#: BackendStrings.php:933
+msgid "Price must be non-negative number"
+msgstr "يجب أن يكون السعر غير سالب"
+
+#: BackendStrings.php:935
+msgid "Please enter price"
+msgstr "الرجاء إدخال السعر"
+
+#: BackendStrings.php:936
+msgid "Unable to delete extra"
+msgstr "غير قادر على حذف اضافية"
+
+#: BackendStrings.php:937
+msgid "Gallery"
+msgstr "معرض"
+
+#: BackendStrings.php:938
+msgid "Hex"
+msgstr "عرافة"
+
+#: BackendStrings.php:939
+msgid "Maximum Capacity"
+msgstr "السعة القصوى"
+
+#: BackendStrings.php:940
+msgid "Here you can set the maximum number of persons<br/>per one appointment."
+msgstr "يمكنك هنا تعيين الحد الأقصى لعدد الأشخاص <br/> لكل موعد واحد."
+
+#: BackendStrings.php:941
+msgid "Maximum Quantity"
+msgstr "الكمية القصوى"
+
+#: BackendStrings.php:942
+msgid "Minimum Capacity"
+msgstr "الحد الأدنى للسعة"
+
+#: BackendStrings.php:943
+msgid ""
+"Here you can set the minimum number of persons<br/>per one booking of this "
+"service."
+msgstr ""
+"يمكنك هنا تعيين الحد الأدنى لعدد الأشخاص <br/> لكل حجز واحد لهذه الخدمة."
+
+#: BackendStrings.php:944
+msgid "The price will multiply by the number of people"
+msgstr ""
+
+#: BackendStrings.php:945
+msgid ""
+" If you disable this option the price will be the same<br/>regardless of how "
+"many customers book in the group appointment."
+msgstr ""
+
+#: BackendStrings.php:946
+msgid "New Category"
+msgstr "تصنيف جديد"
+
+#: BackendStrings.php:947
+msgid "New Package"
+msgstr ""
+
+#: BackendStrings.php:948
+msgid "New Service"
+msgstr "خدمة جديدة"
+
+#: BackendStrings.php:949
+msgid "You don't have any categories here yet..."
+msgstr "ليس لديك أي تصنيفات هنا حتى الآن ..."
+
+#: BackendStrings.php:950
+msgid "Package Details"
+msgstr ""
+
+#: BackendStrings.php:951
+msgid "Package is hidden"
+msgstr ""
+
+#: BackendStrings.php:952
+msgid "Package has been saved"
+msgstr ""
+
+#: BackendStrings.php:953
+msgid "Package is visible"
+msgstr ""
+
+#: BackendStrings.php:954
+msgid "Package has been deleted"
+msgstr ""
+
+#: BackendStrings.php:955
+msgid "Sort Packages:"
+msgstr ""
+
+#: BackendStrings.php:956
+msgid "Calculated price"
+msgstr ""
+
+#: BackendStrings.php:957
+msgid "Calculated price for package"
+msgstr ""
+
+#: BackendStrings.php:958
+msgid "Custom price"
+msgstr ""
+
+#: BackendStrings.php:959
+msgid "Packages positions has been saved"
+msgstr ""
+
+#: BackendStrings.php:960
+msgid "Unable to save packages positions"
+msgstr ""
+
+#: BackendStrings.php:962
+msgid "Number of appointments"
+msgstr ""
+
+#: BackendStrings.php:963
+msgid "A number of appointments included in the package for this service."
+msgstr ""
+
+#: BackendStrings.php:964
+msgid "Minimum bookings required"
+msgstr ""
+
+#: BackendStrings.php:965
+msgid ""
+"A minimum number of appointments a customer needs to schedule at the moment "
+"of booking."
+msgstr ""
+
+#: BackendStrings.php:966
+msgid "Maximum bookings required"
+msgstr ""
+
+#: BackendStrings.php:967
+msgid ""
+"A maximum number of appointments a customer can schedule at the moment of "
+"booking."
+msgstr ""
+
+#: BackendStrings.php:968
+msgid "Please select select at least one service"
+msgstr ""
+
+#: BackendStrings.php:969
+msgid "Please select category"
+msgstr "يرجى اختيار الفئة"
+
+#: BackendStrings.php:970
+msgid "Please select duration"
+msgstr "يرجى تحديد المدة"
+
+#: BackendStrings.php:971
+msgid "Please select select at least one employee"
+msgstr "يرجى اختيار اختيار موظف واحد على الأقل"
+
+#: BackendStrings.php:972
+msgid "Buffer Time After"
+msgstr "الوقت العازلة بعد"
+
+#: BackendStrings.php:973
+msgid ""
+"Time after the appointment (rest, clean up, etc.),<br/>when another booking "
+"for same service and<br/>employee cannot be made."
+msgstr ""
+"الوقت بعد الموعد (الراحة ، والتنظيف ، وما إلى ذلك) ، <br/> عندما يتعذر إجراء "
+"حجز آخر لنفس الخدمة وموظف <br/>."
+
+#: BackendStrings.php:974
+msgid "Buffer Time Before"
+msgstr "وقت العازلة قبل"
+
+#: BackendStrings.php:975
+msgid ""
+"Time needed to prepare for the appointment, when<br/>another booking for same "
+"service and employee<br/>cannot be made."
+msgstr ""
+"الوقت اللازم للتحضير للموعد ، عندما لا يمكن إجراء حجز آخر لنفس الخدمة والمختص "
+"<br/>."
+
+#: BackendStrings.php:976
+msgid "Service has been deleted"
+msgstr "تم حذف الخدمة"
+
+#: BackendStrings.php:977
+msgid "Service Details"
+msgstr "تفاصيل الخدمة"
+
+#: BackendStrings.php:978
+msgid "Service is hidden"
+msgstr "الخدمة مخفية"
+
+#: BackendStrings.php:979 BackendStrings.php:1083
+msgid "Provider has appointments for this service"
+msgstr "مزود لديه المواعيد لهذه الخدمة"
+
+#: BackendStrings.php:980
+msgid "Service has been saved"
+msgstr "تم حفظ الخدمة"
+
+#: BackendStrings.php:981
+msgid "Service is visible"
+msgstr "الخدمة مرئية"
+
+#: BackendStrings.php:982
+msgid "Services positions has been saved"
+msgstr "تم حفظ مواضع الخدمات"
+
+#: BackendStrings.php:983
+msgid "Unable to save services positions"
+msgstr "غير قادر على حفظ مواضع الخدمات"
+
+#: BackendStrings.php:984
+msgid "Sort Services:"
+msgstr "ترتيب الخدمات:"
+
+#: BackendStrings.php:985
+msgid "Custom"
+msgstr "مخصص"
+
+#: BackendStrings.php:988 FrontendStrings.php:201
+msgid "Price Ascending"
+msgstr "سعر تصاعدي"
+
+#: BackendStrings.php:989 FrontendStrings.php:202
+msgid "Price Descending"
+msgstr "سعر تنازلي"
+
+#: BackendStrings.php:990
+msgid "Show service on site"
+msgstr ""
+
+#: BackendStrings.php:991
+msgid ""
+"If this option is disabled, service will be available for booking from back-"
+"end pages only."
+msgstr ""
+
+#: BackendStrings.php:992
+msgid "Set recurring appointment"
+msgstr ""
+
+#: BackendStrings.php:993
+msgid ""
+"If this option is disabled, your customers won't be able to book recurring "
+"appointments at the same time."
+msgstr ""
+
+#: BackendStrings.php:994
+msgid "Handle unavailable recurring dates"
+msgstr ""
+
+#: BackendStrings.php:995
+msgid ""
+"Set how an alternate date should be suggested to the customer<br>if the "
+"desired date has no available time-slots for booking."
+msgstr ""
+
+#: BackendStrings.php:996
+msgid "Recommend the closest date after"
+msgstr ""
+
+#: BackendStrings.php:997
+msgid "Recommend the closest date before "
+msgstr ""
+
+#: BackendStrings.php:998
+msgid "Recommend the closest date before or after"
+msgstr ""
+
+#: BackendStrings.php:999
+msgid "Handle recurring appointment payments"
+msgstr ""
+
+#: BackendStrings.php:1000
+msgid ""
+"Set how you want payments to be processed.<br>If you choose to request "
+"payment only for the first appointment customers will be able to pay the rest "
+"on-site."
+msgstr ""
+
+#: BackendStrings.php:1001
+msgid "Customers will have to pay only for the first appointment"
+msgstr ""
+
+#: BackendStrings.php:1002
+msgid "Customers will have to pay for all appointments at once"
+msgstr ""
+
+#: BackendStrings.php:1015 BackendStrings.php:1256 FrontendStrings.php:380
+msgid "Create New"
+msgstr "انشاء جديد"
+
+#: BackendStrings.php:1017 FrontendStrings.php:108
+msgid "Please enter first name"
+msgstr "الرجاء إدخال الاسم الأول"
+
+#: BackendStrings.php:1018 FrontendStrings.php:109
+msgid "Please enter last name"
+msgstr "الرجاء إدخال الاسم الأخير"
+
+#: BackendStrings.php:1019
+msgid "First Name"
+msgstr "الاسم الأول"
+
+#: BackendStrings.php:1020
+msgid "Last Name"
+msgstr "الاسم الثاني"
+
+#: BackendStrings.php:1021
+msgid "Female"
+msgstr ""
+
+#: BackendStrings.php:1022
+msgid "Male"
+msgstr ""
+
+#: BackendStrings.php:1023
+msgid "Select or Create New"
+msgstr "اختيار أو إنشاء جديد"
+
+#: BackendStrings.php:1024
+msgid "WordPress User"
+msgstr "مستخدم WordPress"
+
+#: BackendStrings.php:1025
+msgid ""
+"Here you can map a WordPress user to the customer if<br/>you want to give "
+"customers access to the list of their<br/>appointments in the back-end of the "
+"plugin."
+msgstr ""
+"يمكنك هنا تعيين مستخدم WordPress للعميل إذا كنت ترغب في منح العملاء حق الوصول "
+"إلى قائمة المواعيد <br/> الخاصة بهم في النهاية الخلفية للمكون الإضافي."
+
+#: BackendStrings.php:1026
+msgid ""
+"Here you can map a WordPress user to the employee if<br/>you want to give "
+"employee access to the list of their<br/>appointments in the back-end of the "
+"plugin."
+msgstr ""
+"يمكنك هنا تعيين مستخدم WordPress للمختص إذا كنت ترغب في منح المختص  حق الوصول "
+"إلى قائمة المواعيد <br/> في النهاية الخلفية للمكون الإضافي."
+
+#: BackendStrings.php:1039 BackendStrings.php:1418
+msgid "Add Employee"
+msgstr "اضافة مختص"
+
+#: BackendStrings.php:1040 FrontendStrings.php:345
+msgid "Assigned Services"
+msgstr "الخدمات المخصصة"
+
+#: BackendStrings.php:1041 FrontendStrings.php:347
+msgid "Available"
+msgstr "متاح"
+
+#: BackendStrings.php:1042 FrontendStrings.php:348
+msgid "Away"
+msgstr "بعيدا"
+
+#: BackendStrings.php:1043 FrontendStrings.php:353
+msgid "On Break"
+msgstr "في استراحة"
+
+#: BackendStrings.php:1044 FrontendStrings.php:356
+msgid "Busy"
+msgstr "مشغول"
+
+#: BackendStrings.php:1045 FrontendStrings.php:362
+msgid "Capacity"
+msgstr "عدد المشاركين"
+
+#: BackendStrings.php:1046
+msgid "Start by clicking the Add Employee button"
+msgstr "ابدأ بالنقر فوق الزر \"إضافة مختص”"
+
+#: BackendStrings.php:1047
+msgid "Are you sure you want to delete this employee?"
+msgstr "هل أنت متأكد أنك تريد حذف هذا المختص؟"
+
+#: BackendStrings.php:1048
+msgid "Are you sure you want to duplicate this employee?"
+msgstr "هل أنت متأكد من أنك تريد تكرار هذا المختص؟"
+
+#: BackendStrings.php:1049
+msgid "Are you sure you want to hide this employee?"
+msgstr "هل أنت متأكد أنك تريد إخفاء هذا المختص؟"
+
+#: BackendStrings.php:1050
+msgid "Are you sure you want to show this employee?"
+msgstr "هل أنت متأكد أنك تريد إظهار هذا المختص؟"
+
+#: BackendStrings.php:1051
+msgid "Connect"
+msgstr "الاتصال"
+
+#: BackendStrings.php:1052 FrontendStrings.php:391
+msgid "Day Off"
+msgstr "يوم عطلة"
+
+#: BackendStrings.php:1053
+msgid "Disconnect"
+msgstr "قطع الاتصال"
+
+#: BackendStrings.php:1054
+msgid "Provider Settings"
+msgstr ""
+
+#: BackendStrings.php:1055
+msgid "Edit Employee"
+msgstr "تعديل المختصين"
+
+#: BackendStrings.php:1056
+msgid "Employee has been deleted"
+msgstr "تم حذف المختص"
+
+#: BackendStrings.php:1057
+msgid "Employee is hidden"
+msgstr "المختص مخفي"
+
+#: BackendStrings.php:1058
+msgid "Employee can not be deleted because of the future appointment"
+msgstr "لا يمكن حذف المختص بسبب الموعد المستقبلي"
+
+#: BackendStrings.php:1059
+msgid "Employee has been saved"
+msgstr "تم حفظ المختص"
+
+#: BackendStrings.php:1060
+msgid "Search Employees..."
+msgstr "بحث في المختصين ..."
+
+#: BackendStrings.php:1061
+msgid "Employee is visible"
+msgstr "المختص ظاهر"
+
+#: BackendStrings.php:1062
+msgid "Employees have been deleted"
+msgstr "تم حذف المختصين"
+
+#: BackendStrings.php:1063 FrontendStrings.php:106
+msgid "employees"
+msgstr "مختصون"
+
+#: BackendStrings.php:1064
+msgid "Employees could not be deleted because of the future appointment"
+msgstr "لا يمكن حذف المختصين بسبب وجود حجوزات مستقبلية"
+
+#: BackendStrings.php:1065
+msgid "Employee Panel Password"
+msgstr ""
+
+#: BackendStrings.php:1066 FrontendStrings.php:421
+msgid "Please select location"
+msgstr "يرجى اختيار الموقع"
+
+#: BackendStrings.php:1067
+msgid "Sign in with Google"
+msgstr ""
+
+#: BackendStrings.php:1068
+msgid "Sign out from Google"
+msgstr ""
+
+#: BackendStrings.php:1069
+msgid "Sign in with Outlook"
+msgstr ""
+
+#: BackendStrings.php:1070
+msgid "Sign out from Outlook"
+msgstr ""
+
+#: BackendStrings.php:1071
+msgid "Unable to connect to Google Calendar"
+msgstr "غير قادر على الاتصال بتقويم Google"
+
+#: BackendStrings.php:1072
+msgid ""
+"Here you can connect employee with Google Calendar,<br/>so once the "
+"appointment is scheduled it will be<br/>automatically added to employee's "
+"calendar."
+msgstr ""
+
+#: BackendStrings.php:1073
+msgid ""
+"Here you can connect employee with Outlook Calendar,<br/>so once the "
+"appointment is scheduled it will be<br/>automatically added to employee's "
+"calendar."
+msgstr ""
+
+#: BackendStrings.php:1074
+msgid "Grid View"
+msgstr "عرض الشبكة"
+
+#: BackendStrings.php:1075
+msgid "New Employee"
+msgstr "مختص جديد"
+
+#: BackendStrings.php:1076
+msgid "Applied for default employee location"
+msgstr ""
+
+#: BackendStrings.php:1077 FrontendStrings.php:536
+msgid "Select specific location for this period."
+msgstr ""
+
+#: BackendStrings.php:1078 FrontendStrings.php:537
+msgid "Select specific location for each period."
+msgstr ""
+
+#: BackendStrings.php:1079 FrontendStrings.php:538
+msgid "Applied for all assigned services"
+msgstr "تطبيق لجميع الخدمات المخصصة"
+
+#: BackendStrings.php:1080 FrontendStrings.php:539
+msgid ""
+"Select only specific services for this period.<br/>If no services are "
+"selected, then all assigned services for this employee<br/>will be available "
+"for booking in this period."
+msgstr ""
+
+#: BackendStrings.php:1081 FrontendStrings.php:540
+msgid "Select specific services for each period."
+msgstr "اختر خدمات محددة لكل فترة."
+
+#: BackendStrings.php:1084
+msgid "Provider has appointments for"
+msgstr "مزود لديه المواعيد ل"
+
+#: BackendStrings.php:1085 FrontendStrings.php:596
+msgid "Special Days"
+msgstr "أيام خاصة"
+
+#: BackendStrings.php:1086 FrontendStrings.php:597
+msgid "Reflect On"
+msgstr "التفكير في"
+
+#: BackendStrings.php:1087
+msgid "Table View"
+msgstr "عرض جدول"
+
+#: BackendStrings.php:1089
+msgid "Enter to set or reset password"
+msgstr ""
+
+#: BackendStrings.php:1090
+msgid "Send Employee Panel Access Email"
+msgstr ""
+
+#: BackendStrings.php:1091 FrontendStrings.php:510
+msgid "Password must be longer than 3 characters"
+msgstr ""
+
+#: BackendStrings.php:1092 FrontendStrings.php:632
+msgid ""
+"Here you can select Zoom User,<br/>so once the appointment is scheduled,<br/"
+">zoom meeting will be automatically created."
+msgstr ""
+
+#: BackendStrings.php:1104 BackendStrings.php:1417
+msgid "Add Customer"
+msgstr "اضافة عميل"
+
+#: BackendStrings.php:1105
+msgid "Start by clicking the Add Customer button"
+msgstr "ابدأ بالنقر فوق الزر \"إضافة عميل\""
+
+#: BackendStrings.php:1106
+msgid "Are you sure you want to delete this customer?"
+msgstr "هل أنت متأكد أنك تريد حذف هذا العميل?"
+
+#: BackendStrings.php:1107
+msgid "Customer has been deleted"
+msgstr "تم حذف العميل"
+
+#: BackendStrings.php:1108
+msgid "Customer can not be deleted because of the future appointment"
+msgstr "لا يمكن حذف العميل بسبب الموعد المستقبلي"
+
+#: BackendStrings.php:1110
+msgid "Customer has been saved"
+msgstr "تم حفظ العميل"
+
+#: BackendStrings.php:1111 BackendStrings.php:1261 FrontendStrings.php:383
+msgid "Customers"
+msgstr "الزبائن"
+
+#: BackendStrings.php:1112
+msgid "Customers have been deleted"
+msgstr "تم حذف العملاء"
+
+#: BackendStrings.php:1113
+msgid "customers"
+msgstr "الزبائن"
+
+#: BackendStrings.php:1114
+msgid "Customers could not be deleted because of the future appointment"
+msgstr "لا يمكن حذف العملاء بسبب الموعد المستقبلي"
+
+#: BackendStrings.php:1115
+msgid "Search Customers..."
+msgstr "البحث عن العملاء ..."
+
+#: BackendStrings.php:1116 FrontendStrings.php:388
+msgid "Date of Birth"
+msgstr "تاريخ الميلاد"
+
+#: BackendStrings.php:1117
+msgid "Edit Customer"
+msgstr "تعديل العميل"
+
+#: BackendStrings.php:1119
+msgid "You can use this option to export customers in CSV file."
+msgstr "يمكنك استخدام هذا الخيار لتصدير العملاء في ملف CSV."
+
+#: BackendStrings.php:1120
+msgid "Gender"
+msgstr "الجنس"
+
+#: BackendStrings.php:1121
+msgid "Last Appointment"
+msgstr "الموعد الأخير"
+
+#: BackendStrings.php:1122
+msgid "Last Appointment Ascending"
+msgstr "موعد آخر تصاعدي"
+
+#: BackendStrings.php:1123
+msgid "Last Appointment Descending"
+msgstr "الموعد الأخير تنازلي"
+
+#: BackendStrings.php:1124
+msgid "New Customer"
+msgstr "عميل جديد"
+
+#: BackendStrings.php:1125
+msgid "You don't have any customers here yet..."
+msgstr "ليس لديك أي عملاء هنا حتى الآن ..."
+
+#: BackendStrings.php:1128
+msgid "Select Date of Birth"
+msgstr "اختر تاريخ الميلاد"
+
+#: BackendStrings.php:1129
+msgid "Total Appointments"
+msgstr "إجمالي المواعيد"
+
+#: BackendStrings.php:1141
+msgid "Amount"
+msgstr "كمية"
+
+#: BackendStrings.php:1142
+msgid "Booking Start"
+msgstr "بدء الحجز"
+
+#: BackendStrings.php:1143
+msgid "Code"
+msgstr "كود"
+
+#: BackendStrings.php:1144
+msgid ""
+"Here you need to define a coupon code which customers will<br/>enter in their "
+"booking so they can get a discount."
+msgstr ""
+"تحتاج هنا إلى تحديد رمز القسيمة الذي سيدخله العملاء <br/> في حجزهم حتى "
+"يتمكنوا من الحصول على خصم."
+
+#: BackendStrings.php:1145
+msgid "Are you sure you want to delete this coupon?"
+msgstr "هل أنت متأكد من أنك تريد حذف هذه القسيمة?"
+
+#: BackendStrings.php:1146
+msgid "Are you sure you want to duplicate this coupon?"
+msgstr "هل تريد بالتأكيد تكرار هذه القسيمة?"
+
+#: BackendStrings.php:1147
+msgid "Are you sure you want to hide this coupon?"
+msgstr "هل أنت متأكد من أنك تريد إخفاء هذه القسيمة?"
+
+#: BackendStrings.php:1148
+msgid "Are you sure you want to show this coupon?"
+msgstr "هل أنت متأكد أنك تريد عرض هذه القسيمة?"
+
+#: BackendStrings.php:1149
+msgid "Coupon has been deleted"
+msgstr "تم حذف الكوبون"
+
+#: BackendStrings.php:1150
+msgid "Your Coupon is hidden"
+msgstr "القسيمة الخاصة بك مخفية"
+
+#: BackendStrings.php:1151
+msgid "Coupon has not been deleted"
+msgstr "لم يتم حذف الكوبون"
+
+#: BackendStrings.php:1152
+msgid "Coupon has been saved"
+msgstr "تم حفظ الكوبون"
+
+#: BackendStrings.php:1153
+msgid "Coupon usage limit must be at least 1"
+msgstr "يجب ألا يقل حد استخدام القسيمة عن 1"
+
+#: BackendStrings.php:1154
+msgid "Your Coupon is active"
+msgstr "القسيمة الخاصة بك نشطة"
+
+#: BackendStrings.php:1156
+msgid "Coupons have been deleted"
+msgstr "تم حذف الكوبونات"
+
+#: BackendStrings.php:1157
+msgid "coupons"
+msgstr "كوبونات"
+
+#: BackendStrings.php:1158
+msgid " & Other Services"
+msgstr " او خدمات اخرى"
+
+#: BackendStrings.php:1159
+msgid " & Other Events"
+msgstr ""
+
+#: BackendStrings.php:1160
+msgid "Coupons have not been deleted"
+msgstr "لم يتم حذف الكوبونات"
+
+#: BackendStrings.php:1161 BackendStrings.php:1258
+msgid "Customer Email"
+msgstr "البريد الإلكتروني للعملاء"
+
+#: BackendStrings.php:1162 BackendStrings.php:1212
+msgid "Deduction"
+msgstr "المستقطع"
+
+#: BackendStrings.php:1163
+msgid "Edit Coupon"
+msgstr "تعديل الكابون"
+
+#: BackendStrings.php:1164
+msgid "Employee Email"
+msgstr "ايميل المختص"
+
+#: BackendStrings.php:1165
+msgid "Please enter code"
+msgstr "من فضلك ادخل الكود"
+
+#: BackendStrings.php:1166
+msgid "You can use this option to export coupons in CSV file."
+msgstr "يمكنك استخدام هذا الخيار لتصدير القسائم في ملف CSV."
+
+#: BackendStrings.php:1167
+msgid ""
+"You can use this option to export payments in CSV file<br/>for the selected "
+"date range."
+msgstr ""
+"يمكنك استخدام هذا الخيار لتصدير المدفوعات في ملف CSV <br/> للنطاق الزمني "
+"المحدد."
+
+#: BackendStrings.php:1168
+msgid "Search Coupons"
+msgstr "بحث كوبونات"
+
+#: BackendStrings.php:1169
+msgid "Limit"
+msgstr "محدود"
+
+#: BackendStrings.php:1170
+msgid "Method"
+msgstr "طريقة"
+
+#: BackendStrings.php:1171 BackendStrings.php:1435
+msgid "New Coupon"
+msgstr "قسيمة جديدة"
+
+#: BackendStrings.php:1172
+msgid "Coupon needs to have discount or deduction"
+msgstr "القسيمة تحتاج إلى خصم أو خصم"
+
+#: BackendStrings.php:1173
+msgid "You don't have any coupons here yet"
+msgstr "ليس لديك أي كوبونات هنا حتى الآن"
+
+#: BackendStrings.php:1174
+msgid "You don't have any payments here yet"
+msgstr "ليس لديك أي مدفوعات هنا حتى الآن"
+
+#: BackendStrings.php:1175
+msgid "Select at least one service or event"
+msgstr ""
+
+#: BackendStrings.php:1177
+msgid "Payment date"
+msgstr "Payment date"
+
+#: BackendStrings.php:1181
+msgid "Notification interval"
+msgstr ""
+
+#: BackendStrings.php:1182
+msgid ""
+"Here you can set the number of approved bookings after which the customer "
+"will automatically receive the coupon in notification.<br/>Please note that "
+"the coupon placeholder needs to be set in the notification template in order "
+"for this to work."
+msgstr ""
+
+#: BackendStrings.php:1183
+msgid "Recurring notification"
+msgstr ""
+
+#: BackendStrings.php:1184
+msgid "Here you can define if notification interval will repeat."
+msgstr ""
+
+#: BackendStrings.php:1185
+msgid "Select All Service"
+msgstr "حدد كل الخدمة"
+
+#: BackendStrings.php:1186
+msgid "Select the services for which the coupon can be used."
+msgstr "حدد الخدمات التي يمكن استخدام القسيمة."
+
+#: BackendStrings.php:1187
+msgid "Select All Events"
+msgstr ""
+
+#: BackendStrings.php:1188
+msgid "Select the events for which the coupon can be used."
+msgstr ""
+
+#: BackendStrings.php:1189
+msgid "Times Used"
+msgstr "مرات المستخدمة"
+
+#: BackendStrings.php:1190
+msgid "Usage Limit"
+msgstr "حد الاستخدام"
+
+#: BackendStrings.php:1191
+msgid ""
+"Here you need to define the number of coupons for use. After the<br/>limit is "
+"reached your coupon will become unavailable."
+msgstr ""
+"هنا تحتاج إلى تحديد عدد القسائم للاستخدام. بعد الوصول إلى الحد الأقصى <br /> "
+"ستصبح قسيمتك غير متاحة."
+
+#: BackendStrings.php:1192
+msgid "Maximum Usage Per Customer"
+msgstr ""
+
+#: BackendStrings.php:1193
+msgid ""
+"Here you can define the maximum number of coupons for use for single "
+"customer. After the<br/>limit is reached for single customer, your coupon "
+"will become unavailable for that customer."
+msgstr ""
+
+#: BackendStrings.php:1194
+msgid "Used"
+msgstr "مستخدم"
+
+#: BackendStrings.php:1206
+msgid "Appointment Date"
+msgstr "تاريخ الموعد"
+
+#: BackendStrings.php:1207 FrontendStrings.php:72
+msgid "Appointment Info"
+msgstr "معلومات الموعد"
+
+#: BackendStrings.php:1208 FrontendStrings.php:113
+msgid "Event Info"
+msgstr "معلومات الحدث"
+
+#: BackendStrings.php:1209
+msgid "Event Date"
+msgstr "تاريخ الحدث"
+
+#: BackendStrings.php:1210
+msgid "Are you sure you want to delete this payment?"
+msgstr "هل أنت متأكد أنك تريد حذف هذه الدفعة?"
+
+#: BackendStrings.php:1211 FrontendStrings.php:409
+msgid "Discount"
+msgstr "خصم"
+
+#: BackendStrings.php:1213
+msgid "Due"
+msgstr "بسبب"
+
+#: BackendStrings.php:1214
+msgid "Enter new payment amount"
+msgstr "أدخل مبلغ الدفع الجديد"
+
+#: BackendStrings.php:1215
+msgid "Finance"
+msgstr "المالية"
+
+#: BackendStrings.php:1216
+msgid "This booking is part of a package deal"
+msgstr ""
+
+#: BackendStrings.php:1218
+msgid "Payment has been deleted"
+msgstr "تم حذف الدفع"
+
+#: BackendStrings.php:1219
+msgid "Payment Details"
+msgstr "بيانات الدفع"
+
+#: BackendStrings.php:1220 FrontendStrings.php:533
+msgid "Payment Method"
+msgstr "طريقة الدفع او السداد"
+
+#: BackendStrings.php:1221
+msgid "Payment has not been deleted"
+msgstr "لم يتم حذف الدفع"
+
+#: BackendStrings.php:1222
+msgid "Payment has been saved"
+msgstr "تم حفظ الدفع"
+
+#: BackendStrings.php:1223
+msgid "Payments have been deleted"
+msgstr "تم حذف المدفوعات"
+
+#: BackendStrings.php:1224
+msgid "Payments have not been deleted"
+msgstr "لم يتم حذف المدفوعات"
+
+#: BackendStrings.php:1225 FrontendStrings.php:587
+msgid "Service Price"
+msgstr "سعر الخدمة"
+
+#: BackendStrings.php:1226
+msgid "Event Price"
+msgstr "سعر الحدث"
+
+#: BackendStrings.php:1227 FrontendStrings.php:600
+msgid "Subtotal"
+msgstr "حاصل الجمع"
+
+#: BackendStrings.php:1239 FrontendStrings.php:339
+msgid "Appointment has been deleted"
+msgstr "تم حذف الموعد"
+
+#: BackendStrings.php:1240
+msgid "Appointment ID"
+msgstr ""
+
+#: BackendStrings.php:1241
+msgid "Appointment has not been deleted"
+msgstr "لم يتم حذف الموعد"
+
+#: BackendStrings.php:1242 FrontendStrings.php:341
+msgid "Appointment has been saved"
+msgstr "تم حفظ الموعد"
+
+#: BackendStrings.php:1243
+msgid "Appointment status has been changed to "
+msgstr "تم تغيير حالة الموعد إلى "
+
+#: BackendStrings.php:1244
+msgid "Appointments have been deleted"
+msgstr "تم حذف المواعيد"
+
+#: BackendStrings.php:1245
+msgid "Appointment have not been deleted"
+msgstr "لم يتم حذف الموعد"
+
+#: BackendStrings.php:1246
+msgid "Search for Customers, Employees, Services..."
+msgstr "البحث عن العملاء والمختصين والخدمات ..."
+
+#: BackendStrings.php:1247
+msgid "Assigned"
+msgstr "تعيين"
+
+#: BackendStrings.php:1248
+msgid "Assigned to"
+msgstr "مخصص ل"
+
+#: BackendStrings.php:1249 FrontendStrings.php:358
+msgid "Cancel Appointment"
+msgstr "إلغاء التعيين"
+
+#: BackendStrings.php:1250 FrontendStrings.php:363
+msgid "Change group status"
+msgstr "تغيير حالة المجموعة"
+
+#: BackendStrings.php:1251 FrontendStrings.php:365
+msgid "Choose a group service"
+msgstr "اختيار خدمة المجموعة"
+
+#: BackendStrings.php:1252
+msgid "Start by clicking the New Appointment button"
+msgstr "ابدأ بالنقر فوق الزر \"موعد جديد\""
+
+#: BackendStrings.php:1253 FrontendStrings.php:372
+msgid "Are you sure you want to delete this appointment?"
+msgstr "هل أنت متأكد أنك تريد حذف هذا الموعد?"
+
+#: BackendStrings.php:1254 FrontendStrings.php:376
+msgid "Are you sure you want to duplicate this appointment?"
+msgstr "هل أنت متأكد من أنك تريد تكرار هذا الموعد?"
+
+#: BackendStrings.php:1255
+msgid "Create Customer"
+msgstr "إنشاء عميل"
+
+#: BackendStrings.php:1259
+msgid "Customer Name"
+msgstr ""
+
+#: BackendStrings.php:1260
+msgid "Customer Phone"
+msgstr "هاتف العميل"
+
+#: BackendStrings.php:1262 FrontendStrings.php:384
+msgid "Customer(s)"
+msgstr "العميل (العملاء)"
+
+#: BackendStrings.php:1263
+msgid ""
+"Here you can define the number of people that are coming<br/>with this "
+"customer. The number you can choose depends<br/>on the service and employee "
+"capacity."
+msgstr ""
+"يمكنك هنا تحديد عدد الأشخاص القادمين <br/> مع هذا العميل. يعتمد الرقم الذي "
+"يمكنك اختياره على سعة المختص وقدرته."
+
+#: BackendStrings.php:1264 FrontendStrings.php:412
+msgid "Edit Appointment"
+msgstr "تعديل الموعد"
+
+#: BackendStrings.php:1265
+msgid "End Time"
+msgstr "نهاية الوقت"
+
+#: BackendStrings.php:1266
+msgid ""
+"You can use this option to export appointments in CSV file<br/>for the "
+"selected date range."
+msgstr ""
+"يمكنك استخدام هذا الخيار لتصدير المواعيد في ملف CSV <br/> للنطاق الزمني "
+"المحدد."
+
+#: BackendStrings.php:1267 FrontendStrings.php:469
+msgid ""
+"You can use this option to export attendees in CSV file<br/>for the selected "
+"event."
+msgstr ""
+
+#: BackendStrings.php:1268
+msgid "Minimum number of persons for bookings to approve appointment is"
+msgstr "الحد الأدنى لعدد الأشخاص للحجوزات للموافقة على التعيين هو"
+
+#: BackendStrings.php:1269 FrontendStrings.php:505
+msgid "Multiple Emails"
+msgstr "رسائل البريد الإلكتروني المتعددة"
+
+#: BackendStrings.php:1270 FrontendStrings.php:507
+msgid "New Appointment"
+msgstr "موعد جديد"
+
+#: BackendStrings.php:1271
+msgid "You don't have any appointments here yet..."
+msgstr "ليس لديك أي مواعيد هنا بعد ..."
+
+#: BackendStrings.php:1272
+msgid "There are no selected customers"
+msgstr "لا يوجد عملاء مختارين"
+
+#: BackendStrings.php:1273 FrontendStrings.php:514
+msgid "Select customer, employee and service"
+msgstr "حدد العميل مزود الخدمة والخدمة"
+
+#: BackendStrings.php:1274 FrontendStrings.php:515
+msgid "Select date and time"
+msgstr ""
+
+#: BackendStrings.php:1275
+msgid "Select customer and service"
+msgstr "حدد العملاء والخدمة"
+
+#: BackendStrings.php:1276 FrontendStrings.php:518
+msgid "Notify the customer(s)"
+msgstr "إخطار العميل (العملاء)"
+
+#: BackendStrings.php:1277 FrontendStrings.php:519
+msgid ""
+"Check this checkbox if you want your customer to<br/>receive an email about "
+"the scheduled appointment."
+msgstr ""
+"حدد مربع الاختيار هذا إذا كنت تريد من عميلك <br/> تلقي بريد إلكتروني حول "
+"الموعد المحدد."
+
+#: BackendStrings.php:1278
+msgid "Amelia booking limit notification"
+msgstr ""
+
+#: BackendStrings.php:1279
+msgid ""
+"You have 15 appointments left available for booking. If you need more please "
+"upgrade to full plugin version."
+msgstr ""
+
+#: BackendStrings.php:1280
+msgid "customers booked this appointment out of package deal"
+msgstr ""
+
+#: BackendStrings.php:1281
+msgid "customers booked this appointment as a part of package:"
+msgstr ""
+
+#: BackendStrings.php:1282
+msgid "Payments for the package deal are not included in this paid amount"
+msgstr ""
+
+#: BackendStrings.php:1283
+msgid ""
+"List of your appointments has changed. Take one more look and continue by "
+"clicking the Save button."
+msgstr ""
+
+#: BackendStrings.php:1284 FrontendStrings.php:152
+msgid "This field is required"
+msgstr "هذه الخانة مطلوبه"
+
+#: BackendStrings.php:1285 BackendStrings.php:1373 FrontendStrings.php:567
+msgid "Schedule"
+msgstr "جدول"
+
+#: BackendStrings.php:1286 FrontendStrings.php:569
+msgid "Please select at least one customer"
+msgstr "يرجى اختيار عميل واحد على الأقل"
+
+#: BackendStrings.php:1287 FrontendStrings.php:570
+msgid "Select Customer(s)"
+msgstr "اختر العميل (العملاء)"
+
+#: BackendStrings.php:1288 BackendStrings.php:1512 FrontendStrings.php:572
+msgid "Select Employee"
+msgstr "اختر الموظف"
+
+#: BackendStrings.php:1289 FrontendStrings.php:573
+msgid "Please select employee"
+msgstr "يرجى اختيار الموظف"
+
+#: BackendStrings.php:1290 BackendStrings.php:1513 FrontendStrings.php:211
+#: FrontendStrings.php:574
+msgid "Select Location"
+msgstr "اختر موقعا"
+
+#: BackendStrings.php:1291 FrontendStrings.php:575
+msgid "Maximum number of places is"
+msgstr "الحد الأقصى لعدد الأماكن هو"
+
+#: BackendStrings.php:1292 BackendStrings.php:1514 FrontendStrings.php:577
+msgid "Select Service"
+msgstr "اختر الخدمة"
+
+#: BackendStrings.php:1293 FrontendStrings.php:578
+msgid "Select Service Category"
+msgstr "اختر فئة الخدمة"
+
+#: BackendStrings.php:1294 BackendStrings.php:1476 FrontendStrings.php:579
+msgid "Please select service"
+msgstr "يرجى اختيار الخدمة"
+
+#: BackendStrings.php:1295
+msgid "Choose how to export group appointments"
+msgstr ""
+
+#: BackendStrings.php:1296 FrontendStrings.php:582
+msgid "Selected Customers"
+msgstr "العملاء المختارين"
+
+#: BackendStrings.php:1297 FrontendStrings.php:586
+msgid "Service Category"
+msgstr "تصنيف الخدمة"
+
+#: BackendStrings.php:1298
+msgid "This service does not have any extras"
+msgstr "هذه الخدمة لا تحتوي على أي إضافات"
+
+#: BackendStrings.php:1299
+msgid "Booking info from group appointment exported in the same row"
+msgstr ""
+
+#: BackendStrings.php:1300
+msgid "Booking info from group appointment exported in separate rows"
+msgstr ""
+
+#: BackendStrings.php:1301
+msgid "Start Time"
+msgstr "وقت البدء"
+
+#: BackendStrings.php:1303 FrontendStrings.php:161
+msgid "Time slot is unavailable"
+msgstr "الفاصل الزمني غير متاح"
+
+#: BackendStrings.php:1304
+msgid "View Payment Details"
+msgstr "عرض تفاصيل الدفع"
+
+#: BackendStrings.php:1305
+msgid "Appointment can't be canceled"
+msgstr ""
+
+#: BackendStrings.php:1306 FrontendStrings.php:352
+msgid "Appointment can't be rescheduled"
+msgstr ""
+
+#: BackendStrings.php:1319
+msgid "Start by clicking the New Event button"
+msgstr "ابدأ بالضغط على زر حدث جديد"
+
+#: BackendStrings.php:1320 FrontendStrings.php:373
+msgid "Are you sure you want to delete selected attendee?"
+msgstr "هل أنت متأكد من رغبتك في حذف المشترك المختار؟"
+
+#: BackendStrings.php:1321 FrontendStrings.php:374
+msgid "Are you sure you want to delete selected attendees?"
+msgstr "‫هل أنت متأكد من رغبتك في حذف المشتركين المختارين؟"
+
+#: BackendStrings.php:1322 FrontendStrings.php:371
+msgid "Are you sure you want to delete this event?"
+msgstr "‫هل أنت متأكد من رغبتك في حذف الحدث؟"
+
+#: BackendStrings.php:1323 FrontendStrings.php:375
+msgid "Do you want to delete following canceled events?"
+msgstr "‫هل أنت متأكد من رغبتك في حذف هذه الأحداث الملغاة؟"
+
+#: BackendStrings.php:1324 FrontendStrings.php:367
+msgid "Are you sure you want to cancel this event?"
+msgstr "‫هل أنت متأكد من رغبتك في إلغاء هذا الحدث؟"
+
+#: BackendStrings.php:1325 FrontendStrings.php:370
+msgid "Do you want to cancel following events?"
+msgstr "هل ترغب في إلغاء هذه الأحداث؟"
+
+#: BackendStrings.php:1326 FrontendStrings.php:377
+msgid "Are you sure you want to open this event?"
+msgstr "هل أنت متأكد من رغبتك في فتح هذا الحدث؟"
+
+#: BackendStrings.php:1327 FrontendStrings.php:378
+msgid "Do you want to open following events?"
+msgstr "هل ترغب في فتح هذه الأحداث؟"
+
+#: BackendStrings.php:1328 FrontendStrings.php:379
+msgid "Do you want to update following events?"
+msgstr "هل ترغب في تحديث هذه الأحداث؟"
+
+#: BackendStrings.php:1329
+msgid "Please cancel the event first before deleting it."
+msgstr "رجاء إلغاء الحدث أولاً قبل حذفه."
+
+#: BackendStrings.php:1330 BackendStrings.php:1469 FrontendStrings.php:386
+msgid "Customize"
+msgstr "تخصيص"
+
+#: BackendStrings.php:1332 FrontendStrings.php:413
+msgid "Edit Event"
+msgstr "تحرير الحدث"
+
+#: BackendStrings.php:1334 FrontendStrings.php:346 FrontendStrings.php:431
+msgid "Attendees"
+msgstr "الحضور"
+
+#: BackendStrings.php:1335 FrontendStrings.php:425
+msgid "Add Attendee"
+msgstr ""
+
+#: BackendStrings.php:1337 FrontendStrings.php:449
+msgid "Edit Attendee"
+msgstr ""
+
+#: BackendStrings.php:1338 FrontendStrings.php:429
+msgid "Attendee has been saved"
+msgstr ""
+
+#: BackendStrings.php:1339 FrontendStrings.php:428
+msgid "Remove Attendee"
+msgstr "حذف المشارك"
+
+#: BackendStrings.php:1340
+msgid "Remove Selected"
+msgstr "حذف المختار"
+
+#: BackendStrings.php:1341 FrontendStrings.php:434
+msgid "Find Attendees"
+msgstr "إيجاد مشارك"
+
+#: BackendStrings.php:1342 FrontendStrings.php:426
+msgid "Attendee have been deleted"
+msgstr "تم حذف المشارك"
+
+#: BackendStrings.php:1343 FrontendStrings.php:427
+msgid "Attendee have not been deleted"
+msgstr "لم يتم حذف المشارك"
+
+#: BackendStrings.php:1344 FrontendStrings.php:432
+msgid "Attendees have been deleted"
+msgstr "تم حذف المشاركين"
+
+#: BackendStrings.php:1345 FrontendStrings.php:433
+msgid "Attendees have not been deleted"
+msgstr "لم يتم حذف المشاركين"
+
+#: BackendStrings.php:1346
+msgid "Allow the same customer to book more than once"
+msgstr ""
+
+#: BackendStrings.php:1347 FrontendStrings.php:439
+msgid "Allow bringing more persons"
+msgstr ""
+
+#: BackendStrings.php:1348 FrontendStrings.php:359 FrontendStrings.php:440
+msgid "Cancel Event"
+msgstr "إلغاء الحدث"
+
+#: BackendStrings.php:1349
+msgid "Spots:"
+msgstr "الأماكن:"
+
+#: BackendStrings.php:1350 FrontendStrings.php:445
+msgid "Custom Address"
+msgstr "عنوان مخصص"
+
+#: BackendStrings.php:1351 FrontendStrings.php:446
+msgid "Delete Event"
+msgstr "حذف الحدث"
+
+#: BackendStrings.php:1352 FrontendStrings.php:447
+msgid "Event has been deleted"
+msgstr "تم حذف الحدث"
+
+#: BackendStrings.php:1353 FrontendStrings.php:452
+msgid "Name:"
+msgstr "الاسم:"
+
+#: BackendStrings.php:1354
+msgid "Booking closes:"
+msgstr "إغلاق الحجز:"
+
+#: BackendStrings.php:1355
+msgid "Booking opens:"
+msgstr "فتح الحجز:"
+
+#: BackendStrings.php:1356 FrontendStrings.php:436
+msgid "Closes on:"
+msgstr "يغلق في:"
+
+#: BackendStrings.php:1357 FrontendStrings.php:438
+msgid "Opens on:"
+msgstr "يفتح في:"
+
+#: BackendStrings.php:1358 FrontendStrings.php:435
+msgid "Booking closes when event starts"
+msgstr "يغلق الحجز عند بدء الحدث"
+
+#: BackendStrings.php:1359 FrontendStrings.php:437
+msgid "Booking opens immediately"
+msgstr "فتح الحجز مباشرة"
+
+#: BackendStrings.php:1360 FrontendStrings.php:448
+msgid "Event Details"
+msgstr "تفاصيل الحدث"
+
+#: BackendStrings.php:1362 FrontendStrings.php:453
+msgid "Open Event"
+msgstr "حدث مفتوح"
+
+#: BackendStrings.php:1363
+msgid "Recurring:"
+msgstr "متكرر:"
+
+#: BackendStrings.php:1364 FrontendStrings.php:457
+msgid "This is recurring event"
+msgstr "هذا حدث متكرر"
+
+#: BackendStrings.php:1365 FrontendStrings.php:458
+msgid "Repeat Event"
+msgstr "كرر الحدث"
+
+#: BackendStrings.php:1366
+msgid "How many times?"
+msgstr "عدد المرات؟"
+
+#: BackendStrings.php:1367 FrontendStrings.php:459
+msgid "Until when?"
+msgstr "إلى متى؟"
+
+#: BackendStrings.php:1368
+msgid "Event booking has been deleted"
+msgstr "تم حذف حجز الحدث"
+
+#: BackendStrings.php:1369
+msgid "Event booking has not been deleted"
+msgstr "لم يتم حذف حجز الحدث"
+
+#: BackendStrings.php:1370 FrontendStrings.php:454
+msgid "Event has been opened"
+msgstr "تم فتح حجز الحدث"
+
+#: BackendStrings.php:1371 FrontendStrings.php:441
+msgid "Event has been canceled"
+msgstr "تم إلغاء الحدث"
+
+#: BackendStrings.php:1372 FrontendStrings.php:460
+msgid "Event has been saved"
+msgstr "تم حفظ الحدث"
+
+#: BackendStrings.php:1374
+msgid "Search Events..."
+msgstr "بحث في الأحداث..."
+
+#: BackendStrings.php:1375 FrontendStrings.php:451
+msgid "Maximum allowed spots"
+msgstr "الحد الأقصى للأماكن المتاحة"
+
+#: BackendStrings.php:1376 FrontendStrings.php:461
+msgid "Select Address"
+msgstr "اختر المشاركين"
+
+#: BackendStrings.php:1377 FrontendStrings.php:463
+msgid "Staff"
+msgstr "المختصون"
+
+#: BackendStrings.php:1378 FrontendStrings.php:455
+msgid "Dates:"
+msgstr "التواريخ:"
+
+#: BackendStrings.php:1379 FrontendStrings.php:465
+msgid "Tags"
+msgstr "وسوم"
+
+#: BackendStrings.php:1380 FrontendStrings.php:466
+msgid "No Tags. Create a new one."
+msgstr ""
+
+#: BackendStrings.php:1381 FrontendStrings.php:467
+msgid "Select or Create Tag"
+msgstr ""
+
+#: BackendStrings.php:1382 FrontendStrings.php:419
+msgid "Enter Event Name"
+msgstr ""
+
+#: BackendStrings.php:1384 FrontendStrings.php:450
+msgid "Event Gallery:"
+msgstr "معرض الحدث:"
+
+#: BackendStrings.php:1385 FrontendStrings.php:442
+msgid "Event Colors:"
+msgstr "ألوان الحدث:"
+
+#: BackendStrings.php:1386 FrontendStrings.php:444
+msgid "Preset Colors"
+msgstr "الألوان الحالية"
+
+#: BackendStrings.php:1387 FrontendStrings.php:443
+msgid "Custom Color"
+msgstr "ألوان مخصصة"
+
+#: BackendStrings.php:1388 FrontendStrings.php:576
+msgid "Select Repeat Period"
+msgstr ""
+
+#: BackendStrings.php:1389 FrontendStrings.php:462
+msgid "Show event on site"
+msgstr "أظهر الحدث على الموقع"
+
+#: BackendStrings.php:1390 FrontendStrings.php:464
+msgid "Booking status has been changed to "
+msgstr "تم تغيير حالة الحدث إلى "
+
+#: BackendStrings.php:1391
+msgid "You don't have any events here yet..."
+msgstr "ليس لديك أية أحداث بعد..."
+
+#: BackendStrings.php:1392 FrontendStrings.php:512
+msgid "There are no attendees yet..."
+msgstr "ليس لديك أي مشاركين بعد..."
+
+#: BackendStrings.php:1393 FrontendStrings.php:508
+msgid "New Event"
+msgstr "حدث جديد"
+
+#: BackendStrings.php:1395 FrontendStrings.php:417
+msgid "Enter Address"
+msgstr ""
+
+#: BackendStrings.php:1396 FrontendStrings.php:208 FrontendStrings.php:568
+msgid "Select"
+msgstr "تحديد"
+
+#: BackendStrings.php:1398 FrontendStrings.php:565
+msgid "No, just this one"
+msgstr "كلا، هذا فقط"
+
+#: BackendStrings.php:1399 FrontendStrings.php:607
+msgid "Update following"
+msgstr "تحديث الآتي"
+
+#: BackendStrings.php:1400 FrontendStrings.php:403
+msgid "Delete following"
+msgstr "حذف الآتي"
+
+#: BackendStrings.php:1401 FrontendStrings.php:360
+msgid "Cancel following"
+msgstr "إلغاء الآتي"
+
+#: BackendStrings.php:1402 FrontendStrings.php:521
+msgid "Open following"
+msgstr "فتح الآتي"
+
+#: BackendStrings.php:1403 FrontendStrings.php:136
+msgid "Open"
+msgstr "مفتوح"
+
+#: BackendStrings.php:1405 FrontendStrings.php:130
+msgid "Maximum capacity is reached"
+msgstr "لقد تم بلوغ الحد الأقصى"
+
+#: BackendStrings.php:1421
+msgid "All employees"
+msgstr "كل المختصين"
+
+#: BackendStrings.php:1422
+msgid "This will change the time of the appointment. Continue?"
+msgstr "هذا سوف يغير وقت الموعد. استمر?"
+
+#: BackendStrings.php:1423
+msgid ""
+"Appointment can't be moved because of employee break in the selected period"
+msgstr "لا يمكن نقل الموعد بسبب استراحة الموظف في الفترة المحددة"
+
+#: BackendStrings.php:1424
+msgid ""
+"There is already an appointment for this employee in selected time period"
+msgstr "يوجد بالفعل موعد لهذا الموظف في الفترة الزمنية المحددة"
+
+#: BackendStrings.php:1425
+msgid ""
+"Appointment can't be moved because the employee doesn't provide this service "
+"at the selected time"
+msgstr "لا يمكن نقل الموعد لأن المختص لا يقدم هذه الخدمة في الوقت المحدد"
+
+#: BackendStrings.php:1426
+msgid "Appointment can't be moved in past time period"
+msgstr "لا يمكن نقل الموعد في الفترة الزمنية الماضية"
+
+#: BackendStrings.php:1427
+msgid "Appointment can't be moved out of employee working hours"
+msgstr "لا يمكن نقل الموعد خارج ساعات عمل المختص"
+
+#: BackendStrings.php:1428 FrontendStrings.php:340
+msgid "Appointment has been rescheduled"
+msgstr "تم إعادة جدولة موعد"
+
+#: BackendStrings.php:1430 FrontendStrings.php:85
+msgid "Confirm"
+msgstr "تأكيد"
+
+#: BackendStrings.php:1432
+msgid "Group appointment"
+msgstr "موعد جماعي"
+
+#: BackendStrings.php:1433
+msgid "List"
+msgstr "قائمة"
+
+#: BackendStrings.php:1436
+msgid "No appointments to display"
+msgstr "لا مواعيد للعرض"
+
+#: BackendStrings.php:1437 BackendStrings.php:1440
+msgid "Timeline"
+msgstr "الجدول الزمني"
+
+#: BackendStrings.php:1453
+msgid "Add Custom Field"
+msgstr "اضافة حقل"
+
+#: BackendStrings.php:1455
+msgid "Add Option"
+msgstr "إضافة خيار"
+
+#: BackendStrings.php:1456
+msgid "All services"
+msgstr "كل الخدمات"
+
+#: BackendStrings.php:1457
+msgid "All events"
+msgstr ""
+
+#: BackendStrings.php:1458 FrontendStrings.php:229
+msgid "Any Employee"
+msgstr "أي مختص"
+
+#: BackendStrings.php:1459
+msgid "Bringing Anyone with You?"
+msgstr "أحضر أحدا معك?"
+
+#: BackendStrings.php:1460
+msgid "Checkbox"
+msgstr "مربع اختيار"
+
+#: BackendStrings.php:1461
+msgid "Start by clicking the Add Custom Field button"
+msgstr "ابدأ بالنقر فوق الزر \"إضافة حقل مخصص\""
+
+#: BackendStrings.php:1462
+msgid "Colors & Fonts"
+msgstr "الألوان والخطوط"
+
+#: BackendStrings.php:1463
+msgid "Text Content"
+msgstr "محتوى النص"
+
+#: BackendStrings.php:1464 FrontendStrings.php:232
+msgid "Continue"
+msgstr "استمر"
+
+#: BackendStrings.php:1466
+msgid "Custom field has been added"
+msgstr "تمت إضافة حقل مخصص"
+
+#: BackendStrings.php:1467
+msgid "Custom field has been deleted"
+msgstr "تمت حذف حقل مخصص"
+
+#: BackendStrings.php:1468
+msgid "Unable to save custom fields positions"
+msgstr "غير قادر على حفظ مواقف الحقول المخصصة"
+
+#: BackendStrings.php:1470
+msgid "Font"
+msgstr "الخط"
+
+#: BackendStrings.php:1471
+msgid "Label"
+msgstr "ملصق"
+
+#: BackendStrings.php:1472
+msgid "You don't have any custom fields here yet..."
+msgstr "ليس لديك أي حقول مخصصة هنا حتى الآن ..."
+
+#: BackendStrings.php:1473
+msgid "Notification Placeholder"
+msgstr "عنصر نائب الإشعار"
+
+#: BackendStrings.php:1474
+msgid "Options"
+msgstr "خيارات"
+
+#: BackendStrings.php:1475
+msgid "Pick date & time"
+msgstr "اختار التاريخ والوقت"
+
+#: BackendStrings.php:1477
+msgid "Primary Color"
+msgstr "لون أصلي"
+
+#: BackendStrings.php:1478
+msgid "Primary Gradient"
+msgstr "التدرج الأساسي"
+
+#: BackendStrings.php:1479
+msgid "Radio Buttons"
+msgstr "أزرار الراديو"
+
+#: BackendStrings.php:1480
+msgid "Required"
+msgstr "مطلوب"
+
+#: BackendStrings.php:1481
+msgid "Reset"
+msgstr "إعادة تعيين"
+
+#: BackendStrings.php:1482
+msgid "Selectbox"
+msgstr "حدد مربع"
+
+#: BackendStrings.php:1483
+msgid "Send custom fields info for each customer separately"
+msgstr ""
+
+#: BackendStrings.php:1484
+msgid ""
+"Enable this option if you want your employee to receive data from the custom "
+"fields only for the last customer when there is a group booking"
+msgstr ""
+
+#: BackendStrings.php:1485
+msgid "Text"
+msgstr "نص"
+
+#: BackendStrings.php:1486
+msgid "Text Area"
+msgstr "منطقة النص"
+
+#: BackendStrings.php:1487
+msgid "Text Color"
+msgstr "لون الخط"
+
+#: BackendStrings.php:1488
+msgid "Text Color on Background"
+msgstr "لون النص على الخلفية"
+
+#: BackendStrings.php:1489
+msgid "Attachment"
+msgstr ""
+
+#: BackendStrings.php:1490
+msgid "Date Picker"
+msgstr ""
+
+#: BackendStrings.php:1491
+msgid "Use already loaded Vue"
+msgstr ""
+
+#: BackendStrings.php:1492
+msgid ""
+"This setting is used to load plugin's Vue JS<br>primarily when there is "
+"another plugin that uses Vue JS.<br>It reduces the possibility of conflict on "
+"the Front-end employee and customer panels."
+msgstr ""
+
+#: BackendStrings.php:1502
+msgid "Booking"
+msgstr "الحجز"
+
+#: BackendStrings.php:1503
+msgid "Catalog"
+msgstr "فهرس"
+
+#: BackendStrings.php:1504
+msgid "Preselect Booking Parameters"
+msgstr "معلمات الحجز المسبق"
+
+#: BackendStrings.php:1505
+msgid "Insert Amelia Booking Shortcode"
+msgstr "أدخل رمز حجز Amelia"
+
+#: BackendStrings.php:1506
+msgid "Notice: Please select at least one panel."
+msgstr ""
+
+#: BackendStrings.php:1507
+msgid "Search"
+msgstr "بحث"
+
+#: BackendStrings.php:1508
+msgid "Preselect Current Date"
+msgstr "تحديد التاريخ الحالي"
+
+#: BackendStrings.php:1509
+msgid "Select Catalog View"
+msgstr "حدد عرض الكتالوج"
+
+#: BackendStrings.php:1510
+msgid "Select Package"
+msgstr ""
+
+#: BackendStrings.php:1511
+msgid "Select Category"
+msgstr "اختر الفئة"
+
+#: BackendStrings.php:1515
+msgid "Select Event"
+msgstr ""
+
+#: BackendStrings.php:1516
+msgid "Select Tag"
+msgstr ""
+
+#: BackendStrings.php:1517
+msgid "Select View"
+msgstr "حدد عرض"
+
+#: BackendStrings.php:1519
+msgid "Show All"
+msgstr ""
+
+#: BackendStrings.php:1520
+msgid "Load booking form manually"
+msgstr ""
+
+#: BackendStrings.php:1521
+msgid ""
+"Add element (button, link...) ID, that will manually load amelia shortcode "
+"content"
+msgstr ""
+
+#: BackendStrings.php:1522
+msgid "Show all categories"
+msgstr "عرض جميع التصنيفات"
+
+#: BackendStrings.php:1523
+msgid "Show all employees"
+msgstr "عرض جميع المختصين"
+
+#: BackendStrings.php:1524
+msgid "Show all locations"
+msgstr "عرض جميع المواقع"
+
+#: BackendStrings.php:1525
+msgid "Show all services"
+msgstr "عرض جميع الخدمات"
+
+#: BackendStrings.php:1526
+msgid "Show all events"
+msgstr ""
+
+#: BackendStrings.php:1527
+msgid "Show all tags"
+msgstr ""
+
+#: BackendStrings.php:1528
+msgid "Show catalog of all categories"
+msgstr "عرض كتالوج جميع الفئات"
+
+#: BackendStrings.php:1529
+msgid "Show specific category"
+msgstr "عرض فئة محددة"
+
+#: BackendStrings.php:1530
+msgid "Show specific package"
+msgstr ""
+
+#: BackendStrings.php:1531
+msgid "Show event"
+msgstr ""
+
+#: BackendStrings.php:1532
+msgid "Show tag"
+msgstr ""
+
+#: BackendStrings.php:1533
+msgid "Show specific service"
+msgstr "عرض خدمة محددة"
+
+#: BackendStrings.php:1534
+msgid "Show recurring events"
+msgstr ""
+
+#: BackendStrings.php:1536
+msgid "Amelia - Search view"
+msgstr "أميليا - واجهة البحث"
+
+#: BackendStrings.php:1537
+msgid ""
+"Front-end Booking Search is shortcode that give your customers the "
+"possibility to search for appointment by selecting several filters so that "
+"they could find the best time slots and services for their needs."
+msgstr ""
+"بحث حجوزات الواجهة الأمامية هو كود مختصر يمكّن عملاءك من البحث في المواعيد، "
+"وذلك باختيار عدد من المرشحات لإيجاد أفضل خانة زمنية وخدمة بالنسبة لهم."
+
+#: BackendStrings.php:1540
+msgid "Amelia - Booking view"
+msgstr "أميليا - واجهة الحجز"
+
+#: BackendStrings.php:1541
+msgid ""
+"Step-By-Step Booking Wizard gives your customers the option to choose "
+"everything about the booking in a few steps"
+msgstr ""
+"دليل خطوة بخطوة للحجز يعطي عملاءك القدرة على اختيار كل ما يتعلق بالحجز في "
+"خطوات قليلة"
+
+#: BackendStrings.php:1544
+msgid "Amelia - Catalog view"
+msgstr "أميليا - واجهة الكتالوج"
+
+#: BackendStrings.php:1545
+msgid ""
+"Front-end Booking Catalog is shortcode when you want to show your service in "
+"a form of a cataloge"
+msgstr ""
+"كتالوج حجز الواجهة الأمامية هو كود مختصر يمكنك من إظهار الخدمات في شكل كتالوج"
+
+#: BackendStrings.php:1548
+msgid "Amelia - Events"
+msgstr "أميليا - أحداث"
+
+#: BackendStrings.php:1549
+msgid ""
+"Event Booking is shortcode that gives your customers the option to book one "
+"of the events that you've created on the back-end in a simple event list view."
+msgstr ""
+"حجز الأحداث هو كود مختصر  يمكن عملاءك من اختيار واحد من الأحداث التي أضفتها "
+"من الواجهة الخلفية في شكل قائمة بسيطة."
+
+#: BackendStrings.php:1552
+msgid "Amelia - Customer Panel"
+msgstr ""
+
+#: BackendStrings.php:1553
+msgid ""
+"Front-end Customer Panel is a shortcode that gives your customers the "
+"possibility to manage their bookings and profile information."
+msgstr ""
+
+#: BackendStrings.php:1556
+msgid "Amelia - Employee Panel"
+msgstr ""
+
+#: BackendStrings.php:1557
+msgid ""
+"Front-end Employee Panel is a shortcode that gives your employees the "
+"possibility to manage their bookings, working hours, days off, assigned "
+"services and profile information."
+msgstr ""
+
+#: BackendStrings.php:1568 FrontendStrings.php:254
+msgid "Recurring Appointments"
+msgstr ""
+
+#: BackendStrings.php:1569 FrontendStrings.php:256
+msgid ""
+"Some of the desired slots are busy. We offered you the nearest time slots "
+"instead."
+msgstr ""
+
+#: BackendStrings.php:1570 FrontendStrings.php:257
+msgid "Number of adjusted time slots: "
+msgstr ""
+
+#: BackendStrings.php:1571 FrontendStrings.php:258 FrontendStrings.php:552
+msgid "Repeat this appointment"
+msgstr ""
+
+#: BackendStrings.php:1572 FrontendStrings.php:553
+msgid "Check this option if you want to create recurring appointments"
+msgstr ""
+
+#: BackendStrings.php:1576 FrontendStrings.php:262
+msgid "Repeat:"
+msgstr ""
+
+#: BackendStrings.php:1577 FrontendStrings.php:263
+msgid "Every:"
+msgstr ""
+
+#: BackendStrings.php:1578 FrontendStrings.php:264
+msgid "Until:"
+msgstr ""
+
+#: BackendStrings.php:1579 FrontendStrings.php:265
+msgid "Every"
+msgstr ""
+
+#: BackendStrings.php:1580 FrontendStrings.php:267
+msgid "until"
+msgstr ""
+
+#: BackendStrings.php:1581 FrontendStrings.php:268
+msgid "On:"
+msgstr ""
+
+#: BackendStrings.php:1582 FrontendStrings.php:270
+msgid "Time(s):"
+msgstr ""
+
+#: BackendStrings.php:1583 FrontendStrings.php:272
+msgid "First"
+msgstr ""
+
+#: BackendStrings.php:1584 FrontendStrings.php:273
+msgid "Second"
+msgstr ""
+
+#: BackendStrings.php:1585 FrontendStrings.php:274
+msgid "Third"
+msgstr ""
+
+#: BackendStrings.php:1586 FrontendStrings.php:275
+msgid "Fourth"
+msgstr ""
+
+#: BackendStrings.php:1587 FrontendStrings.php:276
+msgid "Last"
+msgstr ""
+
+#: FrontendStrings.php:67
+msgid "Add Coupon"
+msgstr "اضافة كوبون"
+
+#: FrontendStrings.php:68
+msgid "Add to Calendar"
+msgstr "إضافة الى المفكرة(على هاتفك)"
+
+#: FrontendStrings.php:69
+msgid "All slots are selected"
+msgstr ""
+
+#: FrontendStrings.php:73
+msgid "at"
+msgstr ""
+
+#: FrontendStrings.php:74
+msgid "Back"
+msgstr "رجوع إلى"
+
+#: FrontendStrings.php:75
+msgid "Base Price:"
+msgstr "السعر الأساسي:"
+
+#: FrontendStrings.php:76
+msgid "Book"
+msgstr "كتاب"
+
+#: FrontendStrings.php:77
+msgid "Thank you! Your booking is completed."
+msgstr "شكرا لكم! اكتمال الحجز."
+
+#: FrontendStrings.php:78
+msgid "An email with details of your booking has been sent to you."
+msgstr "تم إرسال رسالة بريد إلكتروني تحتوي على تفاصيل الحجز."
+
+#: FrontendStrings.php:79
+msgid "Thank you! Your booking is completed and now is pending confirmation."
+msgstr "شكرا لكم! اكتمل الحجز وهو الآن في انتظار التأكيد."
+
+#: FrontendStrings.php:82 FrontendStrings.php:297
+msgid "Capacity:"
+msgstr "عدد المشاركين:"
+
+#: FrontendStrings.php:83
+msgid "Client Time:"
+msgstr "وقت العميل:"
+
+#: FrontendStrings.php:86
+msgid "Congratulations"
+msgstr "تهانينا"
+
+#: FrontendStrings.php:87
+msgid "This coupon is not valid anymore"
+msgstr "هذه القسيمة غير صالحة بعد الآن"
+
+#: FrontendStrings.php:88
+msgid "Please enter coupon"
+msgstr "يرجى إدخال القسيمة"
+
+#: FrontendStrings.php:89
+msgid "You can use this coupon for next booking: "
+msgstr ""
+
+#: FrontendStrings.php:90
+msgid "The coupon you entered is not valid"
+msgstr "الكوبون الذي أدخلته غير صالح"
+
+#: FrontendStrings.php:91
+msgid "Used coupon"
+msgstr "قسيمة مستعملة"
+
+#: FrontendStrings.php:92
+msgid "Credit Card"
+msgstr "بطاقة الائتمان"
+
+#: FrontendStrings.php:93
+msgid "Credit or debit card:"
+msgstr "بطاقة الائتمان أو الخصم:"
+
+#: FrontendStrings.php:96
+msgid "You have already booked this appointment"
+msgstr "لقد تم الحجز بالفعل هذا الموعد"
+
+#: FrontendStrings.php:99
+msgid "Discount:"
+msgstr "خصم:"
+
+#: FrontendStrings.php:100 FrontendStrings.php:240
+msgid "Duration:"
+msgstr "مدة الحجز:"
+
+#: FrontendStrings.php:102
+msgid "Email already exists with different name. Please check your name."
+msgstr "البريد الإلكتروني موجود بالفعل باسم مختلف. يرجى التحقق من اسمك."
+
+#: FrontendStrings.php:103
+msgid "Unfortunately a server error occurred and your email was not sent."
+msgstr "لسوء الحظ ، حدث خطأ في الخادم ولم يتم إرسال بريدك الإلكتروني."
+
+#: FrontendStrings.php:105
+msgid "employee"
+msgstr "الموظف"
+
+#: FrontendStrings.php:110
+msgid "Please enter phone number"
+msgstr "الرجاء إدخال رقم الهاتف"
+
+#: FrontendStrings.php:114
+msgid "Extras Cost:"
+msgstr "تكلفة إضافية:"
+
+#: FrontendStrings.php:115
+msgid "Drop file here or click to upload"
+msgstr ""
+
+#: FrontendStrings.php:116
+msgid "Please upload the file"
+msgstr ""
+
+#: FrontendStrings.php:117
+msgid "Finish"
+msgstr "انهاء"
+
+#: FrontendStrings.php:118
+msgid "First Name:"
+msgstr "الاسم الأول:"
+
+#: FrontendStrings.php:119
+msgid "This file is forbidden for upload"
+msgstr ""
+
+#: FrontendStrings.php:121
+msgid "Your card's security code is incomplete"
+msgstr "رمز أمان بطاقتك غير مكتمل"
+
+#: FrontendStrings.php:122
+msgid "Your card's expiration date is incomplete"
+msgstr "تاريخ انتهاء صلاحية بطاقتك غير مكتمل"
+
+#: FrontendStrings.php:123
+msgid "Your card number is incomplete"
+msgstr "رقم بطاقتك غير مكتمل"
+
+#: FrontendStrings.php:124
+msgid "Your postal code is incomplete"
+msgstr "الرمز البريدي الخاص بك غير مكتمل"
+
+#: FrontendStrings.php:125
+msgid "Your card's expiration year is in the past"
+msgstr "سنة انتهاء بطاقتك في الماضي"
+
+#: FrontendStrings.php:126
+msgid "Your card number is invalid"
+msgstr "رقم بطاقتك غير صالح"
+
+#: FrontendStrings.php:127
+msgid "Last Name:"
+msgstr "الاسم الثاني:"
+
+#: FrontendStrings.php:129
+msgid "Location:"
+msgstr "موقعك:"
+
+#: FrontendStrings.php:134
+msgid "Number of Additional Persons:"
+msgstr "عدد الأشخاص الإضافيين:"
+
+#: FrontendStrings.php:140
+msgid "Package Info"
+msgstr ""
+
+#: FrontendStrings.php:142
+msgid ""
+"Sorry, there was an error processing your payment. Please try again later."
+msgstr "عذرًا ، حدث خطأ أثناء معالجة دفعتك. الرجاء معاودة المحاولة في وقت لاحق."
+
+#: FrontendStrings.php:143
+msgid ""
+"Please check if services and employees are created and connected to each "
+"other."
+msgstr ""
+
+#: FrontendStrings.php:144
+msgid "Payment Method:"
+msgstr "طريقة الدفع او السداد:"
+
+#: FrontendStrings.php:145
+msgid "persons"
+msgstr "الأشخاص"
+
+#: FrontendStrings.php:149
+msgid "Price:"
+msgstr "السعر:"
+
+#: FrontendStrings.php:150
+msgid "Please confirm you are not a robot"
+msgstr ""
+
+#: FrontendStrings.php:151
+msgid "Verification expired. Please try again."
+msgstr ""
+
+#: FrontendStrings.php:153
+msgid "Select Calendar"
+msgstr "اختار المفكرة"
+
+#: FrontendStrings.php:154
+msgid "service"
+msgstr "الخدمات"
+
+#: FrontendStrings.php:156
+msgid "services"
+msgstr "خدمات"
+
+#: FrontendStrings.php:158
+msgid "Subtotal:"
+msgstr "المجموع الفرعي:"
+
+#: FrontendStrings.php:160
+msgid "Local Time:"
+msgstr "الوقت:"
+
+#: FrontendStrings.php:162
+msgid "Time slots are unavailable"
+msgstr ""
+
+#: FrontendStrings.php:163
+msgid "Booking is unavailable"
+msgstr ""
+
+#: FrontendStrings.php:164
+msgid "Total Cost:"
+msgstr "التكلفة الإجمالية:"
+
+#: FrontendStrings.php:165
+msgid "Total Number of Persons:"
+msgstr "العدد الإجمالي للأشخاص:"
+
+#: FrontendStrings.php:166
+msgid "Waiting for payment"
+msgstr "في انتظار الدفع"
+
+#: FrontendStrings.php:167 FrontendStrings.php:169
+msgid "On-line"
+msgstr "عبر الانترنت"
+
+#: FrontendStrings.php:168
+msgid "Appointment is removed from the cart."
+msgstr "تتم إزالة الموعد من العربة."
+
+#: FrontendStrings.php:170
+msgid "Sorry, there was an error while adding booking to WooCommerce cart."
+msgstr "عذرًا ، حدث خطأ أثناء إضافة الحجز إلى عربة WooCommerce."
+
+#: FrontendStrings.php:191
+msgid "Appointment Date:"
+msgstr "تاريخ الموعد:"
+
+#: FrontendStrings.php:192
+msgid "Book Package"
+msgstr ""
+
+#: FrontendStrings.php:193 FrontendStrings.php:231
+msgid "Bringing anyone with you?"
+msgstr "أحضر أحداً معك?"
+
+#: FrontendStrings.php:194
+msgid "Please enter appointment date..."
+msgstr "الرجاء إدخال تاريخ الموعد ..."
+
+#: FrontendStrings.php:195
+msgid "From"
+msgstr "من"
+
+#: FrontendStrings.php:198
+msgid "Next"
+msgstr "التالي"
+
+#: FrontendStrings.php:199 FrontendStrings.php:298
+msgid "No results found..."
+msgstr "لا توجد نتائج..."
+
+#: FrontendStrings.php:203
+msgid "Please refine your search criteria"
+msgstr "رجاء حسن معايير بحثك"
+
+#: FrontendStrings.php:204
+msgid "results"
+msgstr "النتائج"
+
+#: FrontendStrings.php:205
+msgid "Search..."
+msgstr "بحث..."
+
+#: FrontendStrings.php:206
+msgid "Search Filters"
+msgstr "بحث المرشحات"
+
+#: FrontendStrings.php:207
+msgid "Search Results"
+msgstr "نتائج البحث"
+
+#: FrontendStrings.php:209
+msgid "Select the Appointment Time"
+msgstr "حدد وقت الموعد"
+
+#: FrontendStrings.php:210
+msgid "Select the Extras you'd like"
+msgstr "حدد الإضافات التي تريدها"
+
+#: FrontendStrings.php:213
+msgid "Time Range:"
+msgstr "النطاق الزمني:"
+
+#: FrontendStrings.php:215
+msgid "To"
+msgstr "الى"
+
+#: FrontendStrings.php:227
+msgid "Add extra"
+msgstr "إضافة اضافية"
+
+#: FrontendStrings.php:228
+msgid "Any"
+msgstr "اي"
+
+#: FrontendStrings.php:230
+msgid "Book Appointment"
+msgstr "احجز موعد"
+
+#: FrontendStrings.php:233
+msgid "Extra:"
+msgstr "إضافي:"
+
+#: FrontendStrings.php:234
+msgid "Available in package"
+msgstr ""
+
+#: FrontendStrings.php:235
+msgid "Overview"
+msgstr ""
+
+#: FrontendStrings.php:236
+msgid "Save "
+msgstr ""
+
+#: FrontendStrings.php:237
+msgid "All services are booked separately."
+msgstr ""
+
+#: FrontendStrings.php:238
+msgid "The package is time-limited to"
+msgstr ""
+
+#: FrontendStrings.php:239
+msgid "Valid Until:"
+msgstr ""
+
+#: FrontendStrings.php:242
+msgid "Add appointment"
+msgstr ""
+
+#: FrontendStrings.php:243
+msgid "Next Service"
+msgstr ""
+
+#: FrontendStrings.php:244
+msgid "appointment is required to be booked now."
+msgstr ""
+
+#: FrontendStrings.php:245
+msgid "appointments are required to be booked now."
+msgstr ""
+
+#: FrontendStrings.php:246
+msgid "Person"
+msgstr "شخص"
+
+#: FrontendStrings.php:247
+msgid "Persons"
+msgstr "الأشخاص"
+
+#: FrontendStrings.php:248
+msgid "Pick date & time:"
+msgstr "اختر التاريخ ووقت الحجز:"
+
+#: FrontendStrings.php:249
+msgid "Please select"
+msgstr "رجاءاً اختار"
+
+#: FrontendStrings.php:250
+msgid "Qty:"
+msgstr "الكمية:"
+
+#: FrontendStrings.php:251
+msgid "Coupon Limit Reached"
+msgstr ""
+
+#: FrontendStrings.php:252
+msgid "Number of appointments with applied coupon is"
+msgstr ""
+
+#: FrontendStrings.php:253
+msgid "Recurring Appointments:"
+msgstr ""
+
+#: FrontendStrings.php:255
+msgid "You can edit or delete each appointment"
+msgstr ""
+
+#: FrontendStrings.php:266
+msgid "from"
+msgstr ""
+
+#: FrontendStrings.php:269
+msgid "on"
+msgstr ""
+
+#: FrontendStrings.php:277
+msgid "Do you want to delete this appointment?"
+msgstr ""
+
+#: FrontendStrings.php:291
+msgid "About this Event"
+msgstr "حول هذا الحدث"
+
+#: FrontendStrings.php:292
+msgid "Free"
+msgstr "مجاني"
+
+#: FrontendStrings.php:293
+msgid "Book this event"
+msgstr "اجحز في هذا الحدث"
+
+#: FrontendStrings.php:295
+msgid "Show from date"
+msgstr "أظهر من تاريخ"
+
+#: FrontendStrings.php:296
+msgid "Event Type"
+msgstr "نوع الحدث"
+
+#: FrontendStrings.php:310
+msgid "Booking Appointment"
+msgstr "حجز موعد"
+
+#: FrontendStrings.php:311
+msgid "Buffer Time"
+msgstr "وقت العزل"
+
+#: FrontendStrings.php:313
+msgid "Category:"
+msgstr "التصنيف:"
+
+#: FrontendStrings.php:315
+msgid "Description:"
+msgstr "وصف:"
+
+#: FrontendStrings.php:317
+msgid "Info"
+msgstr "معلومات"
+
+#: FrontendStrings.php:318
+msgid "Maximum Quantity:"
+msgstr "الكمية القصوى:"
+
+#: FrontendStrings.php:319
+msgid "View More"
+msgstr "شاهد المزيد"
+
+#: FrontendStrings.php:338
+msgid ""
+"To reschedule your appointment, select an available date time from the "
+"calendar, then click Confirm."
+msgstr ""
+
+#: FrontendStrings.php:343
+msgid "Appointments to book"
+msgstr ""
+
+#: FrontendStrings.php:349
+msgid "Booking can't be canceled"
+msgstr ""
+
+#: FrontendStrings.php:350
+msgid "Booking Closes"
+msgstr ""
+
+#: FrontendStrings.php:351
+msgid "Booking Opens"
+msgstr ""
+
+#: FrontendStrings.php:368
+msgid "Are you sure you want to cancel this appointment?"
+msgstr ""
+
+#: FrontendStrings.php:369
+msgid "Are you sure you want to cancel your attendance?"
+msgstr ""
+
+#: FrontendStrings.php:382
+msgid "Customer Profile "
+msgstr ""
+
+#: FrontendStrings.php:404
+msgid "Delete profile"
+msgstr ""
+
+#: FrontendStrings.php:405
+msgid ""
+"Are you sure you want to delete your profile? You will lose access to all "
+"your bookings and access to the customer panel."
+msgstr ""
+
+#: FrontendStrings.php:415
+msgid "Email or Username"
+msgstr ""
+
+#: FrontendStrings.php:430
+msgid "Edit Attendees"
+msgstr ""
+
+#: FrontendStrings.php:484
+msgid "Incorrect email or password"
+msgstr ""
+
+#: FrontendStrings.php:486
+msgid "Login"
+msgstr ""
+
+#: FrontendStrings.php:487
+msgid "Enter your email"
+msgstr ""
+
+#: FrontendStrings.php:488
+msgid "Enter your password"
+msgstr ""
+
+#: FrontendStrings.php:490
+msgid "Max. Capacity"
+msgstr ""
+
+#: FrontendStrings.php:500
+msgid "Min. Capacity"
+msgstr ""
+
+#: FrontendStrings.php:506
+msgid "My Profile"
+msgstr ""
+
+#: FrontendStrings.php:522
+msgid "Back to appointments"
+msgstr ""
+
+#: FrontendStrings.php:523
+msgid "Appointments in this service"
+msgstr ""
+
+#: FrontendStrings.php:524
+msgid "appointment slots left to be booked"
+msgstr ""
+
+#: FrontendStrings.php:525
+msgid "Book next appointment"
+msgstr ""
+
+#: FrontendStrings.php:526
+msgid "Continue Booking"
+msgstr ""
+
+#: FrontendStrings.php:527
+msgid "Booked Appointments"
+msgstr ""
+
+#: FrontendStrings.php:528
+msgid "Service info"
+msgstr ""
+
+#: FrontendStrings.php:541
+msgid "Periods"
+msgstr ""
+
+#: FrontendStrings.php:545
+msgid "Price per Spot"
+msgstr ""
+
+#: FrontendStrings.php:546
+msgid "Profile deleted"
+msgstr ""
+
+#: FrontendStrings.php:547
+msgid "Profile has been updated"
+msgstr ""
+
+#: FrontendStrings.php:548
+msgid "Employee Profile"
+msgstr ""
+
+#: FrontendStrings.php:550
+msgid "Email with access link has been sent"
+msgstr ""
+
+#: FrontendStrings.php:561
+msgid "Reschedule"
+msgstr ""
+
+#: FrontendStrings.php:564
+msgid "Save Changes"
+msgstr ""
+
+#: FrontendStrings.php:584
+msgid "Send Access Link"
+msgstr ""
+
+#: FrontendStrings.php:585
+msgid ""
+"Enter your account email address and we will send you access link to your "
+"inbox."
+msgstr ""
+
+#: FrontendStrings.php:588
+msgid "You have appointments for this service"
+msgstr ""
+
+#: FrontendStrings.php:589
+msgid "You have appointments for"
+msgstr ""
+
+#: FrontendStrings.php:590
+msgid "Set Password"
+msgstr ""
+
+#: FrontendStrings.php:598
+msgid "Spots"
+msgstr ""
+
+#: FrontendStrings.php:606
+msgid "Total Price"
+msgstr ""
+
+#: FrontendStrings.php:621
+msgid "Working Hours"
+msgstr ""
+
+#: FrontendStrings.php:627
+msgid "Zoom Link"
+msgstr ""
+
+#: FrontendStrings.php:628
+msgid "Zoom Links"
+msgstr ""
+
+#~ msgid "It seems you don't have a valid purchase of Amelia"
+#~ msgstr "يبدو أنك ليس لديك رخصة صالحة لأميليا"
+
+#~ msgid ""
+#~ "Here you can connect with your Google Calendar,<br/>so once the "
+#~ "appointment is scheduled it will be<br/>automatically added to your "
+#~ "calendar."
+#~ msgstr ""
+#~ "هنا يمكنك الاتصال بتقويم Google الخاص بك ، <br/> لذلك بمجرد تعيين الموعد ، "
+#~ "سيتم إضافته <br/> تلقائيًا إلى التقويم الخاص بك."
+
+#~ msgid "Send all notifications to the additional address"
+#~ msgstr "أرسل جميع الإخطارات لعنوان إضافي"
+
+#~ msgid ""
+#~ "Here you can enter an email address where all notifications will be sent."
+#~ msgstr "هنا يمكنك إدخال عنوان بريد إلكتروني يتلقى جميع الإخطارات.."
+
+#~ msgid "Minimum time required before canceling"
+#~ msgstr "الحد الأدنى للوقت المطلوب قبل الإلغاء"
+
+#~ msgid ""
+#~ "Set the time before the appointment when customers<br/>will not be able to "
+#~ "cancel the appointment."
+#~ msgstr ""
+#~ "حدد الوقت قبل الموعد الذي لن يتمكن فيه العملاء <br/> من إلغاء الموعد."
+
+#~ msgid "Redirect URL After Appointment"
+#~ msgstr "إعادة توجيه URL بعد الموعد"
+
+#~ msgid "Including PayPal Processing Fee of"
+#~ msgstr "بما في ذلك (باي بال) رسوم معالجة"
+
+#~ msgid "Location of the event"
+#~ msgstr "مكان الحدث"
+
+#~ msgid "Total Price:"
+#~ msgstr "السعر الكلي:"
+
+#~ msgid "Scheduled Appointments"
+#~ msgstr "المواعيد المقررة"
+
+#~ msgid "Select at least one service"
+#~ msgstr "حدد خدمة واحدة على الأقل"
+
+#~ msgid "event"
+#~ msgstr "حدث"
+
+#~ msgid "events"
+#~ msgstr "أحداث"
+
+#~ msgid "Allow booking of Pending appointments"
+#~ msgstr "السماح بحجز المواعيد المعلقة"
+
+#~ msgid ""
+#~ "Disable this option if you want to restrict customers from booking<br/>a "
+#~ "Pending appointment once the capacity is reached."
+#~ msgstr ""
+#~ "قم بتعطيل هذا الخيار إذا كنت تريد تقييد العملاء من الحجز <br/> موعد معلق "
+#~ "بمجرد الوصول إلى السعة."
+
+#~ msgid "Purchase Code"
+#~ msgstr "كود شراء"
+
+#~ msgid "Purchase Code Settings"
+#~ msgstr "إعدادات رمز الشراء"
+
+#~ msgid ""
+#~ "Use this setting to enter the purchase code so you can have access to auto "
+#~ "updates of Amelia"
+#~ msgstr ""
+#~ "استخدم هذا الإعداد لإدخال رمز الشراء حتى تتمكن من الوصول إلى التحديثات "
+#~ "التلقائية لأميليا"
+
+#~ msgid ""
+#~ "Use these settings to define settings that will be applied for the "
+#~ "specific Amelia roles."
+#~ msgstr ""
+#~ "استخدم هذه الإعدادات لتحديد الإعدادات التي سيتم تطبيقها على أدوار Amelia "
+#~ "المحددة."
+
+#~ msgid "View Purchase Code Settings"
+#~ msgstr "عرض إعدادات رمز الشراء"
+
+#~ msgid ""
+#~ "Shows the number of pending appointments<br/>for the selected date range."
+#~ msgstr "يعرض عدد المواعيد المعلقة <br/> للنطاق الزمني المحدد."
+
+#~ msgid ""
+#~ "Shows the total income for paid appointments<br/>for the chosen date range."
+#~ msgstr "يعرض إجمالي الدخل للمواعيد المدفوعة <br/> للنطاق الزمني المختار."
+
+#~ msgid "Group booking"
+#~ msgstr "مجموعة الحجز"
