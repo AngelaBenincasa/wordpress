@@ -325,7 +325,7 @@ body {
 	text-transform: uppercase;
 }
 
-#menu-item-47500 a {
+ul#menu-navigation li.zoom-button a {
 	color: #fff;
 	font-size: 1em;
 	margin: 0;
@@ -345,7 +345,7 @@ body {
 	display: none;
 }
 
-#menu-item-47500 {
+ul#menu-navigation li.zoom-button {
     width: 40%;
 		margin: 3.75em auto 0 auto;
 		background: #C0CFE2;
@@ -353,16 +353,16 @@ body {
 		padding: 1.25em 1.5625em;
 }
 
-#menu-item-47500,
-#menu-item-47500:visited {
+ul#menu-navigation li.zoom-button,
+ul#menu-navigation li.zoom-button:visited {
 	background: #C0CFE2;
 	color:#FFF;
 	font-size: 0.75em;
 	letter-spacing: 0.25em;
 }
 
-#menu-item-47500:hover,
-#menu-item-47500:active {
+ul#menu-navigation li.zoom-button:hover,
+ul#menu-navigation li.zoom-button:active {
 	background: #729ED5;
 	color:#FFF;
 }
@@ -407,7 +407,7 @@ body {
 	 display: none;
 	}
 
-	#menu-item-47500 {
+	ul#menu-navigation li.zoom-button {
 		margin: 2em 0 0 10em;
 		padding: 1em 2.5em;
 		width: auto;
@@ -434,7 +434,7 @@ body {
 		width: 25%;
 	}
 
-	#menu-item-47500 a {
+	ul#menu-navigation li.zoom-button a {
 		margin: 0;
 		color: #fff;
 		font-size: 0.75em;
@@ -510,7 +510,7 @@ body {
 	height: 8em;
 }
 
-#menu-item-47500 {
+ul#menu-navigation li.zoom-button {
 	height: 50px;
 	align-self: flex-end;
 	line-height: 2em;
