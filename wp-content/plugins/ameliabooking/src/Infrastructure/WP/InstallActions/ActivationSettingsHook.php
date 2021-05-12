@@ -90,6 +90,10 @@ class ActivationSettingsHook
      */
     private static function initGeneralSettings()
     {
+        $settingsService = new SettingsService(new SettingsStorage());
+
+        $savedSettings = $settingsService->getCategorySettings('general');
+
         $settings = [
             'timeSlotLength'                         => 1800,
             'serviceDurationAsSlot'                  => false,
@@ -97,6 +101,10 @@ class ActivationSettingsHook
             'defaultAppointmentStatus'               => 'approved',
             'minimumTimeRequirementPriorToBooking'   => 0,
             'minimumTimeRequirementPriorToCanceling' => 0,
+            'minimumTimeRequirementPriorToRescheduling' =>
+                isset($savedSettings['minimumTimeRequirementPriorToCanceling']) &&
+                !isset($savedSettings['minimumTimeRequirementPriorToRescheduling']) ?
+                    $savedSettings['minimumTimeRequirementPriorToCanceling'] : 0,
             'numberOfDaysAvailableForBooking'        => SettingsService::NUMBER_OF_DAYS_AVAILABLE_FOR_BOOKING,
             'backendSlotsDaysInFuture'               => SettingsService::NUMBER_OF_DAYS_AVAILABLE_FOR_BOOKING,
             'backendSlotsDaysInPast'                 => SettingsService::NUMBER_OF_DAYS_AVAILABLE_FOR_BOOKING,
@@ -114,15 +122,23 @@ class ActivationSettingsHook
             'redirectUrlAfterAppointment'            => '',
             'customFieldsUploadsPath'                => '',
             'backLink'                               => self::getBackLinkSetting(),
+            'runInstantPostBookingActions'           => false,
             'useWindowVueInAmelia'                   => true,
+            'useWindowVueInAmeliaBack'               =>
+                isset($savedSettings['useWindowVueInAmelia']) &&
+                !isset($savedSettings['useWindowVueInAmeliaBack']) ?
+                    $savedSettings['useWindowVueInAmelia'] : true,
             'sortingPackages'                        => 'nameAsc',
             'sortingServices'                        => 'nameAsc',
+            'calendarLocaleSubstitutes'              => [
+            ],
             'googleRecaptcha'                        => [
                 'enabled'   => false,
                 'invisible' => true,
                 'siteKey'   => '',
                 'secret'    => '',
             ],
+            'usedLanguages'                          => [],
         ];
 
         self::initSettings('general', $settings);
@@ -457,21 +473,27 @@ class ActivationSettingsHook
                 'textColor'             => '#354052',
                 'textColorOnBackground' => '#FFFFFF',
                 'font'                  => 'Roboto',
-                'hash'                  => $lessParserService->generateRandomString()
+                'useGenerated'          => false,
             ];
 
             self::initSettings('customization', $settings);
         }
 
-        $lessParserService->compileAndSave([
-            'color-accent'      => $settings['primaryColor'],
-            'color-gradient1'   => $settings['primaryGradient1'],
-            'color-gradient2'   => $settings['primaryGradient2'],
-            'color-text-prime'  => $settings['textColor'],
-            'color-text-second' => $settings['textColor'],
-            'color-white'       => $settings['textColorOnBackground'],
-            'roboto'            => $settings['font'],
-        ]);
+        $hash = $lessParserService->compileAndSave(
+            [
+                'color-accent'      => $settings['primaryColor'],
+                'color-gradient1'   => $settings['primaryGradient1'],
+                'color-gradient2'   => $settings['primaryGradient2'],
+                'color-text-prime'  => $settings['textColor'],
+                'color-text-second' => $settings['textColor'],
+                'color-white'       => $settings['textColorOnBackground'],
+                'roboto'            => $settings['font'],
+            ]
+        );
+
+        $settings['hash'] = $hash;
+
+        self::initSettings('customization', $settings);
     }
 
     /**
@@ -515,6 +537,7 @@ class ActivationSettingsHook
                 'pageUrl'         => '',
                 'loginEnabled'    => true,
                 'filterDate'      => false,
+                'translations'    => [],
             ],
             'providerCabinet'             => [
                 'enabled'         => false,
@@ -542,6 +565,7 @@ class ActivationSettingsHook
             'roles',
             [
                 ['customerCabinet', 'filterDate'],
+                ['customerCabinet', 'translations'],
             ],
             $settings
         );
@@ -559,12 +583,18 @@ class ActivationSettingsHook
             'openedBookingAfterMin'             => false,
             'recurringPlaceholders'             => 'DateTime: %appointment_date_time%',
             'recurringPlaceholdersSms'          => 'DateTime: %appointment_date_time%',
-            'recurringPlaceholdersCustomer'     => null,
-            'recurringPlaceholdersCustomerSms'  => null,
+            'recurringPlaceholdersCustomer'     => 'DateTime: %appointment_date_time%',
+            'recurringPlaceholdersCustomerSms'  => 'DateTime: %appointment_date_time%',
             'packagePlaceholders'               => 'DateTime: %appointment_date_time%',
             'packagePlaceholdersSms'            => 'DateTime: %appointment_date_time%',
             'packagePlaceholdersCustomer'       => 'DateTime: %appointment_date_time%',
             'packagePlaceholdersCustomerSms'    => 'DateTime: %appointment_date_time%',
+            'translations'                      => [
+                'recurringPlaceholdersCustomer'    => null,
+                'recurringPlaceholdersCustomerSms' => null,
+                'packagePlaceholdersCustomer'      => null,
+                'packagePlaceholdersCustomerSms'   => null,
+            ],
         ];
 
         self::initSettings('appointments', $settings);

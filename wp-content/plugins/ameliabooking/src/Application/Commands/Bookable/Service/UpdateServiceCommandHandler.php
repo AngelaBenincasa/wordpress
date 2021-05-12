@@ -12,10 +12,14 @@ use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\Bookable\BookableApplicationService;
 use AmeliaBooking\Application\Services\Gallery\GalleryApplicationService;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
+use AmeliaBooking\Domain\Entity\Bookable\Service\Category;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Factory\Bookable\Service\ServiceFactory;
+use AmeliaBooking\Domain\Services\Settings\SettingsService;
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
+use AmeliaBooking\Infrastructure\Repository\Bookable\Service\CategoryRepository;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ProviderServiceRepository;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ServiceRepository;
 use Interop\Container\Exception\ContainerException;
@@ -49,6 +53,7 @@ class UpdateServiceCommandHandler extends CommandHandler
      * @throws QueryExecutionException
      * @throws AccessDeniedException
      * @throws ContainerException
+     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
      */
     public function handle(UpdateServiceCommand $command)
     {
@@ -63,6 +68,23 @@ class UpdateServiceCommandHandler extends CommandHandler
         /** @var Service $service */
         $service = ServiceFactory::create($command->getFields());
 
+        /** @var SettingsService $settingsService */
+        $settingsService = $this->container->get('domain.settings.service');
+
+        if ($service->getSettings()) {
+            $newSettings = new Json (
+                json_encode(
+                    array_merge(
+                        json_decode($service->getSettings()->getValue(), true),
+                        ['activation' => ['version' => $settingsService->getSetting('activation', 'version')]]
+                    )
+                )
+            );
+            if ($newSettings) {
+                $service->setSettings($newSettings);
+            }
+        }
+
         if (!($service instanceof Service)) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage('Unable to update service.');
@@ -74,6 +96,11 @@ class UpdateServiceCommandHandler extends CommandHandler
         $serviceRepository = $this->container->get('domain.bookable.service.repository');
         /** @var ProviderServiceRepository $providerServiceRepository */
         $providerServiceRepository = $this->container->get('domain.bookable.service.providerService.repository');
+        /** @var CategoryRepository $categoryRepository */
+        $categoryRepository = $this->container->get('domain.bookable.category.repository');
+
+        /** @var Category $category */
+        $category = $categoryRepository->getById($service->getCategoryId()->getValue());
 
         /** @var BookableApplicationService $bookableService */
         $bookableService = $this->container->get('application.bookable.service');
@@ -92,7 +119,7 @@ class UpdateServiceCommandHandler extends CommandHandler
             return $result;
         }
 
-        if (!$serviceRepository->update($command->getArg('id'), $service)) {
+        if (!$category || !$serviceRepository->update($command->getArg('id'), $service)) {
             $serviceRepository->rollback();
 
             $result->setResult(CommandResult::RESULT_ERROR);

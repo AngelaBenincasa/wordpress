@@ -94,22 +94,51 @@ class GetAppointmentsCommandHandler extends CommandHandler
             !empty($params['dates'][1]) ? $params['dates'][1] .= ' 23:59:59' : null;
         }
 
+        $entitiesIds = !empty($params['search']) ?
+            $appointmentAS->getAppointmentEntitiesIdsBySearchString($params['search']) : [];
+
+        if (!empty($params['search']) &&
+            !$entitiesIds['customers'] &&
+            !$entitiesIds['services'] &&
+            !$entitiesIds['providers']
+        ) {
+            $result->setResult(CommandResult::RESULT_SUCCESS);
+            $result->setMessage('Successfully retrieved appointments');
+            $result->setData(
+                [
+                    Entities::APPOINTMENTS     => [],
+                    'availablePackageBookings' => [],
+                    'occupied'                 => [],
+                    'total'                    => 0,
+                    'totalApproved'            => 0,
+                    'totalPending'             => 0,
+                ]
+            );
+
+            return $result;
+        }
+
         $availablePackageBookings = [];
 
-        $periodsAppointmentsCount = $appointmentRepository->getPeriodAppointmentsCount($params);
+        $periodsAppointmentsCount = $appointmentRepository->getPeriodAppointmentsCount(
+            array_merge($params, $entitiesIds, ['anyEntity' => true])
+        );
 
         $periodsAppointmentsApprovedCount = $appointmentRepository->getPeriodAppointmentsCount(
-            array_merge($params, ['status' => BookingStatus::APPROVED])
+            array_merge($params, ['status' => BookingStatus::APPROVED], $entitiesIds, ['anyEntity' => true])
         );
 
         $periodsAppointmentsPendingCount = $appointmentRepository->getPeriodAppointmentsCount(
-            array_merge($params, ['status' => BookingStatus::PENDING])
+            array_merge($params, ['status' => BookingStatus::PENDING], $entitiesIds, ['anyEntity' => true])
         );
 
         $upcomingAppointmentsLimit = $settingsDS->getSetting('general', 'appointmentsPerPage');
 
         /** @var Collection $periodAppointments */
-        $periodAppointments = $appointmentRepository->getPeriodAppointments($params, $upcomingAppointmentsLimit);
+        $periodAppointments = $appointmentRepository->getPeriodAppointments(
+            array_merge($params, $entitiesIds, ['anyEntity' => true]),
+            $upcomingAppointmentsLimit
+        );
 
         $appointmentsIds = [];
 
@@ -121,7 +150,11 @@ class GetAppointmentsCommandHandler extends CommandHandler
         /** @var Collection $appointments */
         $appointments = new Collection();
 
-        if (!$isCabinetPackageRequest) {
+        if (isset($params['customerId'])) {
+            unset($params['customerId']);
+        }
+
+        if (!$isCabinetPackageRequest && $appointmentsIds) {
             $appointments = $appointmentRepository->getFiltered(
                 array_merge(
                     $params,
@@ -132,17 +165,13 @@ class GetAppointmentsCommandHandler extends CommandHandler
                     ]
                 )
             );
-        } else {
+        } elseif ($user && $user->getId()) {
             $availablePackageBookings = $packageAS->getPackageAvailability(
                 $appointments,
                 [
                     'customerId' => $user->getId()->getValue(),
                 ]
             );
-        }
-
-        if (!empty($params['search']) && $appointments->length()) {
-            $appointmentAS->filterAppointmentsBySearchString($appointments, $params['search']);
         }
 
         /** @var Collection $services */
@@ -237,6 +266,18 @@ class GetAppointmentsCommandHandler extends CommandHandler
 
             $cancelable = $currentDateTime <= $minimumCancelTime;
 
+            $minimumRescheduleTimeInSeconds = $settingsDS
+                ->getEntitySettings($service->getSettings())
+                ->getGeneralSettings()
+                ->getMinimumTimeRequirementPriorToRescheduling();
+
+            $minimumRescheduleTime = DateTimeService::getCustomDateTimeObject(
+                $appointment->getBookingStart()->getValue()->format('Y-m-d H:i:s')
+            )->modify("-{$minimumRescheduleTimeInSeconds} seconds");
+
+            $reschedulable = $currentDateTime <= $minimumRescheduleTime;
+
+
             if ($isCabinetPage &&
                 $settingsDS->getSetting('general', 'showClientTimeZone') &&
                 $userAS->isCustomer($user)
@@ -251,6 +292,7 @@ class GetAppointmentsCommandHandler extends CommandHandler
                 $appointment->toArray(),
                 [
                     'cancelable'    => $cancelable,
+                    'reschedulable' => $reschedulable,
                     'past'          => $currentDateTime >= $appointment->getBookingStart()->getValue()
                 ]
             );

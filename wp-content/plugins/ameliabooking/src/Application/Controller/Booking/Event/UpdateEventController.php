@@ -43,6 +43,10 @@ class UpdateEventController extends Controller
         'settings',
         'applyGlobally',
         'zoomUserId',
+        'translations',
+        'deposit',
+        'depositPayment',
+        'depositPerPerson',
     ];
 
     /**

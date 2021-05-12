@@ -72,6 +72,8 @@ class AppointmentReservationService extends AbstractReservationService
 
         $this->bookSingle($reservation, $appointmentData, $inspectTimeSlot, $save);
 
+        $reservation->setApplyDeposit(new BooleanValueObject($appointmentData['bookings'][0]['deposit']));
+
         /** @var Service $bookable */
         $bookable = $reservation->getBookable();
 
@@ -105,11 +107,17 @@ class AppointmentReservationService extends AbstractReservationService
 
                 if ($index >= $bookable->getRecurringPayment()->getValue()) {
                     $recurringAppointmentData['payment']['gateway'] = PaymentType::ON_SITE;
+
+                    $recurringAppointmentData['bookings'][0]['deposit'] = 0;
                 }
 
                 try {
                     /** @var Reservation $recurringReservation */
                     $recurringReservation = new Reservation();
+
+                    $recurringReservation->setApplyDeposit(
+                        new BooleanValueObject(!($index >= $bookable->getRecurringPayment()->getValue()))
+                    );
 
                     $this->bookSingle($recurringReservation, $recurringAppointmentData, $inspectTimeSlot, $save);
                 } catch (\Exception $e) {
@@ -537,6 +545,8 @@ class AppointmentReservationService extends AbstractReservationService
                         $recurringReservation->getReservation()->getBookingEnd()->getValue()->format('Y-m-d H:i:s'),
                     'notifyParticipants' => $recurringReservation->getReservation()->isNotifyParticipants(),
                     'status'             => $recurringReservation->getReservation()->getStatus()->getValue(),
+                    'utcOffset'          => $recurringReservation->getBooking()->getUtcOffset()->getValue(),
+                    'deposit'            => $recurringReservation->getApplyDeposit()->getValue(),
                 ];
 
                 $recurringAppointmentData['couponId'] = !$recurringReservation->getBooking()->getCoupon() ? null :
@@ -585,7 +595,8 @@ class AppointmentReservationService extends AbstractReservationService
                     'status'       => $booking->getStatus()->getValue(),
                     'utcOffset'    => $booking->getUtcOffset() ? $booking->getUtcOffset()->getValue() : null,
                     'customFields' => $booking->getCustomFields() ?
-                        json_decode($booking->getCustomFields()->getValue(), true) : null
+                        json_decode($booking->getCustomFields()->getValue(), true) : null,
+                    'deposit'      => $reservation->getApplyDeposit()->getValue(),
                 ]
             ],
             'payment'            => [
@@ -593,6 +604,8 @@ class AppointmentReservationService extends AbstractReservationService
             ],
             'recurring'          => $recurringAppointmentsData,
             'package'            => [],
+            'locale'             => $reservation->getLocale()->getValue(),
+            'timeZone'           => $reservation->getTimeZone()->getValue(),
         ];
 
         foreach ($booking->getExtras()->keys() as $extraKey) {
@@ -653,13 +666,34 @@ class AppointmentReservationService extends AbstractReservationService
 
         $paymentAmount = $this->getPaymentAmount($reservation->getBooking(), $bookable);
 
+        if ($reservation->getApplyDeposit()->getValue()) {
+            $paymentAmount = $this->calculateDepositAmount(
+                $paymentAmount,
+                $bookable,
+                $reservation->getBooking()->getPersons()->getValue()
+            );
+        }
+
         /** @var Reservation $recurringReservation */
         foreach ($reservation->getRecurring()->getItems() as $index => $recurringReservation) {
             /** @var Service $recurringBookable */
             $recurringBookable = $recurringReservation->getBookable();
 
             if ($index < $recurringBookable->getRecurringPayment()->getValue()) {
-                $paymentAmount += $this->getPaymentAmount($recurringReservation->getBooking(), $recurringBookable);
+                $recurringPaymentAmount = $this->getPaymentAmount(
+                    $recurringReservation->getBooking(),
+                    $recurringBookable
+                );
+
+                if ($recurringReservation->getApplyDeposit()->getValue()) {
+                    $recurringPaymentAmount = $this->calculateDepositAmount(
+                        $recurringPaymentAmount,
+                        $recurringBookable,
+                        $recurringReservation->getBooking()->getPersons()->getValue()
+                    );
+                }
+
+                $paymentAmount += $recurringPaymentAmount;
             }
         }
 

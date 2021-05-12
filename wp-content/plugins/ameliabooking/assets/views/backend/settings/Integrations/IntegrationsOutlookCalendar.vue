@@ -67,7 +67,7 @@
           <i class="el-icon-question am-tooltip-icon"></i>
         </el-tooltip>
       </label>
-      <el-input v-model="settings.redirectURI" auto-complete="off" readonly="readonly"></el-input>
+      <el-input v-model="settings.redirectURI" auto-complete="off"></el-input>
     </el-form-item>
     <!-- /Redirect URI -->
 
@@ -102,7 +102,6 @@
       <inline-placeholders
         :placeholdersNames="[
           'appointmentPlaceholders',
-          'eventPlaceholders',
           'categoryPlaceholders',
           'companyPlaceholders',
           'customerPlaceholders',
@@ -112,14 +111,9 @@
           appointmentPlaceholders: [
             '%zoom_host_url%',
             '%zoom_join_url%',
-            '%appointment_cancel_url%'
-          ],
-          eventPlaceholders: [
-            '%event_cancel_url%',
-            '%zoom_join_url_date%',
-            '%zoom_join_url_date_time%',
-            '%zoom_host_url_date%',
-            '%zoom_host_url_date_time%'
+            '%appointment_cancel_url%',
+            '%reservation_name%',
+            '%reservation_description%'
           ]
         }"
         userTypeTab="provider"

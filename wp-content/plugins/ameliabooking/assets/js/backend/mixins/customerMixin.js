@@ -1,6 +1,7 @@
 export default {
 
   data: () => ({
+    searchCounter: 0,
     loadingCustomers: false,
     searchCustomersTimer: null,
     searchedCustomers: [],
@@ -26,30 +27,53 @@ export default {
       }
     },
 
+    setInitialCustomers () {
+      this.searchCustomers(
+        '',
+        () => {
+          let customersIds = this.options.entities.customers.map(customer => parseInt(customer.id))
+
+          let customers = this.options.entities.customers
+
+          this.searchedCustomers.forEach((customer) => {
+            if (customersIds.indexOf(parseInt(customer.id)) === -1) {
+              customersIds.push(customer.id)
+              customers.push(customer)
+            }
+          })
+
+          this.options.entities.customers = Object.values(customers.sort((a, b) => (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : -1))
+        }
+      )
+    },
+
     searchCustomers (query, callback) {
       clearTimeout(this.searchCustomersTimer)
 
-      if (!this.loadingCustomers) {
-        this.loadingCustomers = true
+      this.loadingCustomers = true
+      this.searchCounter++
 
-        this.searchCustomersTimer = setTimeout(() => {
-            this.$http.get(`${this.$root.getAjaxUrl}/users/customers`, {
-              params: {search: query, page: 1, limit: this.$root.settings.general.customersFilterLimit, skipCount: 1}
-            })
-              .then(response => {
-                this.searchedCustomers = response.data.data.users
+      this.searchCustomersTimer = setTimeout(() => {
+        let lastSearchCounter = this.searchCounter
 
-                this.loadingCustomers = false
+        this.$http.get(`${this.$root.getAjaxUrl}/users/customers`, {
+          params: {search: query, page: 1, limit: this.$root.settings.general.customersFilterLimit, skipCount: 1}
+        })
+          .then(response => {
+            if (lastSearchCounter >= this.searchCounter) {
+              this.searchedCustomers = response.data.data.users.sort((a, b) => (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : -1)
+            }
 
-                callback()
-              })
-              .catch(e => {
-                this.loadingCustomers = false
-              })
-          },
-          500
-        )
-      }
+            this.loadingCustomers = false
+
+            callback()
+          })
+          .catch(e => {
+            this.loadingCustomers = false
+          })
+      },
+      500
+      )
     }
   }
 }

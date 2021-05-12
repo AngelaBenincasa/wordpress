@@ -85,16 +85,17 @@ class UpdateNotificationCommandHandler extends CommandHandler
         );
 
         $notification = NotificationFactory::create([
-            'name'       => $currentNotification->getName()->getValue(),
-            'status'     => $currentNotification->getStatus()->getValue(),
-            'type'       => $currentNotification->getType()->getValue(),
-            'time'       => $command->getField('time'),
-            'timeBefore' => $command->getField('timeBefore'),
-            'timeAfter'  => $command->getField('timeAfter'),
-            'sendTo'     => $currentNotification->getSendTo()->getValue(),
-            'subject'    => $command->getField('subject'),
-            'entity'     => $command->getField('entity'),
-            'content'    => $content
+            'name'         => $currentNotification->getName()->getValue(),
+            'status'       => $currentNotification->getStatus()->getValue(),
+            'type'         => $currentNotification->getType()->getValue(),
+            'time'         => $command->getField('time'),
+            'timeBefore'   => $command->getField('timeBefore'),
+            'timeAfter'    => $command->getField('timeAfter'),
+            'sendTo'       => $currentNotification->getSendTo()->getValue(),
+            'subject'      => $command->getField('subject'),
+            'entity'       => $command->getField('entity'),
+            'content'      => $content,
+            'translations' => $command->getField('translations'),
         ]);
 
         if (!$notification instanceof Notification) {

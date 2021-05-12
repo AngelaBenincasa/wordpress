@@ -6,6 +6,7 @@
 
 namespace AmeliaBooking\Domain\Entity\CustomField;
 
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\IntegerValue;
 use AmeliaBooking\Domain\ValueObjects\String\Label;
@@ -28,6 +29,9 @@ class CustomFieldOption
 
     /** @var IntegerValue */
     private $position;
+
+    /** @var  Json */
+    private $translations;
 
     /**
      * CustomFieldOption constructor.
@@ -108,6 +112,22 @@ class CustomFieldOption
     }
 
     /**
+     * @return Json
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * @param Json $translations
+     */
+    public function setTranslations(Json $translations)
+    {
+        $this->translations = $translations;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -117,6 +137,7 @@ class CustomFieldOption
             'customFieldId' => $this->getCustomFieldId()->getValue(),
             'label'         => $this->getLabel()->getValue(),
             'position'      => $this->getPosition()->getValue(),
+            'translations'  => $this->getTranslations() ? $this->getTranslations()->getValue() : null,
         ];
     }
 }

@@ -41,6 +41,7 @@ class UpdateServiceController extends Controller
         'status',
         'timeAfter',
         'timeBefore',
+        'translations',
         'bringingAnyone',
         'show',
         'applyGlobally',
@@ -49,7 +50,10 @@ class UpdateServiceController extends Controller
         'recurringCycle',
         'recurringSub',
         'recurringPayment',
-        'position'
+        'position',
+        'deposit',
+        'depositPayment',
+        'depositPerPerson',
     ];
 
     /**

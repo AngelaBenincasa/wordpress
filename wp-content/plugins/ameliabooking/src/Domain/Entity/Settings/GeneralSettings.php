@@ -19,6 +19,9 @@ class GeneralSettings
     /** @var int */
     private $minimumTimeRequirementPriorToCanceling;
 
+    /** @var int */
+    private $minimumTimeRequirementPriorToRescheduling;
+
     /** @var string */
     private $defaultAppointmentStatus;
 
@@ -55,6 +58,22 @@ class GeneralSettings
     public function setMinimumTimeRequirementPriorToCanceling($minimumTimeRequirementPriorToCanceling)
     {
         $this->minimumTimeRequirementPriorToCanceling = $minimumTimeRequirementPriorToCanceling;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinimumTimeRequirementPriorToRescheduling()
+    {
+        return $this->minimumTimeRequirementPriorToRescheduling;
+    }
+
+    /**
+     * @param int $minimumTimeRequirementPriorToRescheduling
+     */
+    public function setMinimumTimeRequirementPriorToRescheduling($minimumTimeRequirementPriorToRescheduling)
+    {
+        $this->minimumTimeRequirementPriorToRescheduling = $minimumTimeRequirementPriorToRescheduling;
     }
 
     /**
@@ -95,10 +114,11 @@ class GeneralSettings
     public function toArray()
     {
         return [
-            'minimumTimeRequirementPriorToBooking'   => $this->getMinimumTimeRequirementPriorToBooking(),
-            'minimumTimeRequirementPriorToCanceling' => $this->getMinimumTimeRequirementPriorToCanceling(),
-            'defaultAppointmentStatus'               => $this->getDefaultAppointmentStatus(),
-            'numberOfDaysAvailableForBooking'        => $this->getNumberOfDaysAvailableForBooking(),
+            'minimumTimeRequirementPriorToBooking'      => $this->getMinimumTimeRequirementPriorToBooking(),
+            'minimumTimeRequirementPriorToCanceling'    => $this->getMinimumTimeRequirementPriorToCanceling(),
+            'minimumTimeRequirementPriorToRescheduling' => $this->getMinimumTimeRequirementPriorToRescheduling(),
+            'defaultAppointmentStatus'                  => $this->getDefaultAppointmentStatus(),
+            'numberOfDaysAvailableForBooking'           => $this->getNumberOfDaysAvailableForBooking(),
         ];
     }
 }

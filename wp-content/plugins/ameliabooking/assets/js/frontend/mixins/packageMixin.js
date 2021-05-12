@@ -204,6 +204,7 @@ export default {
           serviceQuantity: bookable.quantity,
           serviceAppointment: serviceAppointment,
           serviceDuration: bookable.service.duration,
+          service: bookable.service,
           spanLengths: spanLengths,
           hasLocations: hasLocation,
           singleEmployee: null,
@@ -221,7 +222,8 @@ export default {
         durationCount: this.selectedPackage.durationCount,
         durationType: this.selectedPackage.durationType,
         endDate: this.selectedPackage.endDate,
-        bookings: bookings
+        bookings: bookings,
+        translations: this.selectedPackage.translations
       }
     }
   }

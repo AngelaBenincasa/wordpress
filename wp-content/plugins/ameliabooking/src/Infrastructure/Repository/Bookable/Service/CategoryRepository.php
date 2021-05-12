@@ -31,16 +31,17 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
         $data = $entity->toArray();
 
         $params = [
-            ':status'   => $data['status'],
-            ':name'     => $data['name'],
-            ':position' => $data['position'],
+            ':status'       => $data['status'],
+            ':name'         => $data['name'],
+            ':position'     => $data['position'],
+            ':translations' => $data['translations'],
         ];
 
         try {
             $statement = $this->connection->prepare(
                 "INSERT INTO {$this->table} 
-                (`status`, `name`, `position`)
-                VALUES (:status, :name, :position)"
+                (`status`, `name`, `position`, `translations`)
+                VALUES (:status, :name, :position, :translations)"
             );
 
             $res = $statement->execute($params);
@@ -67,16 +68,17 @@ class CategoryRepository extends AbstractRepository implements CategoryRepositor
         $data = $entity->toArray();
 
         $params = [
-            ':status'   => $data['status'],
-            ':name'     => $data['name'],
-            ':position' => $data['position'],
-            ':id'       => $id
+            ':status'       => $data['status'],
+            ':name'         => $data['name'],
+            ':position'     => $data['position'],
+            ':translations' => $data['translations'],
+            ':id'           => $id
         ];
 
         try {
             $statement = $this->connection->prepare(
                 "UPDATE {$this->table}
-                SET `status` = :status, `name` = :name, `position` = :position
+                SET `status` = :status, `name` = :name, `position` = :position, `translations` = :translations
                 WHERE id = :id"
             );
 

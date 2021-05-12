@@ -207,6 +207,7 @@
               @closeDialogSettingsGeneral="dialogSettingsGeneral = false"
               @updateSettings="updateSettings"
               :general="settings.general"
+              :languagesData="languagesData"
           >
           </dialog-settings-general>
         </el-dialog>
@@ -357,12 +358,35 @@
           <dialog-settings-roles
               @closeDialogSettingsRoles="dialogSettingsRoles = false"
               @updateSettings="updateSettings"
+              @showDialogTranslate ="showDialogTranslate"
               :roles="settings.roles"
           >
           </dialog-settings-roles>
         </el-dialog>
       </transition>
       <!-- /Dialog Roles Settings -->
+
+      <!-- Dialog Translate -->
+      <transition name="slide">
+        <el-dialog
+            class="am-side-dialog am-dialog-translate am-edit"
+            :show-close="true"
+            :visible.sync="dialogTranslate"
+            v-if="dialogTranslate"
+        >
+          <dialog-translate
+              :passed-translations="dialogTranslateData"
+              :name="dialogTranslateName"
+              :allLanguagesData="languagesData"
+              :used-languages="settings.general.usedLanguages"
+              :type="dialogTranslateType"
+              :tab="dialogTranslateTab"
+              @saveDialogTranslate="saveDialogTranslate"
+              @closeDialogTranslate="dialogTranslate = false"
+          >
+          </dialog-translate>
+        </el-dialog>
+      </transition>
 
       <!-- Dialog Appointments Settings -->
       <transition name="slide">
@@ -432,6 +456,7 @@
   import DialogSettingsPayments from './DialogSettingsPayments.vue'
   import DialogSettingsRoles from './DialogSettingsRoles.vue'
   import DialogSettingsWorkHoursDaysOff from './DialogSettingsWorkHoursDaysOff.vue'
+  import DialogTranslate from '../parts/DialogTranslate'
   import helperMixin from '../../../js/backend/mixins/helperMixin'
   import imageMixin from '../../../js/common/mixins/imageMixin'
   import notifyMixin from '../../../js/backend/mixins/notifyMixin'
@@ -443,6 +468,7 @@
   export default {
     components: {
       PageHeader,
+      DialogTranslate,
       DialogSettingsGeneral,
       DialogSettingsCompany,
       DialogSettingsNotifications,
@@ -475,6 +501,16 @@
           employee: null,
           futureAppointments: {}
         },
+        dialogTranslate: false,
+        dialogTranslateExtra: false,
+        dialogTranslateCategory: false,
+        dialogTranslateType: 'url',
+        dialogTranslateTab: 'roles',
+        dialogTranslateData: {},
+        dialogTranslateName: '',
+        extrasTranslateIndex: 0,
+        languagesData: [],
+        newExtraTranslations: null,
         dialogSettingsGeneral: false,
         dialogSettingsCompany: false,
         dialogSettingsNotifications: false,
@@ -696,15 +732,36 @@
       getEntities () {
         this.$http.get(`${this.$root.getAjaxUrl}/entities`, {
           params: {
-            types: ['custom_fields', 'categories', 'coupons']
+            types: ['custom_fields', 'categories', 'coupons', 'settings']
           }
         }).then(response => {
           this.customFields = response.data.data.customFields
           this.coupons = response.data.data.coupons
           this.categories = response.data.data.categories
+          this.languagesData = response.data.data.settings.languages
         }).catch(e => {
           console.log(e.message)
         })
+      },
+
+      showDialogTranslate (name) {
+        this.dialogTranslateTab = 'service'
+        this.dialogTranslateType = 'url'
+        this.dialogTranslateData = this.settings.roles.customerCabinet.translations
+          ? JSON.stringify(this.settings.roles.customerCabinet.translations) : ''
+        this.dialogTranslateName = name
+        this.dialogTranslate = true
+      },
+
+      saveDialogTranslate (translations, newLanguages, tab) {
+        this.settings.general.usedLanguages = this.settings.general.usedLanguages.concat(newLanguages)
+        this.dialogTranslate = false
+
+        this.settings.roles.customerCabinet.translations = translations ? JSON.parse(translations) : []
+      },
+
+      closeDialogTranslate () {
+        this.dialogTranslate = false
       },
 
       openActiveSettingFromQueryParameter () {

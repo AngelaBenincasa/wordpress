@@ -3,7 +3,9 @@ import moment from 'moment'
 export default {
 
   data () {
-    return {}
+    return {
+      phonePopulated: false
+    }
   },
 
   methods: {
@@ -26,6 +28,8 @@ export default {
             this.appointment.bookings[0].customer.lastName = this.currentUser.lastName
             this.appointment.bookings[0].customer.phone = this.currentUser.phone || ''
             this.appointment.bookings[0].customer.countryPhoneIso = this.currentUser.countryPhoneIso
+
+            this.phonePopulated = this.currentUser.phone ? this.currentUser.phone.trim() !== '' : false
           }
         })
         .catch(e => {
@@ -173,15 +177,13 @@ export default {
 
               bookingsIds.push(packData.booking.id)
 
-              responseData.package.forEach(function (packData) {
-                packData.utcTime.forEach(function (date) {
-                  dates.push(
-                    {
-                      start: moment.utc(date.start.replace(/ /g, 'T')).toDate(),
-                      end: moment.utc(date.end.replace(/ /g, 'T')).toDate()
-                    }
-                  )
-                })
+              packData.utcTime.forEach(function (date) {
+                dates.push(
+                  {
+                    start: moment.utc(date.start.replace(/ /g, 'T')).toDate(),
+                    end: moment.utc(date.end.replace(/ /g, 'T')).toDate()
+                  }
+                )
               })
             } else {
               bookingId = packData.booking.id
@@ -200,15 +202,19 @@ export default {
           break
       }
 
-      this.$http.post(`${this.$root.getAjaxUrl}/bookings/success/` + bookingId + '&nocache=' + (new Date().getTime()), {
-        type: responseData.type,
-        appointmentStatusChanged: responseData.appointmentStatusChanged,
-        recurring: bookings,
-        packageId: responseData.packageId ? responseData.packageId : null,
-        customer: responseData.customer
-      }).then(response => {
-      }).catch(e => {
-      })
+      let packageId = responseData.packageId ? responseData.packageId : null
+
+      if (!this.$root.settings.general.runInstantPostBookingActions) {
+        this.$http.post(`${this.$root.getAjaxUrl}/bookings/success/` + bookingId + '&nocache=' + (new Date().getTime()), {
+          type: responseData.type,
+          appointmentStatusChanged: responseData.appointmentStatusChanged,
+          recurring: bookings,
+          packageId: packageId,
+          customer: responseData.customer
+        }).then(response => {
+        }).catch(e => {
+        })
+      }
 
       let addToCalendarData = {}
 
@@ -216,6 +222,11 @@ export default {
         case ('appointment'):
           let service = this.getServiceById(appointment.serviceId)
           let location = this.getLocationById(appointment.locationId)
+
+          if (this.$root.useTranslations) {
+            service.name = this.getNameTranslated(service)
+            service.description = this.getDescriptionTranslated(service)
+          }
 
           addToCalendarData = {
             title: service.name,
@@ -235,17 +246,24 @@ export default {
           break
 
         case ('package'):
+          let pack = this.getPackageById(packageId)
+
+          if (this.$root.useTranslations) {
+            pack.name = this.getNameTranslated(pack)
+            pack.description = this.getDescriptionTranslated(pack)
+          }
+
           addToCalendarData = {
-            title: responseData[responseData.type].name,
-            dates: [],
+            title: pack.name,
+            dates: dates,
             address: '',
-            description: responseData[responseData.type].description,
+            description: pack.description,
             id: bookingId,
             status: 'approved',
             active: this.$root.settings.general.addToCalendar && dates.length > 0,
             color: responseData.color,
             type: 'appointment',
-            bookable: responseData[responseData.type],
+            bookable: pack,
             booking: responseData.booking,
             recurringIds: bookingsIds
           }

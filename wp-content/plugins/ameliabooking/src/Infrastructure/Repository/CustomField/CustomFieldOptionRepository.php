@@ -35,7 +35,8 @@ class CustomFieldOptionRepository extends AbstractRepository implements CustomFi
         $params = [
             ':customFieldId' => $data['customFieldId'],
             ':label'         => $data['label'],
-            ':position'      => $data['position']
+            ':position'      => $data['position'],
+            ':translations'  => $data['translations'],
         ];
 
         try {
@@ -43,9 +44,9 @@ class CustomFieldOptionRepository extends AbstractRepository implements CustomFi
                 "INSERT INTO
                 {$this->table}
                 (
-                `customFieldId`, `label`, `position`
+                `customFieldId`, `label`, `position`, `translations`
                 ) VALUES (
-                :customFieldId, :label, :position
+                :customFieldId, :label, :position, :translations
                 )"
             );
 
@@ -77,6 +78,7 @@ class CustomFieldOptionRepository extends AbstractRepository implements CustomFi
             ':customFieldId' => $data['customFieldId'],
             ':label'         => $data['label'],
             ':position'      => $data['position'],
+            ':translations'  => $data['translations'],
             ':id'            => $id,
         ];
 
@@ -86,7 +88,8 @@ class CustomFieldOptionRepository extends AbstractRepository implements CustomFi
                 SET
                 `customFieldId` = :customFieldId,
                 `label`         = :label,
-                `position`      = :position
+                `position`      = :position,
+                `translations`  = :translations
                 WHERE
                 id = :id"
             );

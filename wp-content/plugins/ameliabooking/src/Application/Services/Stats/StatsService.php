@@ -21,6 +21,7 @@ use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ServiceRepository;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\CustomerBookingRepository;
 use AmeliaBooking\Infrastructure\Repository\Location\LocationRepository;
+use AmeliaBooking\Infrastructure\Repository\Payment\PaymentRepository;
 use AmeliaBooking\Infrastructure\Repository\User\ProviderRepository;
 use DateTime;
 use Exception;
@@ -104,14 +105,63 @@ class StatsService
      */
     public function getRangeStatisticsData($params)
     {
-        /** @var AppointmentRepository $appointmentRepo */
-        $appointmentRepo = $this->container->get('domain.booking.appointment.repository');
+        /** @var AppointmentRepository $appointmentRepository */
+        $appointmentRepository = $this->container->get('domain.booking.appointment.repository');
+
+        /** @var Collection $appointments */
+        $appointments = $appointmentRepository->getFiltered(
+            array_merge(
+                $params,
+                [
+                    'skipServices'  => true,
+                    'skipProviders' => true,
+                    'skipCustomers' => true,
+                    'skipPayments'  => true,
+                    'skipExtras'    => true,
+                    'skipCoupons'   => true,
+                ]
+            )
+        );
+
+        /** @var Collection $bookingsPayments */
+        $bookingsPayments = new Collection();
+
+        /** @var Appointment $appointment */
+        foreach ($appointments->getItems() as $appointment) {
+            /** @var CustomerBooking $booking */
+            foreach ($appointment->getBookings()->getItems() as $booking) {
+                $bookingsPayments->addItem(null, $booking->getId()->getValue());
+            }
+        }
+
+        /** @var PaymentRepository $paymentRepository */
+        $paymentRepository = $this->container->get('domain.payment.repository');
+
+        /** @var Collection $payments */
+        $payments = $bookingsPayments->length() ?
+            $paymentRepository->getByBookings($bookingsPayments->keys()) : new Collection();
+
+        /** @var Payment $payment */
+        foreach ($payments->getItems() as $payment) {
+            if ($payment->getCustomerBookingId()) {
+                $bookingsPayments->placeItem($payment, $payment->getCustomerBookingId()->getValue(), true);
+            }
+        }
+
+        /** @var Appointment $appointment */
+        foreach ($appointments->getItems() as $appointment) {
+            /** @var CustomerBooking $booking */
+            foreach ($appointment->getBookings()->getItems() as $booking) {
+                if ($bookingsPayments->keyExists($booking->getId()->getValue()) &&
+                    $bookingsPayments->getItem($booking->getId()->getValue())
+                ) {
+                    $booking->getPayments()->addItem($bookingsPayments->getItem($booking->getId()->getValue()));
+                }
+            }
+        }
 
         /** @var ProviderRepository $providerRepository */
         $providerRepository = $this->container->get('domain.users.providers.repository');
-
-        /** @var Collection $appointments */
-        $appointments = $appointmentRepo->getFiltered($params);
 
         /** @var Collection $providers */
         $providers = $providerRepository->getByCriteriaWithSchedule($params);

@@ -46,6 +46,9 @@ class CustomerBooking extends AbstractCustomerBooking
     /** @var PackageCustomerService */
     protected $packageCustomerService;
 
+    /** @var  BooleanValueObject */
+    protected $deposit;
+
     /**
      * CustomerBooking constructor.
      *
@@ -188,6 +191,22 @@ class CustomerBooking extends AbstractCustomerBooking
     public function setPackageCustomerService(PackageCustomerService $packageCustomerService)
     {
         $this->packageCustomerService = $packageCustomerService;
+    }
+
+    /**
+     * @return BooleanValueObject
+     */
+    public function getDeposit()
+    {
+        return $this->deposit;
+    }
+
+    /**
+     * @param BooleanValueObject $deposit
+     */
+    public function setDeposit(BooleanValueObject $deposit)
+    {
+        $this->deposit = $deposit;
     }
 
     /**

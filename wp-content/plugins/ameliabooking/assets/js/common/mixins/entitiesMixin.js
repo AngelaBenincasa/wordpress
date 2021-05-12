@@ -1,4 +1,7 @@
+import translationMixin from '../../common/mixins/translationMixin'
+
 export default {
+  mixins: [translationMixin],
 
   data: () => ({}),
 
@@ -256,9 +259,9 @@ export default {
 
       if ('packages' in entities && ('show' in entitiesIds ? entitiesIds.show !== 'services' : true)) {
         let availablePackages = entities.packages.filter(pack => pack.status === 'visible').filter(
-            pack => pack.bookable.filter(
-                bookable => this.options.entities.services.map(service => service.id).indexOf(bookable.service.id) !== -1
-            ).length > 0
+          pack => pack.bookable.filter(
+            bookable => this.options.entities.services.map(service => service.id).indexOf(bookable.service.id) !== -1
+          ).length > 0
         )
 
         let availableLocationsIds = this.options.entities.locations.map(location => location.id)
@@ -270,9 +273,9 @@ export default {
           let hasSlots = false
 
           pack.bookable.forEach((bookable) => {
-            if (bookable.minimumScheduled === 0 && bookable.maximumScheduled > 0 ||
-                bookable.minimumScheduled > 0 && bookable.maximumScheduled === 0 ||
-                bookable.minimumScheduled > 0 && bookable.maximumScheduled > 0
+            if ((bookable.minimumScheduled === 0 && bookable.maximumScheduled > 0) ||
+              (bookable.minimumScheduled > 0 && bookable.maximumScheduled === 0) ||
+              (bookable.minimumScheduled > 0 && bookable.maximumScheduled > 0)
             ) {
               hasSlots = true
             }
@@ -289,10 +292,10 @@ export default {
 
             if (hasPredefinedEmployees) {
               bookable.providers = bookable.providers.filter(
-                  provider => availableEmployeesIds.indexOf(provider.id) !== -1 &&
-                  hasPredefinedLocations
-                      ? bookable.locations.filter(location => this.isEmployeeServiceLocation(provider.id, bookable.service.id, location.id)).length
-                      : (this.options.entities.locations.length ? this.options.entities.locations.filter(location => this.isEmployeeServiceLocation(provider.id, bookable.service.id, location.id)).length : true)
+                provider => availableEmployeesIds.indexOf(provider.id) !== -1 &&
+                hasPredefinedLocations
+                  ? bookable.locations.filter(location => this.isEmployeeServiceLocation(provider.id, bookable.service.id, location.id)).length
+                  : (this.options.entities.locations.length ? this.options.entities.locations.filter(location => this.isEmployeeServiceLocation(provider.id, bookable.service.id, location.id)).length : true)
               )
 
               if (!bookable.providers.length) {
@@ -304,12 +307,12 @@ export default {
 
             if (hasPredefinedLocations) {
               bookable.locations = bookable.locations.filter(
-                  location => availableLocationsIds.indexOf(location.id) !== -1 &&
-                      (
-                          hasPredefinedEmployees
-                              ? bookable.providers.filter(provider => this.isEmployeeServiceLocation(provider.id, bookable.service.id, location.id)).length
-                              : this.options.entities.employees.filter(provider => this.isEmployeeServiceLocation(provider.id, bookable.service.id, location.id)).length
-                      )
+                location => availableLocationsIds.indexOf(location.id) !== -1 &&
+                  (
+                    hasPredefinedEmployees
+                      ? bookable.providers.filter(provider => this.isEmployeeServiceLocation(provider.id, bookable.service.id, location.id)).length
+                      : this.options.entities.employees.filter(provider => this.isEmployeeServiceLocation(provider.id, bookable.service.id, location.id)).length
+                  )
               )
 
               if (!bookable.locations.length) {
@@ -383,10 +386,16 @@ export default {
             this.responseEntities.locations = response.data.data.locations
             this.responseEntities.customFields = response.data.data.customFields
             this.responseEntities.services = this.getServicesFromCategories(this.responseEntities.categories)
-            this.responseEntities.packages = response.data.data.packages
+            this.responseEntities.packages = response.data.data.packages ? response.data.data.packages.filter(pack => pack.available) : []
+
+            response.data.data.packages = response.data.data.packages.filter(pack => pack.available)
           }
 
           this.filterEntities(response.data.data, this.getShortCodeEntityIds())
+
+          if (this.$root.useTranslations) {
+            this.translateEntities(this.responseEntities)
+          }
         } else {
           this.options.entities.employees = response.data.data.employees
           this.options.entities.categories = response.data.data.categories
@@ -394,6 +403,7 @@ export default {
           this.options.entities.customers = response.data.data.customers
           this.options.entities.services = this.getServicesFromCategories(this.options.entities.categories)
           this.options.entities.packages = response.data.data.packages
+          this.options.entities.customFields = response.data.data.customFields
 
           this.options.entities.services.forEach(function (service) {
             service.extras.forEach(function (extra) {
@@ -407,11 +417,17 @@ export default {
             employeeId: null,
             locationId: null
           })
+
+          if (this.$root.useTranslations) {
+            this.translateEntities(this.options.entities)
+          }
+        }
+
+        if ('settings' in response.data.data) {
+          this.options.entities.settings = response.data.data.settings
         }
 
         this.options.entities.tags = 'tags' in response.data.data ? response.data.data.tags : []
-
-        this.options.entities.customFields = response.data.data.customFields
 
         let success = true
 

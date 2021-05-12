@@ -129,10 +129,6 @@
       }
     },
 
-    mounted () {
-      this.inlineSVG()
-    },
-
     methods: {
       closeDialog () {
         this.$emit('closeDialogSettingsIntegrations')

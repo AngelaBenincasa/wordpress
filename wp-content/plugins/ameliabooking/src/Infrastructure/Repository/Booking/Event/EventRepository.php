@@ -67,6 +67,10 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
             ':created'              => $data['created'],
             ':settings'             => $data['settings'],
             ':zoomUserId'           => $data['zoomUserId'],
+            ':translations'         => $data['translations'],
+            ':deposit'              => $data['deposit'],
+            ':depositPayment'       => $data['depositPayment'],
+            ':depositPerPerson'     => $data['depositPerPerson'] ? 1 : 0,
         ];
 
         try {
@@ -93,7 +97,11 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                 `parentId`,
                 `created`,
                 `settings`,
-                `zoomUserId`
+                `zoomUserId`,
+                `translations`,
+                `deposit`,
+                `depositPayment`,
+                `depositPerPerson`
                 )
                 VALUES (
                 :bookingOpens,
@@ -116,7 +124,11 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                 :parentId,
                 :created,
                 :settings,
-                :zoomUserId
+                :zoomUserId,
+                :translations,
+                :deposit,
+                :depositPayment,
+                :depositPerPerson
                 )"
             );
 
@@ -166,6 +178,10 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
             ':parentId'             => $data['parentId'],
             ':settings'             => $data['settings'],
             ':zoomUserId'           => $data['zoomUserId'],
+            ':translations'         => $data['translations'],
+            ':deposit'              => $data['deposit'],
+            ':depositPayment'       => $data['depositPayment'],
+            ':depositPerPerson'     => $data['depositPerPerson'] ? 1 : 0,
         ];
 
         try {
@@ -191,7 +207,11 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                 `customLocation` = :customLocation,
                 `parentId` = :parentId,
                 `settings` = :settings,
-                `zoomUserId` = :zoomUserId
+                `zoomUserId` = :zoomUserId,
+                `translations` = :translations,
+                `deposit` = :deposit,
+                `depositPayment` = :depositPayment,
+                `depositPerPerson` = :depositPerPerson
                 WHERE id = :id"
             );
 
@@ -360,10 +380,12 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
         $providerJoin = '';
         $providerFields = '';
 
-        if (!empty($criteria['providers'])) {
+        if (!empty($criteria['providers']) || !empty($criteria['allProviders'])) {
+            $joinType = !empty($criteria['providers']) ? 'INNER' : 'LEFT';
+
             $providerJoin = "
-            INNER JOIN {$eventsProvidersTable} epr ON epr.eventId = e.id
-            INNER JOIN {$usersTable} pu ON pu.id = epr.userId";
+            $joinType JOIN {$eventsProvidersTable} epr ON epr.eventId = e.id
+            $joinType JOIN {$usersTable} pu ON pu.id = epr.userId";
 
             $queryProviders = [];
 
@@ -379,13 +401,17 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                 pu.pictureThumbPath AS provider_pictureThumbPath,
             ';
 
-            foreach ((array)$criteria['providers'] as $index => $value) {
-                $param = ':provider' . $index;
-                $queryProviders[] = $param;
-                $params[$param] = $value;
-            }
+            if (!empty($criteria['providers'])) {
+                foreach ((array)$criteria['providers'] as $index => $value) {
+                    $param = ':provider' . $index;
 
-            $where[] = 'epr.userId IN (' . implode(', ', $queryProviders) . ')';
+                    $queryProviders[] = $param;
+
+                    $params[$param] = $value;
+                }
+
+                $where[] = 'epr.userId IN (' . implode(', ', $queryProviders) . ')';
+            }
         }
 
         if (isset($criteria['tag'])) {
@@ -474,6 +500,10 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                     e.notifyParticipants AS event_notifyParticipants,
                     e.settings AS event_settings,
                     e.zoomUserId AS event_zoomUserId,
+                    e.translations AS event_translations,
+                    e.deposit AS event_deposit,
+                    e.depositPayment AS event_depositPayment,
+                    e.depositPerPerson AS event_depositPerPerson,
                     
                     ep.id AS event_periodId,
                     ep.periodStart AS event_periodStart,
@@ -611,6 +641,10 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                     e.parentId AS event_parentId,
                     e.created AS event_created,
                     e.notifyParticipants AS event_notifyParticipants,
+                    e.translations AS event_translations,
+                    e.deposit AS event_deposit,
+                    e.depositPayment AS event_depositPayment,
+                    e.depositPerPerson AS event_depositPerPerson,
                     
                     ep.id AS event_periodId,
                     ep.periodStart AS event_periodStart,
@@ -696,16 +730,16 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
 
         if (!empty($criteria['id'])) {
             if ($criteria['recurring']) {
-                $params[':id1'] = $criteria['id'];
-                $params[':id2'] = $criteria['id'];
-                $params[':id3'] = $criteria['id'];
-                $params[':id4'] = $criteria['id'];
+                $params[':id1'] = (int)$criteria['id'];
+                $params[':id2'] = (int)$criteria['id'];
+                $params[':id3'] = (int)$criteria['id'];
+                $params[':id4'] = (int)$criteria['id'];
 
-                $where[] = "(e.id = :id1 AND e.parentId IS NULL) OR 
+                $where[] = "((e.id = :id1 AND e.parentId IS NULL) OR 
                     (e.parentId IN (SELECT parentId FROM {$this->table} WHERE parentId = :id2)) OR
-                    (e.id >= :id3  AND e.parentId IN (SELECT parentId FROM {$this->table} WHERE id = :id4))";
+                    (e.id >= :id3  AND e.parentId IN (SELECT parentId FROM {$this->table} WHERE id = :id4)))";
             } else {
-                $params[':id'] = $criteria['id'];
+                $params[':id'] = (int)$criteria['id'];
 
                 $where[] = 'e.id = :id';
             }
@@ -788,14 +822,19 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
         $where = [];
         $params = [];
 
+        if (isset($criteria['show'])) {
+            $where = ['e.show = 1'];
+        }
+
         if (!empty($criteria['dates'])) {
             if (isset($criteria['dates'][0], $criteria['dates'][1])) {
                 $where[] = "(DATE_FORMAT(ep.periodStart, '%Y-%m-%d %H:%i:%s') BETWEEN :eventFrom AND :eventTo)";
                 $params[':eventFrom'] = DateTimeService::getCustomDateTimeInUtc($criteria['dates'][0]);
                 $params[':eventTo'] = DateTimeService::getCustomDateTimeInUtc($criteria['dates'][1]);
             } elseif (isset($criteria['dates'][0])) {
-                $where[] = "(DATE_FORMAT(ep.periodStart, '%Y-%m-%d %H:%i:%s') >= :eventFrom)";
+                $where[] = "(DATE_FORMAT(ep.periodStart, '%Y-%m-%d %H:%i:%s') >= :eventFrom OR (DATE_FORMAT(ep.periodEnd, '%Y-%m-%d %H:%i:%s') >= :eventTo))";
                 $params[':eventFrom'] = DateTimeService::getCustomDateTimeInUtc($criteria['dates'][0]);
+                $params[':eventTo'] = DateTimeService::getCustomDateTimeInUtc($criteria['dates'][0]);
             } elseif (isset($criteria['dates'][1])) {
                 $where[] = "(DATE_FORMAT(ep.periodStart, '%Y-%m-%d %H:%i:%s') <= :eventTo)";
                 $params[':eventTo'] = DateTimeService::getCustomDateTimeInUtc($criteria['dates'][1]);
@@ -815,16 +854,16 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
 
         if (!empty($criteria['id'])) {
             if ($criteria['recurring']) {
-                $params[':id1'] = $criteria['id'];
-                $params[':id2'] = $criteria['id'];
-                $params[':id3'] = $criteria['id'];
-                $params[':id4'] = $criteria['id'];
+                $params[':id1'] = (int)$criteria['id'];
+                $params[':id2'] = (int)$criteria['id'];
+                $params[':id3'] = (int)$criteria['id'];
+                $params[':id4'] = (int)$criteria['id'];
 
-                $where[] = "(e.id = :id1 AND e.parentId IS NULL) OR 
+                $where[] = "((e.id = :id1 AND e.parentId IS NULL) OR 
                     (e.parentId IN (SELECT parentId FROM {$this->table} WHERE parentId = :id2)) OR
-                    (e.id >= :id3  AND e.parentId IN (SELECT parentId FROM {$this->table} WHERE id = :id4))";
+                    (e.id >= :id3  AND e.parentId IN (SELECT parentId FROM {$this->table} WHERE id = :id4)))";
             } else {
-                $params[':id'] = $criteria['id'];
+                $params[':id'] = (int)$criteria['id'];
 
                 $where[] = 'e.id = :id';
             }
@@ -898,6 +937,10 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                     e.created AS event_created,
                     e.settings AS event_settings,
                     e.zoomUserId AS event_zoomUserId,
+                    e.translations AS event_translations,
+                    e.deposit AS event_deposit,
+                    e.depositPayment AS event_depositPayment,
+                    e.depositPerPerson AS event_depositPerPerson,
                     
                     ep.id AS event_periodId,
                     ep.periodStart AS event_periodStart,
@@ -1034,6 +1077,10 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                     e.created AS event_created,
                     e.settings AS event_settings,
                     e.zoomUserId AS event_zoomUserId,
+                    e.translations AS event_translations,
+                    e.deposit AS event_deposit,
+                    e.depositPayment AS event_depositPayment,
+                    e.depositPerPerson AS event_depositPerPerson,
                     
                     ep.id AS event_periodId,
                     ep.periodStart AS event_periodStart,
@@ -1154,6 +1201,10 @@ class EventRepository extends AbstractRepository implements EventRepositoryInter
                     e.customLocation AS event_customLocation,
                     e.parentId AS event_parentId,
                     e.created AS event_created,
+                    e.translations AS event_translations,
+                    e.deposit AS event_deposit,
+                    e.depositPayment AS event_depositPayment,
+                    e.depositPerPerson AS event_depositPerPerson,
                     
                     pu.id AS provider_id,
                     pu.firstName AS provider_firstName,

@@ -12,6 +12,8 @@ use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
+use AmeliaBooking\Domain\Services\Settings\SettingsService;
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ServiceRepository;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
@@ -47,8 +49,18 @@ class GetServiceCommandHandler extends CommandHandler
             ['services' => [$command->getArg('id')]]
         )->getItem($command->getArg('id'));
 
-        if ($service->getSettings() && json_decode($service->getSettings()->getValue(), true) === null) {
+        // fix for wrongly saved JSON
+        if ($service->getSettings() &&
+            json_decode($service->getSettings()->getValue(), true) === null
+        ) {
             $service->setSettings(null);
+        }
+
+        if ($service->getSettings()) {
+            /** @var SettingsService $settingsDS */
+            $settingsDS = $this->container->get('domain.settings.service');
+
+            $service->setSettings(new Json(json_encode($settingsDS->getSavedSettings($service->getSettings()))));
         }
 
         $futureAppointmentsProvidersIds = $appointmentRepository->getFutureAppointmentsProvidersIds(

@@ -730,10 +730,11 @@
           // Profile Details
           .am-cabinet-profile-details {
             display: flex;
+            flex-wrap: wrap;
 
-            @media @less-then-large {
-              display: block;
-            }
+            //@media @less-then-large {
+            //  display: block;
+            //}
 
             // Profile
             .am-cabinet-profile-details-info {
@@ -742,6 +743,10 @@
               display: flex;
               align-items: center;
               justify-content: center;
+
+              &.mobile {
+                order: 0;
+              }
 
               @media @less-then-large {
                 padding-bottom: @padding-big;
@@ -956,9 +961,10 @@
             .el-row {
               line-height: 40px;
               display: flex;
+              flex-wrap: wrap;
 
               @media @less-then-medium {
-                display: block;
+                //display: block;
 
                 .el-col {
                   width: 100%;
@@ -968,15 +974,25 @@
               .am-flexed2 {
                 display: flex;
 
+                &:last-of-type {
+                  justify-content: flex-end;
+                }
+
+                &.mobile {
+                  position: absolute;
+                  display: flex;
+                  right: 0;
+                }
+
                 @media @less-then-medium {
-                  display: block;
+                  //display: block;
 
                   .am-overflow-ellipsis {
                     display: flex;
                   }
 
                   &:last-of-type {
-                    float: left;
+                    //float: left;
                     position: absolute;
                     display: flex;
                     right: 0;
@@ -1051,56 +1067,14 @@
             border-left: 1px solid #f2f3f5;
             border-right: 1px solid #f2f3f5;
 
-            @media @less-then-small {
-              form {
-                .am-add-period-labels {
-                  display: none;
-                }
-
-                .am-add-period-type {
-                  margin-bottom: 0;
-                }
-
-                .el-col {
-                  width: 100%;
-                  margin-bottom: 16px;
-
-                  .el-date-editor {
-                    margin-bottom: 0 !important;
-                  }
-                }
-
-                .el-button {
-                  width: 100%;
-                }
+            .el-select {
+              &--mini {
+                margin-bottom: @margin-small/2*3;
               }
-            }
 
-            @media @from-small-to-medium {
-              form {
-                .am-add-period-labels {
-                  display: none;
-                }
-
-                .el-row {
-                  > p {
-                    display: block !important;
-                    margin: 0;
-                  }
-
-                  .el-col {
-                    width: 50%;
-
-                    > p {
-                      display: inline-block !important;
-                      margin: 0;
-                      text-transform: capitalize;
-                    }
-                  }
-                }
-
-                .am-working-hours-buttons {
-                  margin-top: 16px;
+              &__input {
+                &.is-mini {
+                  height: 28px;
                 }
               }
             }
@@ -1160,13 +1134,20 @@
             }
           }
 
+          &__header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+          }
+
           &__legend {
             display: flex;
+            flex-wrap: wrap;
             order: 2;
-            margin-left: auto;
 
-            @media @less-then-medium {
-              display: none;
+            & > div {
+              margin-top: @margin-medium;
             }
 
             .am-legend-once {
@@ -1313,6 +1294,7 @@
               display: flex;
               align-items: center;
               justify-content: flex-end;
+              min-width: 60px;
 
               .am-edit-element {
                 display: inline-flex;
@@ -2086,6 +2068,54 @@
     // Appointment booking page - end
   }
 
+  .am-setting-box {
+    border: 1px solid @color-divider-gray;
+    border-radius: 3px;
+    margin-bottom: @margin-big;
+    position: relative;
+    line-height: 0.8;
+
+    &.am-switch-box {
+      padding: 13px;
+
+      p {
+        font-size: @small-fs;
+        //height: 50px;
+      }
+
+      .el-col {
+        min-height: 16px;
+      }
+    }
+
+    .el-row {
+      margin-bottom: 0 !important;
+    }
+
+    .am-service-deposit {
+      margin-top: @padding-small;
+
+      p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 40px;
+      }
+
+      i {
+        color: #1A84EE;
+      }
+
+      label {
+        display: inline-block;
+        font-weight: normal;
+      }
+    }
+
+    .align-right {
+      text-align: right;
+    }
+  }
+
   .v-calendar-column {
     @media @less-then-small {
       text-align: left;
@@ -2190,3 +2220,21 @@
     }
   }
 }
+.am-service-deposit {
+  margin-top: @padding-small;
+
+  p {
+    margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 40px !important;
+  }
+
+  i {
+    color: #1A84EE;
+  }
+
+  .el-icon-question {
+    color: @color-icon !important;
+  }
+}
+

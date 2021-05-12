@@ -26,6 +26,7 @@ class EventsShortcodeService extends AmeliaShortcodeService
                 'recurring'     => null,
                 'tag'           => null,
 				'today'         => null,
+                'type'          => null,
 			],
 			$atts
 		);

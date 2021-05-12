@@ -35,7 +35,10 @@ class AddBookingController extends Controller
         'package',
         'packageRules',
         'utcOffset',
+        'locale',
+        'timeZone',
         'recaptcha',
+        'deposit',
     ];
 
     /**

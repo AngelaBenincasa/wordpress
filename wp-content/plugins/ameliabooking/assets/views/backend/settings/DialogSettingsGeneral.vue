@@ -146,6 +146,26 @@
           </el-select>
         </el-form-item>
 
+        <!-- Minimum Time Prior to Rescheduling -->
+        <el-popover :disabled="!$root.isLite" ref="minimumTimeBeforeReschedulingPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
+        <el-form-item label="placeholder" v-popover:minimumTimeBeforeReschedulingPop>
+          <label slot="label">
+            {{ $root.labels.minimum_time_before_rescheduling }}:
+            <el-tooltip placement="top">
+              <div slot="content" v-html="$root.labels.minimum_time_before_rescheduling_tooltip"></div>
+              <i class="el-icon-question am-tooltip-icon"></i>
+            </el-tooltip>
+          </label>
+          <el-select v-model="settings.minimumTimeRequirementPriorToRescheduling" :disabled="$root.isLite">
+            <el-option
+              v-for="item in options.minimumTime"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
         <!-- Number of days available for booking -->
         <el-form-item label="placeholder">
           <label slot="label">
@@ -195,6 +215,37 @@
             </el-col>
           </el-row>
         </div>
+
+        <el-popover :disabled="!$root.isLite" ref="languagesPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
+        <el-form-item v-popover:languagesPop>
+          <label slot="label">
+            {{ $root.labels.manage_languages }}:
+            <el-tooltip placement="top">
+              <div slot="content" v-html="$root.labels.manage_languages_tooltip"></div>
+              <i class="el-icon-question am-tooltip-icon"></i>
+            </el-tooltip>
+          </label>
+          <el-select class="select-languages"
+             :placeholder="$root.labels.language"
+             v-model="settings.usedLanguages"
+             clearable
+             filterable
+             multiple
+             :disabled="$root.isLite"
+             collapse-tags>
+            <el-option
+                v-for="(lang, index) in Object.keys(languagesData)"
+                :key="index"
+                :label="getLanguageLabel(lang)"
+                :value="lang"
+            >
+            <span>
+              <img class="option-languages-flag" :src="getLanguageFlag(lang)">
+              {{ getLanguageLabel(lang) }}
+            </span>
+            </el-option>
+          </el-select>
+        </el-form-item>
 
         <!-- Default required phone number input -->
         <div class="am-setting-box am-switch-box">
@@ -469,6 +520,10 @@
     props: {
       general: {
         type: Object
+      },
+      languagesData: {
+        default: () => {},
+        type: Object
       }
     },
 
@@ -667,6 +722,17 @@
     },
 
     methods: {
+      getLanguageLabel (lang) {
+        return this.languagesData[lang] ? this.languagesData[lang].name : ''
+      },
+
+      getLanguageFlag (lang) {
+        if (lang && this.languagesData[lang] && this.languagesData[lang].country_code) {
+          return this.$root.getUrl + 'public/img/flags/' + this.languagesData[lang].country_code + '.png'
+        }
+        return this.$root.getUrl + 'public/img/grey.svg'
+      },
+
       handleRecaptchaValidationRules () {
         this.clearValidation()
         if (this.settings.googleRecaptcha.enabled === true) {

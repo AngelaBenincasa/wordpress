@@ -59,13 +59,24 @@ class AmeliaShortcodeService
             AMELIA_VERSION
         );
 
-        wp_enqueue_style(
-            'amelia_booking_styles',
-            UPLOADS_URL . '/amelia/css/amelia-booking.' .
-            $settingsService->getSetting('customization', 'hash') . '.css',
-            [],
-            AMELIA_VERSION
-        );
+        if ($settingsService->getSetting('customization', 'useGenerated') === null ||
+            $settingsService->getSetting('customization', 'useGenerated')
+        ) {
+            wp_enqueue_style(
+                'amelia_booking_styles',
+                UPLOADS_URL . '/amelia/css/amelia-booking.' .
+                $settingsService->getSetting('customization', 'hash') . '.css',
+                [],
+                AMELIA_VERSION
+            );
+        } else {
+            wp_enqueue_style(
+                'amelia_booking_styles',
+                AMELIA_URL . 'public/css/frontend/amelia-booking-' . str_replace('.', '-', AMELIA_VERSION) . '.css',
+                [],
+                AMELIA_VERSION
+            );
+        }
 
         // Underscore
         wp_enqueue_script('undescore', includes_url('js') . '/underscore.min.js');
@@ -100,6 +111,16 @@ class AmeliaShortcodeService
             'localeLanguage',
             [AMELIA_LOCALE]
         );
+
+        $localeSubstitutes = $settingsService->getSetting('general', 'calendarLocaleSubstitutes');
+
+        if (isset($localeSubstitutes[AMELIA_LOCALE])) {
+            wp_localize_script(
+                'amelia_booking_scripts',
+                'ameliaCalendarLocale',
+                [$localeSubstitutes[AMELIA_LOCALE]]
+            );
+        }
 
         wp_localize_script(
             'amelia_booking_scripts',

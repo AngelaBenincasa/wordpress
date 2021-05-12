@@ -6,6 +6,7 @@ use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Extra;
 use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\Duration;
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Float\Price;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\PositiveInteger;
@@ -49,6 +50,10 @@ class ExtraFactory
 
         if (isset($data['aggregatedPrice'])) {
             $extra->setAggregatedPrice(new BooleanValueObject($data['aggregatedPrice']));
+        }
+
+        if (isset($data['translations'])) {
+            $extra->setTranslations(new Json($data['translations']));
         }
 
         return $extra;

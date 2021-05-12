@@ -8,6 +8,7 @@ namespace AmeliaBooking\Domain\Entity\CustomField;
 
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\IntegerValue;
 use AmeliaBooking\Domain\ValueObjects\String\CustomFieldType;
@@ -34,6 +35,9 @@ class CustomField
 
     /** @var IntegerValue */
     private $position;
+
+    /** @var  Json */
+    private $translations;
 
     /** @var Collection */
     private $options;
@@ -145,6 +149,22 @@ class CustomField
     }
 
     /**
+     * @return Json
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * @param Json $translations
+     */
+    public function setTranslations(Json $translations)
+    {
+        $this->translations = $translations;
+    }
+
+    /**
      * @return Collection
      */
     public function getOptions()
@@ -198,14 +218,15 @@ class CustomField
     public function toArray()
     {
         return [
-            'id'       => null !== $this->getId() ? $this->getId()->getValue() : null,
-            'label'    => $this->getLabel()->getValue(),
-            'type'     => $this->getType()->getValue(),
-            'required' => $this->getRequired()->getValue(),
-            'position' => $this->getPosition()->getValue(),
-            'options'  => $this->getOptions() ? $this->getOptions()->toArray() : [],
-            'services' => $this->getServices() ? $this->getServices()->toArray() : [],
-            'events'   => $this->getEvents() ? $this->getEvents()->toArray() : [],
+            'id'           => null !== $this->getId() ? $this->getId()->getValue() : null,
+            'label'        => $this->getLabel()->getValue(),
+            'type'         => $this->getType()->getValue(),
+            'required'     => $this->getRequired()->getValue(),
+            'position'     => $this->getPosition()->getValue(),
+            'options'      => $this->getOptions() ? $this->getOptions()->toArray() : [],
+            'services'     => $this->getServices() ? $this->getServices()->toArray() : [],
+            'events'       => $this->getEvents() ? $this->getEvents()->toArray() : [],
+            'translations' => $this->getTranslations() ? $this->getTranslations()->getValue() : null,
         ];
     }
 }

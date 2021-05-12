@@ -4,6 +4,7 @@ namespace AmeliaBooking\Domain\Factory\Bookable\Service;
 
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Category;
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\PositiveInteger;
 use AmeliaBooking\Domain\ValueObjects\String\Status;
@@ -43,6 +44,10 @@ class CategoryFactory
             }
 
             $category->setServiceList(new Collection($services));
+        }
+
+        if (isset($data['translations'])) {
+            $category->setTranslations(new Json($data['translations']));
         }
 
         return $category;

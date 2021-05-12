@@ -2,7 +2,7 @@
   <div :class="{'am-lite-container-disabled': $root.isLite}">
 
   <!-- Employees Special Days -->
-  <div class="am-employee-special-days">
+  <div class="am-employee-special-days" ref="specialDays">
 
     <!-- Special Days List -->
     <div class="am-dialog-table">
@@ -97,22 +97,22 @@
             <el-col :sm="24" style="overflow: visible;" class="v-calendar-column">
               <el-form-item :label="$root.labels.date + ':'" prop="dateRange" :rules="rules.dateRange">
                 <v-date-picker
-                    v-model="specialDayModel.dateRange"
-                    @input="clearValidation"
-                    mode='range'
-                    popover-visibility="focus"
-                    popover-direction="bottom"
-                    :popover-align="screenWidth < 768 ? 'center' : 'left'"
-                    :tint-color='isCabinet ? $root.settings.customization.primaryColor : "#1A84EE"'
-                    :show-day-popover=false
-                    :input-props='{class: "el-input__inner"}'
-                    :is-expanded=false
-                    :is-required=true
-                    input-class="el-input__inner"
-                    :placeholder="$root.labels.pick_a_date_or_range"
-                    :formats="vCalendarFormats"
-                    style="margin-bottom: 20px;"
-                    :available-dates="{ start: this.$moment().subtract(1, 'days').toDate() }"
+                  v-model="specialDayModel.dateRange"
+                  @input="clearValidation"
+                  mode='range'
+                  popover-visibility="focus"
+                  popover-direction="bottom"
+                  :popover-align="screenWidth < 768 ? 'center' : 'left'"
+                  :tint-color='isCabinet ? $root.settings.customization.primaryColor : "#1A84EE"'
+                  :show-day-popover=false
+                  :input-props='{class: "el-input__inner"}'
+                  :is-expanded=false
+                  :is-required=true
+                  input-class="el-input__inner"
+                  :placeholder="$root.labels.pick_a_date_or_range"
+                  :formats="vCalendarFormats"
+                  style="margin-bottom: 20px;"
+                  :available-dates="{ start: this.$moment().subtract(1, 'days').toDate() }"
                 >
                 </v-date-picker>
               </el-form-item>
@@ -120,45 +120,29 @@
           </el-row>
           <!-- /Special Day Date -->
 
-          <!-- Special Day Work Hours & Services Labels -->
-          <el-row :gutter="20" class="am-dialog-table-head hours" style="margin-bottom: 5px;">
-            <el-col :span="getColumnLength.workHours + getColumnLength.workHours">
-              <span>{{ $root.labels.work_hours }}</span></el-col>
-            <el-col :span="getColumnLength.services" v-if="categorizedServiceList && servicesCount > 1">
-              <span>{{ $root.labels.services.charAt(0).toUpperCase() + $root.labels.services.slice(1) }}</span>
-              <el-tooltip placement="top">
-                <div slot="content" v-html="$root.labels.period_services_filter2_tooltip"></div>
-                <i class="el-icon-question am-tooltip-icon"></i>
-              </el-tooltip>
-            </el-col>
-            <el-col :span="getColumnLength.location" v-if="locations && locations.length > 1">
-              <span>{{ $root.labels.location }}</span>
-              <el-tooltip placement="top">
-                <div slot="content" v-html="$root.labels.period_location_filter2_tooltip"></div>
-                <i class="el-icon-question am-tooltip-icon"></i>
-              </el-tooltip>
-            </el-col>
-          </el-row>
-          <!-- Special Day Work Hours & Services Labels -->
-
           <!-- Special Day Work and Break Hours -->
           <transition-group name="fade">
-            <div class="am-period" v-for="(period, index) in specialDayModel.periodList" :key="index + 1">
-              <el-row :gutter="10" type="flex">
+            <div v-for="(period, index) in specialDayModel.periodList" :key="index + 1" class="am-period">
+              <el-row :gutter="10" type="flex" style="flex-wrap: wrap">
 
                 <!-- Work Hours Start & End -->
-                <el-col :span="getColumnLength.workHours + getColumnLength.workHours">
+                <el-col :span="responsiveGrid.editHours.workHours">
                   <el-row :gutter="10">
 
+                    <el-col :span="24" style="margin-bottom: 4px">
+                      <span>{{ $root.labels.work_hours }}</span>
+                    </el-col>
+
                     <!-- Work Hours Start -->
-                    <el-col :span="12">
+                    <el-col :span="responsiveGrid.editHours.hour">
                       <el-form-item :prop="'periodList.' + index + '.startTime'" :rules="rules.startTime">
                         <el-time-select
-                            v-model="period.startTime"
-                            :picker-options="getTimeSelectOptionsWithLimits(getPeriodBorderTime(specialDayModel, index)[0], period.endTime)"
-                            size="mini"
-                            :is-required=true
-                            @change="clearValidation"
+                          v-model="period.startTime"
+                          :picker-options="getTimeSelectOptionsWithLimits(getPeriodBorderTime(specialDayModel, index)[0], period.endTime)"
+                          size="mini"
+                          style="margin-bottom: 12px"
+                          :is-required=true
+                          @change="clearValidation"
                         >
                         </el-time-select>
                       </el-form-item>
@@ -166,14 +150,15 @@
                     <!-- /Work Hours Start -->
 
                     <!-- Work Hours End -->
-                    <el-col :span="12">
+                    <el-col :span="responsiveGrid.editHours.hour">
                       <el-form-item :prop="'periodList.' + index + '.endTime'" :rules="rules.endTime">
                         <el-time-select
-                            v-model="period.endTime"
-                            :picker-options="getTimeSelectOptionsWithLimits(period.startTime, getPeriodBorderTime(specialDayModel, index)[1])"
-                            size="mini"
-                            :is-required=true
-                            @change="clearValidation"
+                          v-model="period.endTime"
+                          :picker-options="getTimeSelectOptionsWithLimits(period.startTime, getPeriodBorderTime(specialDayModel, index)[1])"
+                          size="mini"
+                          style="margin-bottom: 12px"
+                          :is-required=true
+                          @change="clearValidation"
                         >
                         </el-time-select>
                       </el-form-item>
@@ -185,62 +170,90 @@
                 <!-- /Work Hours Start & End -->
 
                 <!-- Services -->
-                <el-col :span="getColumnLength.services" v-if="categorizedServiceList && servicesCount > 1">
+                <el-col v-if="categorizedServiceList && servicesCount > 1" :span="responsiveGrid.editHours.services">
+                  <el-row :gutter="10" type="flex" style="flex-wrap: wrap">
+                    <el-col :span="24" style="margin-bottom: 4px">
+                      <span>{{ $root.labels.services.charAt(0).toUpperCase() + $root.labels.services.slice(1) }}</span>
+                      <el-tooltip placement="top">
+                        <div slot="content" v-html="$root.labels.period_services_filter2_tooltip"></div>
+                        <i class="el-icon-question am-tooltip-icon"></i>
+                      </el-tooltip>
+                    </el-col>
 
-                  <el-select
-                      v-model="period.serviceIds"
-                      multiple
-                      filterable
-                      :placeholder="$root.labels.period_services_filter"
-                      collapse-tags
-                      size="mini"
-                      class="am-select-service"
-                      v-if="categorizedServiceList"
-                      @change="clearValidation()"
-                  >
-                    <div v-for="category in categorizedServiceList"
-                         v-if="category.serviceList.filter(service => service.state).length > 0"
-                         :key="category.id">
-                      <div class="am-drop-parent"
-                           @click="selectAllInCategory(period, category.id)"
+
+                    <el-col :span="24">
+                      <el-select
+                        v-model="period.serviceIds"
+                        multiple
+                        filterable
+                        :placeholder="$root.labels.period_services_filter"
+                        collapse-tags
+                        size="mini"
+                        style="margin-bottom: 12px"
+                        class="am-select-service"
+                        v-if="categorizedServiceList"
+                        @change="clearValidation()"
                       >
-                        <span>{{ category.name }}</span>
-                      </div>
-                      <el-option
-                          v-for="service in category.serviceList"
-                          :key="service.id"
-                          :label="service.name"
-                          :value="service.id"
-                          class="am-drop-child"
-                          v-if="service.state"
-                      >
-                      </el-option>
-                    </div>
-                  </el-select>
+                        <div
+                          v-if="category.serviceList.filter(service => service.state).length > 0"
+                          v-for="category in categorizedServiceList"
+                          :key="category.id"
+                        >
+                          <div
+                            class="am-drop-parent"
+                            @click="selectAllInCategory(period, category.id)"
+                          >
+                            <span>{{ category.name }}</span>
+                          </div>
+                          <el-option
+                            v-for="service in category.serviceList"
+                            :key="service.id"
+                            :label="service.name"
+                            :value="service.id"
+                            class="am-drop-child"
+                            v-if="service.state"
+                          >
+                          </el-option>
+                        </div>
+                      </el-select>
+                    </el-col>
+                  </el-row>
 
                 </el-col>
                 <!-- /Services -->
 
                 <!-- Location -->
-                <el-col :span="getColumnLength.location" :xs="12" v-if="locations && locations.length > 1">
-                  <el-select
-                      v-model="period.locationId"
-                      filterable
-                      clearable
-                      :placeholder="$root.labels.location"
-                      collapse-tags
-                      size="mini"
-                      class="am-select-service"
-                      v-if="locations.length"
-                  >
-                    <el-option
-                        v-for="location in locations"
-                        :key="location.id"
-                        :label="location.name"
-                        :value="location.id"
-                    >
-                    </el-option>
-                  </el-select>
+                <el-col v-if="locations && locations.length > 1" :span="responsiveGrid.editHours.location">
+                  <el-row :gutter="10" type="flex" style="flex-wrap: wrap">
+                    <el-col :span="24" style="margin-bottom: 4px">
+                      <span>{{ $root.labels.location }}</span>
+                      <el-tooltip placement="top">
+                        <div slot="content" v-html="$root.labels.period_location_filter2_tooltip"></div>
+                        <i class="el-icon-question am-tooltip-icon"></i>
+                      </el-tooltip>
+                    </el-col>
+                    <el-col :span="24">
+                      <el-select
+                        v-model="period.locationId"
+                        filterable
+                        clearable
+                        :placeholder="$root.labels.location"
+                        collapse-tags
+                        size="mini"
+                        style="margin-bottom: 12px"
+                        class="am-select-service"
+                        v-if="locations.length"
+                      >
+                        <el-option
+                          v-for="location in locations"
+                          :key="location.id"
+                          :label="location.name"
+                          :value="location.id"
+                        >
+                        </el-option>
+                    </el-select>
+                    </el-col>
+                  </el-row>
                 </el-col>
                 <!-- /Location -->
 
@@ -304,6 +317,7 @@
     mixins: [imageMixin, dateMixin, durationMixin, helperMixin, windowMixin],
 
     props: {
+      activeTab: '',
       categorizedServiceList: null,
       locations: null,
       specialDays: null,
@@ -337,14 +351,145 @@
 
         specialDayModel: this.getInitSpecialDayModel(),
 
-        showSpecialDayForm: false
+        showSpecialDayForm: false,
+
+        responsiveGrid: {
+          editHours: {
+            workHours: 24,
+            hour: 24,
+            services: 24,
+            location: 24
+          }
+        }
       }
+    },
+
+    created () {
+      window.addEventListener('resize', this.handleResize)
     },
 
     mounted () {
     },
 
     methods: {
+
+      getColumnLength (size = '') {
+        if (this.categorizedServiceList && this.servicesCount > 1 && this.locations && this.locations.length > 1) {
+          if (size === 'mini') {
+            return {
+              workHours: 22,
+              hour: 24,
+              services: 22,
+              location: 22
+            }
+          }
+
+          if (size === 'mobile') {
+            return {
+              workHours: 22,
+              hour: 12,
+              services: 22,
+              location: 22
+            }
+          }
+
+          return {
+            workHours: 10,
+            hour: 12,
+            services: 7,
+            location: 5
+          }
+        } else if (this.categorizedServiceList && this.servicesCount > 1) {
+          if (size === 'mini') {
+            return {
+              workHours: 22,
+              hour: 24,
+              services: 22,
+              location: 0
+            }
+          }
+
+          if (size === 'mobile') {
+            return {
+              workHours: 22,
+              hour: 12,
+              services: 22,
+              location: 0
+            }
+          }
+
+          return {
+            workHours: 10,
+            hour: 12,
+            services: 12,
+            location: 0
+          }
+        } else if (this.locations && this.locations.length > 1) {
+          if (size === 'mini') {
+            return {
+              workHours: 22,
+              hour: 24,
+              services: 0,
+              location: 22
+            }
+          }
+
+          if (size === 'mobile') {
+            return {
+              workHours: 22,
+              hour: 12,
+              services: 0,
+              location: 22
+            }
+          }
+
+          return {
+            workHours: 10,
+            hour: 12,
+            services: 0,
+            location: 14
+          }
+        } else {
+          if (size === 'mini') {
+            return {
+              workHours: 22,
+              hour: 24,
+              services: 0,
+              location: 0
+            }
+          }
+
+          if (size === 'mobile') {
+            return {
+              workHours: 22,
+              hour: 12,
+              services: 0,
+              location: 0
+            }
+          }
+
+          return {
+            workHours: 22,
+            hour: 12,
+            services: 0,
+            location: 0
+          }
+        }
+      },
+
+      handleResize () {
+        if (this.activeTab === 'specialDays' || this.activeTab === 'specialDays') {
+          let amContainer = this.$refs.specialDays
+
+          if (amContainer.offsetWidth < 320) {
+            this.responsiveGrid.editHours = this.getColumnLength('mini')
+          } else if (amContainer.offsetWidth < 650) {
+            this.responsiveGrid.editHours = this.getColumnLength('mobile')
+          } else {
+            this.responsiveGrid.editHours = this.getColumnLength()
+          }
+        }
+      },
 
       getInitSpecialDayModel () {
         return {
@@ -418,33 +563,13 @@
         })
 
         return servicesCount
-      },
+      }
+    },
 
-      getColumnLength () {
-        if (this.categorizedServiceList && this.servicesCount > 1 && this.locations && this.locations.length > 1) {
-          return {
-            workHours: 5,
-            services: 7,
-            location: 5
-          }
-        } else if (this.categorizedServiceList && this.servicesCount > 1) {
-          return {
-            workHours: 5,
-            services: 12,
-            location: 0
-          }
-        } else if (this.locations && this.locations.length > 1) {
-          return {
-            workHours: 5,
-            services: 0,
-            location: 12
-          }
-        } else {
-          return {
-            workHours: 11,
-            services: 0,
-            location: 0
-          }
+    watch: {
+      'activeTab' () {
+        if (this.activeTab === 'specialDays' || this.activeTab === 'special') {
+          this.handleResize()
         }
       }
     }

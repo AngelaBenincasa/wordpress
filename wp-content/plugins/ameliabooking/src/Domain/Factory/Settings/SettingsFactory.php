@@ -32,6 +32,8 @@ class SettingsFactory
 
         $data = $entityJsonData ? json_decode($entityJsonData->getValue(), true) : [];
 
+        $isOldEntitySettings = !isset($data['activation']['version']);
+
         if (isset($data['general']['defaultAppointmentStatus'])) {
             $generalSettings->setDefaultAppointmentStatus($data['general']['defaultAppointmentStatus']);
         } else {
@@ -55,6 +57,22 @@ class SettingsFactory
         } else {
             $generalSettings->setMinimumTimeRequirementPriorToCanceling(
                 $globalSettings['general']['minimumTimeRequirementPriorToCanceling']
+            );
+        }
+
+        if (isset($data['general']['minimumTimeRequirementPriorToRescheduling'])) {
+            $generalSettings->setMinimumTimeRequirementPriorToRescheduling(
+                $data['general']['minimumTimeRequirementPriorToRescheduling']
+            );
+        } else {
+            $generalSettings->setMinimumTimeRequirementPriorToRescheduling(
+                $globalSettings['general']['minimumTimeRequirementPriorToRescheduling']
+            );
+        }
+
+        if ($isOldEntitySettings && !isset($globalSettings['general']['minimumTimeRequirementPriorToCanceling'])) {
+            $generalSettings->setMinimumTimeRequirementPriorToRescheduling(
+                $generalSettings->getMinimumTimeRequirementPriorToCanceling()
             );
         }
 

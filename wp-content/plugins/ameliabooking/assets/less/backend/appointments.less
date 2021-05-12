@@ -25,7 +25,7 @@
           vertical-align: top;
 
           &.calc-width {
-            width: calc(~'100% - 62px');
+            width: calc(~'100% - 63px');
             @media @less-then-medium {
               width: calc(~'100% - 123px');
             }
@@ -218,6 +218,11 @@
             &.paid {
               background-color: fade(@color-green, 10%);
               color: @color-green;
+            }
+
+            &.partiallyPaid {
+              background-color: fade(@color-blue, 10%);
+              color: @color-blue;
             }
 
             @media @less-then-medium {

@@ -2,25 +2,27 @@
   <div class="am-days-off" :class="{'am-lite-container-disabled': $root.isLite}">
 
     <div class="am-dialog-table">
-      <el-row :gutter="20" type="flex" align="middle">
+      <el-row :gutter="20" type="flex" align="middle" style="flex-wrap: wrap">
+        <el-col class="am-days-off__header">
 
-        <!-- Year Picker -->
-        <el-date-picker
+          <!-- Year Picker -->
+          <el-date-picker
             v-model="filterDate"
             type="year"
             :clearable="false"
             :placeholder="$root.labels.pick_a_year"
             @change="filterDaysOff"
-        />
-        <!-- /Year Picker -->
+          />
+          <!-- /Year Picker -->
 
-        <!-- Legend -->
-        <div class="am-days-off__legend">
-          <div class="am-legend-repeat"><span class="type repeat"></span>{{ $root.labels.repeat_every_year }}</div>
-          <div class="am-legend-once"><span class="type once"></span>{{ $root.labels.once_off }}</div>
-        </div>
-        <!-- /Legend -->
+          <!-- Legend -->
+          <div class="am-days-off__legend">
+            <div class="am-legend-repeat"><span class="type repeat"></span>{{ $root.labels.repeat_every_year }}</div>
+            <div class="am-legend-once"><span class="type once"></span>{{ $root.labels.once_off }}</div>
+          </div>
+          <!-- /Legend -->
 
+        </el-col>
       </el-row>
     </div>
 
@@ -43,18 +45,19 @@
 
         <!-- Day Off Row -->
         <el-row
-            v-for="(dayOff, index) in yearDaysOff" :key="index"
-            :gutter="20" type="flex" align="middle" class="am-day-off"
+          v-for="(dayOff, index) in yearDaysOff" :key="index"
+          :gutter="20" type="flex" align="middle" class="am-day-off"
         >
 
           <!-- Day Off Type and Date -->
           <el-col :span="12">
             <span class="type" :class="{ 'repeat': dayOff.repeat, 'once': !dayOff.repeat }"></span>
             <el-tooltip
-                effect="dark"
-                :content="dayOff.startDate === dayOff.endDate ? getFrontedFormattedDate (dayOff.startDate) :
+              effect="dark"
+              :content="dayOff.startDate === dayOff.endDate ? getFrontedFormattedDate (dayOff.startDate) :
               getFrontedFormattedDate(dayOff.startDate) + ' - ' + getFrontedFormattedDate(dayOff.endDate)"
-                placement="top-start">
+              placement="top-start"
+            >
               <span>
                 {{ dayOff.startDate === dayOff.endDate ? getFrontedFormattedDate (dayOff.startDate) :
                 getFrontedFormattedDate(dayOff.startDate) + ' - ' + getFrontedFormattedDate(dayOff.endDate) }}
@@ -172,8 +175,9 @@
         </el-row>
 
         <!-- Listed Day Off Row -->
-        <el-row :gutter="20" type="flex" align="middle" class="am-day-off"
-                v-for="(dayOff, index) in yearListedDaysOff" :key="index"
+        <el-row
+          v-for="(dayOff, index) in yearListedDaysOff" :key="index"
+          :gutter="20" type="flex" align="middle" class="am-day-off"
         >
 
           <!-- Listed Day Off Type and Date -->

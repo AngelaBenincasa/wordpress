@@ -10,7 +10,11 @@ namespace AmeliaBooking\Domain\ValueObjects\String;
 final class PaymentStatus
 {
     const PAID = 'paid';
+
     const PENDING = 'pending';
+
+    const PARTIALLY_PAID = 'partiallyPaid';
+
     /**
      * @var string
      */

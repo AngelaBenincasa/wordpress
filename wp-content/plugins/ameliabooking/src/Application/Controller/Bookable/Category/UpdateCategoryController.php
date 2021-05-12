@@ -23,7 +23,8 @@ class UpdateCategoryController extends Controller
     protected $allowedFields = [
         'status',
         'name',
-        'position'
+        'position',
+        'translations',
     ];
 
     /**

@@ -8,6 +8,7 @@ namespace AmeliaBooking\Infrastructure\WP\EventListeners\Booking\Appointment;
 
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Services\Booking\BookingApplicationService;
+use AmeliaBooking\Application\Services\Booking\IcsApplicationService;
 use AmeliaBooking\Application\Services\Notification\EmailNotificationService;
 use AmeliaBooking\Application\Services\Notification\SMSNotificationService;
 use AmeliaBooking\Application\Services\WebHook\WebHookApplicationService;
@@ -17,6 +18,8 @@ use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Factory\Booking\Appointment\AppointmentFactory;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
+use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
+use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
 use AmeliaBooking\Infrastructure\Common\Container;
 use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
@@ -36,6 +39,10 @@ class AppointmentEditedEventHandler
 {
     /** @var string */
     const APPOINTMENT_EDITED = 'appointmentEdited';
+    /** @var string */
+    const APPOINTMENT_ADDED = 'appointmentAdded';
+    /** @var string */
+    const APPOINTMENT_DELETED = 'appointmentDeleted';
     /** @var string */
     const APPOINTMENT_STATUS_AND_TIME_UPDATED = 'appointmentStatusAndTimeUpdated';
     /** @var string */
@@ -133,26 +140,62 @@ class AppointmentEditedEventHandler
             }
         }
 
-        if ($googleCalendarService) {
+        if (!$appointmentEmployeeChanged && $googleCalendarService) {
             try {
                 $googleCalendarService->handleEvent($reservationObject, self::APPOINTMENT_EDITED);
             } catch (Exception $e) {
             }
+        } elseif ($googleCalendarService) {
+            $newProviderId = $reservationObject->getProviderId()->getValue();
 
-            if ($reservationObject->getGoogleCalendarEventId() !== null) {
-                $appointment['googleCalendarEventId'] = $reservationObject->getGoogleCalendarEventId()->getValue();
+            $reservationObject->setProviderId(new Id($appointmentEmployeeChanged));
+
+            try {
+                $googleCalendarService->handleEvent($reservationObject, self::APPOINTMENT_DELETED);
+            } catch (Exception $e) {
+            }
+
+            $reservationObject->setGoogleCalendarEventId(null);
+
+            $reservationObject->setProviderId(new Id($newProviderId));
+
+            try {
+                $googleCalendarService->handleEvent($reservationObject, self::APPOINTMENT_ADDED);
+            } catch (Exception $e) {
             }
         }
 
-        if ($outlookCalendarService) {
+        if ($reservationObject->getGoogleCalendarEventId() !== null) {
+            $appointment['googleCalendarEventId'] = $reservationObject->getGoogleCalendarEventId()->getValue();
+        }
+
+        if (!$appointmentEmployeeChanged && $outlookCalendarService) {
             try {
                 $outlookCalendarService->handleEvent($reservationObject, self::APPOINTMENT_EDITED);
             } catch (Exception $e) {
             }
+        } elseif ($outlookCalendarService) {
+            $newProviderId = $reservationObject->getProviderId()->getValue();
 
-            if ($reservationObject->getOutlookCalendarEventId() !== null) {
-                $appointment['outlookCalendarEventId'] = $reservationObject->getOutlookCalendarEventId()->getValue();
+            $reservationObject->setProviderId(new Id($appointmentEmployeeChanged));
+
+            try {
+                $outlookCalendarService->handleEvent($reservationObject, self::APPOINTMENT_DELETED);
+            } catch (Exception $e) {
             }
+
+            $reservationObject->setOutlookCalendarEventId(null);
+
+            $reservationObject->setProviderId(new Id($newProviderId));
+
+            try {
+                $outlookCalendarService->handleEvent($reservationObject, self::APPOINTMENT_ADDED);
+            } catch (Exception $e) {
+            }
+        }
+
+        if ($reservationObject->getOutlookCalendarEventId() !== null) {
+            $appointment['outlookCalendarEventId'] = $reservationObject->getOutlookCalendarEventId()->getValue();
         }
 
         if ($appointmentStatusChanged === true) {
@@ -164,6 +207,20 @@ class AppointmentEditedEventHandler
         }
 
         if ($appointmentRescheduled === true) {
+
+            /** @var IcsApplicationService $icsService */
+            $icsService = $container->get('application.ics.service');
+
+            foreach ($appointment['bookings'] as $index => $booking) {
+                if ($booking['status'] === BookingStatus::APPROVED || $booking['status'] === BookingStatus::PENDING) {
+                    $appointment['bookings'][$index]['icsFiles'] = $icsService->getIcsData(
+                        Entities::APPOINTMENT,
+                        $booking['id'],
+                        [],
+                        true
+                    );
+                }
+            }
             $emailNotificationService->sendAppointmentRescheduleNotifications($appointment);
 
             if ($settingsService->getSetting('notifications', 'smsSignedIn') === true) {
@@ -171,7 +228,7 @@ class AppointmentEditedEventHandler
             }
         }
 
-        $appointment['employee_changed'] = $appointmentEmployeeChanged;
+        $appointment['employee_changed'] = $appointmentEmployeeChanged !== null;
 
         $emailNotificationService->sendAppointmentEditedNotifications(
             $appointment,

@@ -25,6 +25,9 @@
                 :coupons="options.entities.coupons"
                 type="email"
                 :pageUrl="getPageUrl()"
+                :languagesData="languagesData"
+                :passed-used-languages="options.settings.general.usedLanguages"
+                @manageLanguages="manageLanguages = true"
             ></customize-notifications>
           </el-tab-pane>
           <!-- /Email Notifications -->
@@ -37,6 +40,9 @@
                 :categories="options.entities.categories"
                 :customFields="options.entities.customFields"
                 :coupons="options.entities.coupons"
+                :languagesData="languagesData"
+                :passed-used-languages="options.settings.general.usedLanguages"
+                @manageLanguages="manageLanguages = true"
             >
             </sms-notifications>
           </el-tab-pane>
@@ -55,6 +61,26 @@
       </el-col>
       <!-- /Help Button -->
 
+
+      <!-- Dialog Manage Notifications -->
+      <transition name="slide">
+        <el-dialog
+          class="am-side-dialog am-dialog-email-codes"
+          :visible.sync="manageLanguages"
+          :show-close="false"
+          v-if="manageLanguages"
+        >
+          <dialog-manage-languages
+            :passed-used-languages="options.settings.general.usedLanguages"
+            :languages-data="languagesData"
+            @closeDialogManageLanguages="manageLanguages = false"
+            @saveDialogManageLanguages="saveDialogManageLanguages"
+          >
+          </dialog-manage-languages>
+        </el-dialog>
+      </transition>
+      <!-- /Dialog Manage Notifications -->
+
     </div>
   </div>
 </template>
@@ -68,6 +94,7 @@
   import notifyMixin from '../../../js/backend/mixins/notifyMixin'
   import durationMixin from '../../../js/common/mixins/durationMixin'
   import helperMixin from '../../../js/backend/mixins/helperMixin'
+  import DialogManageLanguages from './common/DialogManageLanguages.vue'
 
   export default {
     mixins: [imageMixin, notifyMixin, durationMixin, helperMixin],
@@ -81,8 +108,15 @@
           entities: {
             customFields: []
           },
+          settings: {
+            general: {
+              usedLanguages: []
+            }
+          },
           fetched: false
-        }
+        },
+        languagesData: null,
+        manageLanguages: false
       }
     },
 
@@ -104,11 +138,13 @@
       getEntities () {
         this.$http.get(`${this.$root.getAjaxUrl}/entities`, {
           params: {
-            types: []
+            types: ['settings']
           }
         }).then(response => {
           this.options.entities = response.data.data
           this.options.fetched = true
+          this.options.settings.general.usedLanguages = response.data.data.settings.general.usedLanguages
+          this.languagesData = response.data.data.settings.languages
           this.getNotifications()
         }).catch(e => {
           console.log(e.message)
@@ -137,6 +173,19 @@
         if ('notificationTab' in urlParams && urlParams.notificationTab === 'sms') {
           this.notificationTab = 'sms'
         }
+      },
+
+      saveDialogManageLanguages (usedLanguages) {
+        this.manageLanguages = false
+        this.options.settings.general.usedLanguages = usedLanguages
+        this.usedLanguages = usedLanguages
+        this.$http.post(`${this.$root.getAjaxUrl}/settings`, {
+          usedLanguages: this.usedLanguages
+        }).then(() => {
+          this.notify(this.$root.labels.success, this.$root.labels.settings_saved, 'success')
+        }).catch((e) => {
+          console.log(e)
+        })
       }
     },
 
@@ -151,7 +200,8 @@
       PageHeader,
       CustomizeNotifications,
       SmsNotifications,
-      quillEditor
+      quillEditor,
+      DialogManageLanguages
     }
   }
 </script>

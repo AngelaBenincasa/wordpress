@@ -131,6 +131,20 @@
   .am-flexed2 {
     display: flex;
     //flex-wrap: wrap;
+
+    &:last-of-type {
+      position: absolute;
+      display: flex;
+      right: 0;
+      justify-content: flex-end;
+    }
+
+    &.mobile {
+      position: absolute;
+      display: flex;
+      right: 0;
+      justify-content: flex-end;
+    }
   }
 
   a.am-help-button {
@@ -683,6 +697,12 @@
     }
   }
 
+  &.partiallyPaid {
+    &:before {
+      border-color: @color-blue;
+    }
+  }
+
   &.approved {
     &:before {
       border-color: @color-green;
@@ -1024,6 +1044,10 @@
 
       .el-icon-circle-check {
         color: @color-green;
+
+        &.partially-paid {
+          color: @color-blue;
+        }
       }
 
       .el-icon-refresh {
@@ -1094,15 +1118,16 @@
     border-right: 1px solid @color-light-gray;
     border-bottom: 1px solid @color-light-gray;
 
-    .el-row--flex {
-      @media @less-then-small {
-        display: grid;
-      }
-    }
+    //.el-row--flex {
+    //  @media @less-then-small {
+    //    display: grid;
+    //  }
+    //}
 
     .el-row {
       margin-bottom: 0 !important;
       line-height: 40px;
+      flex-wrap: wrap;
     }
 
     .am-delete-element {
@@ -1343,10 +1368,25 @@
     }
   }
 
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   &__legend {
     margin-left: auto;
     margin-right: 10px;
     order: 2;
+
+    @media @less-then-xsmall {
+      width: 100%;
+    }
+
+    & > div {
+      margin-top: @margin-medium;
+    }
 
     .am-legend-once {
       margin-left: 10px;

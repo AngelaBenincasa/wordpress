@@ -45,11 +45,11 @@
         <el-col :sm="12">
           <el-select :placeholder="$root.labels.select_calendar" v-model="calendarIndex">
             <el-option
-                v-for="(item, index) in calendars"
-                :key="index"
-                :label="item.label"
-                :value="index"
-                :style="{'color': calendarIndex === index ? addToCalendarData.color : ''}"
+              v-for="(item, index) in calendars"
+              :key="index"
+              :label="item.label"
+              :value="index"
+              :style="{'color': calendarIndex === index ? addToCalendarData.color : ''}"
             >
             </el-option>
           </el-select>
@@ -59,15 +59,18 @@
       <br>
 
       <!-- Button -->
-      <div :class="{'is-disabled' : calendarIndex === null}" class="el-button el-button--primary calendar-link"
-           @mouseover="setBookableConfirmStyle(true)"
-           @mouseleave="setBookableConfirmStyle(false)"
-           :style="bookableConfirmStyle"
-           v-if="addToCalendarData.active">
-        <a v-if="calendarIndex !== null"
-           @click="executeIfMultipleLinks"
-           :href="calendars[calendarIndex].links[0]"
-           :target="(calendars[calendarIndex].type === 'ios' || calendars[calendarIndex].type === 'outlook') ? '_self' : '_blank'"
+      <div
+        :class="{'is-disabled' : calendarIndex === null}" class="el-button el-button--primary calendar-link"
+         @mouseover="setBookableConfirmStyle(true)"
+         @mouseleave="setBookableConfirmStyle(false)"
+         :style="bookableConfirmStyle"
+         v-if="addToCalendarData.active"
+      >
+        <a
+          v-if="calendarIndex !== null"
+          @click="executeIfMultipleLinks"
+          :href="calendars[calendarIndex].links[0]"
+          :target="(calendars[calendarIndex].type === 'ios' || calendars[calendarIndex].type === 'outlook') ? '_self' : '_blank'"
         >
           {{ $root.labels.add_to_calendar }}
         </a>
@@ -77,19 +80,20 @@
       </div>
 
       <!-- Button Redirect URL After Appointment -->
-      <div class="el-button el-button--primary redirect-link"
-           @mouseover="setBookableConfirmStyle(true)"
-           @mouseleave="setBookableConfirmStyle(false)"
-           :style="bookableConfirmStyle">
-        <a v-if="redirectUrlAfterAppointment !== '' "
-           :href="redirectUrlAfterAppointment"
-           target="_self"
+      <div
+        class="el-button el-button--primary redirect-link"
+        @mouseover="setBookableConfirmStyle(true)"
+        @mouseleave="setBookableConfirmStyle(false)"
+        :style="bookableConfirmStyle"
+      >
+        <a
+          v-if="redirectUrlAfterAppointment !== '' "
+          :href="redirectUrlAfterAppointment"
+          target="_self"
         >
           {{ $root.labels.finish_appointment }}
         </a>
-        <a v-else
-           @click="closeDialog()"
-        >
+        <a v-else @click="closeDialog()">
           {{ $root.labels.finish_appointment }}
         </a>
       </div>
@@ -276,16 +280,18 @@
 
     computed: {
       bookableConfirmStyle () {
-        return this.hoverConfirm ? {
-          color: this.addToCalendarData.color,
-          borderColor: this.addToCalendarData.color,
-          backgroundColor: this.addToCalendarData.color,
-          opacity: 0.8
-        } : {
-          color: '#ffffff',
-          backgroundColor: this.addToCalendarData.color,
-          borderColor: this.addToCalendarData.color,
-          opacity: 1
+        if (this.addToCalendarData.type === 'event') {
+          return this.hoverConfirm ? {
+            color: this.addToCalendarData.color,
+            borderColor: this.addToCalendarData.color,
+            backgroundColor: this.addToCalendarData.color,
+            opacity: 0.8
+          } : {
+            color: '#ffffff',
+            backgroundColor: this.addToCalendarData.color,
+            borderColor: this.addToCalendarData.color,
+            opacity: 1
+          }
         }
       }
     }

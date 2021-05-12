@@ -2,6 +2,18 @@ import moment from 'moment'
 
 export default {
   methods: {
+    getPreselectedTag () {
+      return 'eventTag' in this.$root.shortcodeData.booking ? this.$root.shortcodeData.booking.eventTag : null
+    },
+
+    getPreselectedEventId () {
+      return 'eventId' in this.$root.shortcodeData.booking ? this.$root.shortcodeData.booking.eventId : null
+    },
+
+    getPreselectedEventRecurring () {
+      return 'eventRecurring' in this.$root.shortcodeData.booking ? this.$root.shortcodeData.booking.eventRecurring : null
+    },
+
     getImplodedPeriods (eventPeriods) {
       let lastPeriod = null
 

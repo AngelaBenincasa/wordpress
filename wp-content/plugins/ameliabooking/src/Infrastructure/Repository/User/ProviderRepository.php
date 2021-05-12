@@ -376,7 +376,11 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
                     s.recurringCycle AS service_recurringCycle,
                     s.recurringSub AS service_recurringSub,
                     s.recurringPayment AS service_recurringPayment,
-                    s.settings AS service_settings
+                    s.settings AS service_settings,
+                    s.translations AS service_translations,
+                    s.deposit AS service_deposit,
+                    s.depositPayment AS service_depositPayment,
+                    s.depositPerPerson AS service_depositPerPerson
                 FROM {$this->table} u
                 LEFT JOIN {$this->providerLocationTable} lt ON lt.userId = u.id
                 LEFT JOIN {$this->providerServicesTable} st ON st.userId = u.id
@@ -790,6 +794,11 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
                     s.pictureFullPath AS service_picture_full,
                     s.pictureThumbPath AS service_picture_thumb,
                     s.settings AS service_settings,
+                    s.timeBefore AS service_timeBefore,
+                    s.timeAfter AS service_timeAfter,
+                    s.deposit AS service_deposit,
+                    s.depositPayment AS service_depositPayment,
+                    s.depositPerPerson AS service_depositPerPerson,
                     gd.id AS google_calendar_id,
                     gd.token AS google_calendar_token,
                     gd.calendarId AS google_calendar_calendar_id,
@@ -1013,6 +1022,12 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
                     s.pictureThumbPath AS service_picture_thumb,
                     s.aggregatedPrice AS service_aggregatedPrice,
                     s.recurringPayment AS service_recurringPayment,
+                    s.translations AS service_translations,
+                    s.timeBefore AS service_timeBefore,
+                    s.timeAfter AS service_timeAfter,
+                    s.deposit AS service_deposit,
+                    s.depositPayment AS service_depositPayment,
+                    s.depositPerPerson AS service_depositPerPerson,
                     e.id AS extra_id,
                     e.name AS extra_name,
                     e.price AS extra_price,
@@ -1684,12 +1699,18 @@ class ProviderRepository extends UserRepository implements ProviderRepositoryInt
                 'aggregatedPrice'  => isset($row['service_aggregatedPrice']) ? $row['service_aggregatedPrice'] : null,
                 'pictureFullPath'  => isset($row['service_picture_full']) ? $row['service_picture_full'] : null,
                 'pictureThumbPath' => isset($row['service_picture_thumb']) ? $row['service_picture_thumb'] : null,
+                'timeBefore'       => isset($row['service_timeBefore']) ? $row['service_timeBefore'] : null,
+                'timeAfter'        => isset($row['service_timeAfter']) ? $row['service_timeAfter'] : null,
                 'extras'           => [],
                 'coupons'          => [],
                 'settings'         => isset($row['service_settings']) ? $row['service_settings'] : null,
                 'recurringCycle'   => isset($row['service_recurringCycle']) ? $row['service_recurringCycle'] : null,
                 'recurringSub'     => isset($row['service_recurringSub']) ? $row['service_recurringSub'] : null,
                 'recurringPayment' => isset($row['service_recurringPayment']) ? $row['service_recurringPayment'] : null,
+                'translations'     => isset($row['service_translations']) ? $row['service_translations'] : null,
+                'deposit'          => isset($row['service_deposit']) ? $row['service_deposit'] : null,
+                'depositPayment'   => isset($row['service_depositPayment']) ? $row['service_depositPayment'] : null,
+                'depositPerPerson' => isset($row['service_depositPerPerson']) ? $row['service_depositPerPerson'] : null,
             ];
         }
 

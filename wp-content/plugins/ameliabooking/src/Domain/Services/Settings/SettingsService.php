@@ -119,11 +119,28 @@ class SettingsService
      * @param Json $entitySettingsJson
      *
      * @return Settings
-     *
-     * @throws \Interop\Container\Exception\ContainerException
      */
     public function getEntitySettings($entitySettingsJson)
     {
         return SettingsFactory::create($entitySettingsJson, $this->getAllSettingsCategorized());
+    }
+
+    /**
+     * @param Json $entitySettingsJson
+     *
+     * @return Settings
+     */
+    public function getSavedSettings($entitySettingsJson)
+    {
+        $data = $entitySettingsJson ? json_decode($entitySettingsJson->getValue(), true) : [];
+
+        $isOldEntitySettings = !isset($data['activation']['version']);
+
+        if ($isOldEntitySettings && isset($data['general']['minimumTimeRequirementPriorToCanceling'])) {
+            $data['general']['minimumTimeRequirementPriorToRescheduling'] =
+                $data['general']['minimumTimeRequirementPriorToCanceling'];
+        }
+
+        return $data;
     }
 }

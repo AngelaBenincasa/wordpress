@@ -19,6 +19,7 @@ use AmeliaBooking\Domain\ValueObjects\Recurring;
 use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
 use AmeliaBooking\Domain\ValueObjects\String\BookingType;
 use AmeliaBooking\Domain\ValueObjects\String\Name;
+use AmeliaBooking\Domain\ValueObjects\Json;
 
 /**
  * Class Event
@@ -86,6 +87,9 @@ class Event extends AbstractBookable
 
     /** @var BooleanValueObject */
     private $bookMultipleTimes;
+
+    /** @var  Json */
+    protected $translations;
 
     /**
      * Event constructor.
@@ -437,6 +441,22 @@ class Event extends AbstractBookable
     }
 
     /**
+     * @return Json
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * @param Json $translations
+     */
+    public function setTranslations(Json $translations)
+    {
+        $this->translations = $translations;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -467,6 +487,7 @@ class Event extends AbstractBookable
                 'type'               => $this->getType()->getValue(),
                 'bringingAnyone'     => $this->getBringingAnyone() ? $this->getBringingAnyone()->getValue() : null,
                 'bookMultipleTimes'  => $this->getBookMultipleTimes() ? $this->getBookMultipleTimes()->getValue() : null,
+                'translations'       => $this->getTranslations() ? $this->getTranslations()->getValue() : null,
             ]
         );
     }

@@ -28,6 +28,7 @@ class CustomFieldsOptionsTable extends AbstractDatabaseTable
                    `customFieldId` int(11) NOT NULL,
                    `label` VARCHAR(255) NOT NULL DEFAULT '',
                    `position` int(11) NOT NULL,
+                   `translations` TEXT NULL DEFAULT NULL,
                     PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
     }

@@ -147,15 +147,47 @@
                 </el-col>
                 <!-- /Notification Name -->
 
-                <!-- Show Email Codes Button -->
                 <el-col :span="12">
+                  <!-- Show Email Codes Button -->
                   <div class="align-right">
                     <p class="am-blue-link" @click="showDialogPlaceholders">
                       {{ $root.labels['show_' + type + '_codes'] }}
                     </p>
                   </div>
+                  <!-- /Show Email Codes Button -->
+
+                  <!-- Select Language -->
+                  <div class="align-right" v-if="notification.sendTo === 'customer'">
+                    <el-popover :disabled="!$root.isLite" ref="languagesPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
+                    <el-select class="select-languages" :placeholder="$root.labels.language" v-model="selectedLanguage" clearable filterable v-popover:languagesPop :disabled="$root.isLite">
+                      <li class="el-select-dropdown__item" @click="manageLanguages">
+                        <span>
+                          <img class="option-languages-flag" :src="$root.getUrl+'public/img/translate.svg'">
+                          {{ $root.labels.manage_languages }}
+                        </span>
+                      </li>
+                      <hr v-if="usedLanguages.length > 0">
+
+                      <template slot="prefix">
+                        <img class="select-languages-flag" :src="getLanguageFlag(selectedLanguage)">
+                      </template>
+
+                      <el-option
+                        v-for="(lang, index) in usedLanguages"
+                        :key="index"
+                        :label="getLanguageLabel(lang)"
+                        :value="lang"
+                      >
+                        <span>
+                          <img class="option-languages-flag" :src="getLanguageFlag(lang)">
+                          {{ getLanguageLabel(lang) }}
+                        </span>
+                      </el-option>
+
+                    </el-select>
+                  </div>
+                  <!-- /Select Language -->
                 </el-col>
-                <!-- /Show Email Codes Button -->
 
               </el-row>
               <!-- /Name & Show Email Codes -->
@@ -166,7 +198,7 @@
                 <!-- Subject -->
                 <el-col :span="notificationTimeBased ? 18 : 24" v-if="type === 'email'">
                   <el-form-item :label="$root.labels.subject + ':'">
-                    <el-input type="text" v-model="notification.subject"></el-input>
+                    <el-input type="text" v-model="notificationSubject"></el-input>
                   </el-form-item>
                 </el-col>
                 <!-- /Subject -->
@@ -224,7 +256,7 @@
 
                 <!-- Quill Editor -->
                 <quill-editor
-                    v-model="notification.content" v-if="type === 'email'"
+                    v-model="notificationContent" v-if="type === 'email'"
                     :options="editorOptions"
                     @change="parseQuillEditorContent"
                 >
@@ -234,7 +266,7 @@
                 <!-- Textarea -->
                 <el-input
                     v-if="type === 'sms'"
-                    v-model="notification.content"
+                    v-model="notificationContent"
                     type="textarea"
                     :rows="7"
                     placeholder=""
@@ -268,12 +300,19 @@
                       v-if="notification.name === 'customer_package_purchased' || notification.name === 'provider_package_purchased'"
               >
                 <el-col :span="16">
-                  <p><strong>{{ $root.labels.package_placeholder_label }}</strong> %package_appointments_details%</p>
+                  <div class="am-customize-notifications-combined-tooltip">
+                    <strong>{{ $root.labels.package_placeholder_label }}</strong>
+                    %package_appointments_details%
+                    <el-tooltip placement="top">
+                      <div slot="content" v-html="$root.labels.ph_package_tooltip"></div>
+                      <i class="el-icon-question am-tooltip-icon"/>
+                    </el-tooltip>
+                  </div>
                 </el-col>
 
                 <el-col :span="8" class="am-align-right">
-                  <p class="am-blue-link" @click="dialogCombinedPlaceholder = true">
-                    {{ $root.labels.configure_placeholder }}
+                  <p class="am-blue-link" @click="openDialogCombinedPlaceholders()">
+                    {{ $root.labels.configure_placeholder_here }}
                   </p>
                 </el-col>
               </el-row>
@@ -285,13 +324,20 @@
                       notification.name === 'provider_appointment_pending'"
               >
                 <el-col :span="16">
-                  <p :style="{'opacity': $root.isLite ? 0.5 : 1}"><strong>{{ $root.labels.ph_recurring_appointments_details }}</strong> %recurring_appointments_details%</p>
+                  <div :style="{'opacity': $root.isLite ? 0.5 : 1}" class="am-customize-notifications-combined-tooltip">
+                    <strong>{{ $root.labels.ph_recurring_appointments_details }}</strong>
+                    %recurring_appointments_details%
+                    <el-tooltip placement="top">
+                      <div slot="content" v-html="$root.labels.ph_recurring_tooltip"></div>
+                      <i class="el-icon-question am-tooltip-icon"></i>
+                    </el-tooltip>
+                  </div>
                 </el-col>
 
                 <el-col :span="8" class="am-align-right">
                   <el-popover :disabled="!$root.isLite" ref="recurringPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
-                  <p class="am-blue-link" @click="!$root.isLite ? dialogCombinedPlaceholder = true : false" :style="{'opacity': $root.isLite ? 0.5 : 1}" v-popover:recurringPop>
-                    {{ $root.labels.configure_placeholder }}
+                  <p class="am-blue-link" @click="!$root.isLite ? openDialogCombinedPlaceholders() : false" :style="{'opacity': $root.isLite ? 0.5 : 1}" v-popover:recurringPop>
+                    {{ $root.labels.configure_placeholder_here }}
                   </p>
                 </el-col>
               </el-row>
@@ -392,6 +438,8 @@
           :notification="notification"
           :placeholdersNames="getDialogPlaceholderNames(notification)"
           :excludedPlaceholders="getExcludedPlaceholders(notification, false, true, false)"
+          :selectedLanguage="selectedLanguage"
+          :languagesData="languagesData"
         >
         </dialog-combined-placeholder>
       </el-dialog>
@@ -546,6 +594,14 @@
       user: {
         default: () => {},
         type: Object
+      },
+      passedUsedLanguages: {
+        default: () => [],
+        type: Array
+      },
+      languagesData: {
+        default: () => {},
+        type: Object
       }
     },
 
@@ -586,15 +642,36 @@
         },
         testNotificationLoading: false,
         testNotificationModal: false,
-        userTypeTab: 'customer'
+        userTypeTab: 'customer',
+        selectedLanguage: null,
+        usedLanguages: []
       }
     },
 
     mounted () {
       this.getNotification(null)
+      this.usedLanguages = this.passedUsedLanguages
     },
 
     methods: {
+      manageLanguages () {
+        this.$emit('manageLanguages')
+      },
+
+      openDialogCombinedPlaceholders () {
+        if (this.selectedLanguage) {
+          let name = this.getPlaceholdersSettingsName + (this.type === 'sms' ? 'Sms' : '')
+          if (!this.$root.settings.appointments.translations[name]) {
+            this.$root.settings.appointments.translations[name] = {}
+          }
+
+          if (!(this.selectedLanguage in this.$root.settings.appointments.translations[name])) {
+            this.$root.settings.appointments.translations[name][this.selectedLanguage] = this.$root.settings.appointments[name]
+          }
+        }
+
+        this.dialogCombinedPlaceholder = true
+      },
       getExcludedPlaceholders (notification, isDialog, isCombinedDialog, isInline) {
         let excludedPlaceholders = {}
 
@@ -922,6 +999,23 @@
             notification => notification.sendTo === 'provider' && notification.type === this.type && notification.entity === entity && ['provider_panel_access'].indexOf(notification.name) === -1
           )
         }
+      },
+
+      getLanguageLabel (lang) {
+        return this.languagesData[lang] ? this.languagesData[lang].name : ''
+      },
+
+      getLanguageFlag (lang) {
+        if (lang && this.languagesData[lang] && this.languagesData[lang].country_code) {
+          return this.$root.getUrl + 'public/img/flags/' + this.languagesData[lang].country_code + '.png'
+        }
+        return this.$root.getUrl + 'public/img/grey.svg'
+      }
+    },
+
+    watch: {
+      'passedUsedLanguages' () {
+        this.usedLanguages = this.passedUsedLanguages
       }
     },
 
@@ -936,6 +1030,58 @@
         },
         set (selected) {
           this.notification.time = this.$moment(selected, 'HH:mm').format('HH:mm:ss')
+        }
+      },
+
+      notificationSubject: {
+        get () {
+          if (this.selectedLanguage && this.notification.translations) {
+            let translations = JSON.parse(this.notification.translations)
+            if (translations['subject'] && translations['subject'][this.selectedLanguage]) {
+              return translations['subject'][this.selectedLanguage]
+            }
+          }
+          return this.notification.subject
+        },
+        set (subject) {
+          if (this.selectedLanguage) {
+            this.notification.translations = this.notification.translations ? this.notification.translations : '{}'
+            let translations = JSON.parse(this.notification.translations)
+
+            if (!translations['subject']) {
+              translations['subject'] = {}
+            }
+            translations['subject'][this.selectedLanguage] = subject
+            this.notification.translations = JSON.stringify(translations)
+          } else {
+            this.notification.subject = subject
+          }
+        }
+      },
+
+      notificationContent: {
+        get () {
+          if (this.selectedLanguage && this.notification.translations) {
+            let translations = JSON.parse(this.notification.translations)
+            if (translations['content'] && translations['content'][this.selectedLanguage]) {
+              return translations['content'][this.selectedLanguage]
+            }
+          }
+          return this.notification.content
+        },
+        set (content) {
+          if (this.selectedLanguage) {
+            this.notification.translations = this.notification.translations ? this.notification.translations : '{}'
+            let translations = JSON.parse(this.notification.translations)
+
+            if (!translations['content']) {
+              translations['content'] = {}
+            }
+            translations['content'][this.selectedLanguage] = content
+            this.notification.translations = JSON.stringify(translations)
+          } else {
+            this.notification.content = content
+          }
         }
       },
 

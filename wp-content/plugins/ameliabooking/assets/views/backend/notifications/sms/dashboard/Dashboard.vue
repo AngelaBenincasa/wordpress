@@ -150,6 +150,9 @@
                 :user="user"
                 type="sms"
                 :pageUrl="getPageUrl()"
+                :languagesData="languagesData"
+                :passed-used-languages="passedUsedLanguages"
+                @manageLanguages="manageLanguages()"
             ></customize-notifications>
           </transition>
           <!-- /Customize SMS -->
@@ -246,6 +249,14 @@
       notifications: {
         default: () => [],
         type: Array
+      },
+      passedUsedLanguages: {
+        default: () => [],
+        type: Array
+      },
+      languagesData: {
+        default: () => {},
+        type: Object
       }
     },
 
@@ -332,6 +343,10 @@
       increaseBalance (amount) {
         this.user.balance = this.getFormattedMessagePrice(parseFloat(this.user.balance.replace(',', '.')) + parseInt(amount))
         this.dialogRechargeBalance = false
+      },
+
+      manageLanguages () {
+        this.$emit('manageLanguages')
       }
     },
 

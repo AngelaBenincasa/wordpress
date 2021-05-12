@@ -40,8 +40,11 @@
               :events="options.entities.events"
               :categories="options.entities.categories"
               :services="options.entities.services"
+              :passed-used-languages="options.settings.general.usedLanguages"
+              :languages-data="languagesData"
               @deleteCustomField="deleteCustomField"
               @updateCustomField="updateCustomField"
+              @usedLanguagesUpdated="updateUsedLanguages"
           >
           </custom-field>
         </draggable>
@@ -144,8 +147,14 @@
             categories: [],
             services: []
           },
+          settings: {
+            general: {
+              usedLanguages: []
+            }
+          },
           fetched: false
         },
+        languagesData: [],
         popover: false,
         types: ['text', 'text-area', 'content', 'select', 'checkbox', 'radio', 'file', 'datepicker']
       }

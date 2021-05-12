@@ -4,6 +4,7 @@ namespace AmeliaBooking\Domain\Entity\Notification;
 
 use AmeliaBooking\Domain\ValueObjects\DateTime\TimeOfDay;
 use AmeliaBooking\Domain\ValueObjects\Duration;
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\String\BookingType;
 use AmeliaBooking\Domain\ValueObjects\String\Html;
@@ -51,6 +52,9 @@ class Notification
 
     /** @var BookingType */
     private $entity;
+
+    /** @var  Json */
+    private $translations;
 
     /**
      * Notification constructor.
@@ -258,22 +262,39 @@ class Notification
     }
 
     /**
+     * @return Json
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * @param Json $translations
+     */
+    public function setTranslations(Json $translations)
+    {
+        $this->translations = $translations;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
     {
         return [
-            'id'         => null !== $this->getId() ? $this->getId()->getValue() : null,
-            'name'       => $this->getName()->getValue(),
-            'status'     => $this->getStatus()->getValue(),
-            'type'       => $this->getType()->getValue(),
-            'entity'     => $this->getEntity()->getValue(),
-            'time'       => null !== $this->getTime() ? $this->getTime()->getValue() : null,
-            'timeBefore' => null !== $this->getTimeBefore() ? $this->getTimeBefore()->getValue() : null,
-            'timeAfter'  => null !== $this->getTimeAfter() ? $this->getTimeAfter()->getValue() : null,
-            'sendTo'     => $this->getSendTo()->getValue(),
-            'subject'    => $this->getSubject()->getValue(),
-            'content'    => $this->getContent()->getValue()
+            'id'           => null !== $this->getId() ? $this->getId()->getValue() : null,
+            'name'         => $this->getName()->getValue(),
+            'status'       => $this->getStatus()->getValue(),
+            'type'         => $this->getType()->getValue(),
+            'entity'       => $this->getEntity()->getValue(),
+            'time'         => null !== $this->getTime() ? $this->getTime()->getValue() : null,
+            'timeBefore'   => null !== $this->getTimeBefore() ? $this->getTimeBefore()->getValue() : null,
+            'timeAfter'    => null !== $this->getTimeAfter() ? $this->getTimeAfter()->getValue() : null,
+            'sendTo'       => $this->getSendTo()->getValue(),
+            'subject'      => $this->getSubject()->getValue(),
+            'content'      => $this->getContent()->getValue(),
+            'translations' => $this->getTranslations() ? $this->getTranslations()->getValue() : null,
         ];
     }
 }

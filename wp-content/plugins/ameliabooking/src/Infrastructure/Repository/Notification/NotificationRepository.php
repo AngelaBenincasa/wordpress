@@ -30,17 +30,18 @@ class NotificationRepository extends AbstractRepository implements NotificationR
         $data = $entity->toArray();
 
         $params = [
-            ':name'       => $data['name'],
-            ':sendToType' => $data['sendToType'],
-            ':subject'    => $data['subject'],
-            ':content'    => $data['content'],
+            ':name'         => $data['name'],
+            ':sendToType'   => $data['sendToType'],
+            ':subject'      => $data['subject'],
+            ':content'      => $data['content'],
+            ':translations' => $data['translations'],
         ];
 
         try {
             $statement = $this->connection->prepare(
                 "INSERT INTO {$this->table} 
-                (`name`, `sendToType`, `subject`, `content`)
-                VALUES (:name, :sendToType, :subject, :content)"
+                (`name`, `sendToType`, `subject`, `content`, `translations`)
+                VALUES (:name, :sendToType, :subject, :content, :translations)"
             );
 
             $res = $statement->execute($params);
@@ -66,13 +67,14 @@ class NotificationRepository extends AbstractRepository implements NotificationR
         $data = $entity->toArray();
 
         $params = [
-            ':status'     => $data['status'],
-            ':time'       => $data['time'],
-            ':timeBefore' => $data['timeBefore'],
-            ':timeAfter'  => $data['timeAfter'],
-            ':subject'    => $data['subject'],
-            ':content'    => $data['content'],
-            ':id'         => $id,
+            ':status'       => $data['status'],
+            ':time'         => $data['time'],
+            ':timeBefore'   => $data['timeBefore'],
+            ':timeAfter'    => $data['timeAfter'],
+            ':subject'      => $data['subject'],
+            ':content'      => $data['content'],
+            ':translations' => $data['translations'],
+            ':id'           => $id,
         ];
 
         try {
@@ -83,7 +85,8 @@ class NotificationRepository extends AbstractRepository implements NotificationR
                 `timeBefore` = :timeBefore,
                 `timeAfter` = :timeAfter,
                 `subject` = :subject,
-                `content` = :content
+                `content` = :content,
+                `translations` = :translations
                 WHERE id = :id"
             );
 

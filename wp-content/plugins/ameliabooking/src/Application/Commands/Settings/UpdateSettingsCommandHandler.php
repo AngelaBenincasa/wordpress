@@ -54,7 +54,7 @@ class UpdateSettingsCommandHandler extends CommandHandler
         if ($command->getField('customization')) {
             $customizationData = $command->getField('customization');
 
-            $lessParserService->compileAndSave(
+            $hash = $lessParserService->compileAndSave(
                 [
                     'color-accent'      => $customizationData['primaryColor'],
                     'color-gradient1'   => $customizationData['primaryGradient1'],
@@ -66,7 +66,10 @@ class UpdateSettingsCommandHandler extends CommandHandler
                 ]
             );
 
-            $settingsFields['customization']['hash'] = $settingsService->getSetting('customization', 'hash');
+            $settingsFields['customization']['hash'] = $hash;
+
+            $settingsFields['customization']['useGenerated'] = isset($customizationData['useGenerated']) ?
+                $customizationData['useGenerated'] : true;
         }
 
         if (!AMELIA_LITE_VERSION &&
@@ -97,6 +100,18 @@ class UpdateSettingsCommandHandler extends CommandHandler
             $settingsFields['notifications']['sendAllCF'] = $command->getField('sendAllCF');
 
             unset($settingsFields['sendAllCF']);
+        }
+
+        $settingsFields['activation'] = $settingsService->getCategorySettings('activation');
+
+        if ($command->getField('usedLanguages') !== null) {
+            $generalSettings = $settingsService->getCategorySettings('general');
+
+            $settingsFields['general'] = $generalSettings;
+
+            $settingsFields['general']['usedLanguages'] = $command->getField('usedLanguages');
+
+            unset($settingsFields['usedLanguages']);
         }
 
         $settingsService->setAllSettings($settingsFields);

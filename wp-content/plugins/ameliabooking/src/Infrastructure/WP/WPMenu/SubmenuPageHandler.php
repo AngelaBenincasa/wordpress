@@ -67,7 +67,7 @@ class SubmenuPageHandler
         wp_localize_script(
             'amelia_booking_scripts',
             'useWindowVueInAmelia',
-            [$this->settingsService->getSetting('general', 'useWindowVueInAmelia') ? '1' : '0']
+            [$this->settingsService->getSetting('general', 'useWindowVueInAmeliaBack') ? '1' : '0']
         );
 
         // Strings Localization
@@ -92,6 +92,7 @@ class SubmenuPageHandler
                         BackendStrings::getSettingsStrings(),
                         BackendStrings::getEntityFormStrings(),
                         BackendStrings::getServiceStrings(),
+                        BackendStrings::getBookableStrings(),
                         BackendStrings::getCommonStrings()
                     )
                 );
@@ -168,7 +169,8 @@ class SubmenuPageHandler
 				        BackendStrings::getUserStrings(),
 				        BackendStrings::getCustomerStrings(),
 				        BackendStrings::getAppointmentStrings(),
-				        BackendStrings::getEventStrings()
+				        BackendStrings::getEventStrings(),
+                        BackendStrings::getBookableStrings()
 			        )
 		        );
 

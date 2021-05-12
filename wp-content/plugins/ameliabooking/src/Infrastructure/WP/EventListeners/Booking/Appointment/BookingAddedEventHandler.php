@@ -323,13 +323,33 @@ class BookingAddedEventHandler
         }
 
         if ($webHookService) {
-            $webHookService->process(self::BOOKING_ADDED, $reservation, [$booking]);
+            $webHookService->process(
+                self::BOOKING_ADDED,
+                $reservation,
+                [
+                    array_merge(
+                        $booking,
+                        [
+                            'isRecurringBooking' => $recurringData && !$commandResult->getData()['packageId'],
+                            'isPackageBooking' => !!$commandResult->getData()['packageId'],
+                        ]
+                    )
+                ]
+            );
 
             foreach ($recurringData as $key => $recurringReservationData) {
                 $webHookService->process(
                     self::BOOKING_ADDED,
                     $recurringReservationData[$type],
-                    [$recurringReservationData['booking']]
+                    [
+                        array_merge(
+                            $recurringReservationData['booking'],
+                            [
+                                'isRecurringBooking' => !$commandResult->getData()['packageId'],
+                                'isPackageBooking' => !!$commandResult->getData()['packageId'],
+                            ]
+                        )
+                    ]
                 );
             }
         }

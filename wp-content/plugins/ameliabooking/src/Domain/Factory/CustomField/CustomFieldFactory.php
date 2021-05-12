@@ -8,6 +8,7 @@ use AmeliaBooking\Domain\Entity\CustomField\CustomField;
 use AmeliaBooking\Domain\Factory\Bookable\Service\ServiceFactory;
 use AmeliaBooking\Domain\Factory\Booking\Event\EventFactory;
 use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\IntegerValue;
 use AmeliaBooking\Domain\ValueObjects\String\CustomFieldType;
@@ -48,6 +49,10 @@ class CustomFieldFactory
             }
 
             $customField->setOptions(new Collection($optionList));
+        }
+
+        if (isset($data['translations'])) {
+            $customField->setTranslations(new Json($data['translations']));
         }
 
         $serviceList = [];
@@ -100,12 +105,14 @@ class CustomFieldFactory
             $customFields[$customFieldId]['type'] = $row['cf_type'];
             $customFields[$customFieldId]['required'] = $row['cf_required'];
             $customFields[$customFieldId]['position'] = $row['cf_position'];
+            $customFields[$customFieldId]['translations'] = $row['cf_translations'];
 
             if ($optionId) {
                 $customFields[$customFieldId]['options'][$optionId]['id'] = $row['cfo_id'];
                 $customFields[$customFieldId]['options'][$optionId]['customFieldId'] = $row['cfo_custom_field_id'];
                 $customFields[$customFieldId]['options'][$optionId]['label'] = $row['cfo_label'];
                 $customFields[$customFieldId]['options'][$optionId]['position'] = $row['cfo_position'];
+                $customFields[$customFieldId]['options'][$optionId]['translations'] = $row['cfo_translations'];
             }
 
             if ($serviceId) {

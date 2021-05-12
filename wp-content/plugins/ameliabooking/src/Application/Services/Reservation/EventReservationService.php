@@ -23,6 +23,7 @@ use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\Number\Float\Price;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
+use AmeliaBooking\Domain\ValueObjects\String\PaymentType;
 use AmeliaBooking\Domain\ValueObjects\String\Token;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\CustomerBookingExtraRepository;
@@ -103,6 +104,22 @@ class EventReservationService extends AbstractReservationService
 
         $booking->setAggregatedPrice(new BooleanValueObject(true));
 
+        $paymentAmount = $this->getPaymentAmount($booking, $event);
+
+        $applyDeposit = $eventData['bookings'][0]['deposit'] && $eventData['payment']['gateway'] !== PaymentType::ON_SITE;
+
+        if ($applyDeposit) {
+            $paymentDeposit = $this->calculateDepositAmount(
+                $paymentAmount,
+                $event,
+                $booking->getPersons()->getValue()
+            );
+
+            $eventData['payment']['deposit'] = $paymentAmount !== $paymentDeposit;
+
+            $paymentAmount = $paymentDeposit;
+        }
+
         if ($save) {
             /** @var CustomerBookingRepository $bookingRepository */
             $bookingRepository = $this->container->get('domain.booking.customerBooking.repository');
@@ -131,7 +148,7 @@ class EventReservationService extends AbstractReservationService
                 $booking->getId()->getValue(),
                 null,
                 $eventData['payment'],
-                $this->getPaymentAmount($booking, $event),
+                $paymentAmount,
                 $event->getPeriods()->getItem(0)->getPeriodStart()->getValue()
             );
 
@@ -150,6 +167,7 @@ class EventReservationService extends AbstractReservationService
 
         $reservation = new Reservation();
 
+        $reservation->setApplyDeposit(new BooleanValueObject($applyDeposit));
         $reservation->setCustomer($booking->getCustomer());
         $reservation->setBookable($event);
         $reservation->setBooking($booking);
@@ -323,12 +341,15 @@ class EventReservationService extends AbstractReservationService
                     'extras'       => [],
                     'utcOffset'    => $booking->getUtcOffset() ? $booking->getUtcOffset()->getValue() : null,
                     'customFields' => $booking->getCustomFields() ?
-                        json_decode($booking->getCustomFields()->getValue(), true) : null
+                        json_decode($booking->getCustomFields()->getValue(), true) : null,
+                    'deposit'      => $reservation->getApplyDeposit()->getValue(),
                 ]
             ],
             'payment'            => [
                 'gateway' => $paymentGateway
             ],
+            'locale'             => $reservation->getLocale()->getValue(),
+            'timeZone'           => $reservation->getTimeZone()->getValue(),
             'recurring'          => [],
             'package'            => [],
         ];
@@ -414,6 +435,16 @@ class EventReservationService extends AbstractReservationService
         /** @var Event $bookable */
         $bookable = $reservation->getBookable();
 
-        return $this->getPaymentAmount($reservation->getBooking(), $bookable);
+        $paymentAmount = $this->getPaymentAmount($reservation->getBooking(), $bookable);
+
+        if ($reservation->getApplyDeposit()->getValue()) {
+            $paymentAmount = $this->calculateDepositAmount(
+                $paymentAmount,
+                $bookable,
+                $reservation->getBooking()->getPersons()->getValue()
+            );
+        }
+
+        return $paymentAmount;
     }
 }

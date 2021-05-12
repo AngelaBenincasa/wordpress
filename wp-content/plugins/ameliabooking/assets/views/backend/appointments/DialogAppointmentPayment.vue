@@ -38,8 +38,10 @@
               <span>{{ $root.labels.status }}:</span>
             </el-col>
             <el-col :span="12">
-                        <span class="am-semi-strong"><i
-                            :class="{'el-icon-circle-check':payment.status === 'paid','el-icon-refresh':payment.status !== 'paid'}"></i> {{ getPaymentStatus(payment.status) }}</span>
+              <span class="am-semi-strong">
+                <i :class="{'el-icon-circle-check': payment.status === 'paid' || payment.status === 'partiallyPaid', 'partially-paid': payment.status === 'partiallyPaid', 'el-icon-refresh': payment.status === 'pending'}"></i>
+                {{ getPaymentStatus(payment.status) }}
+              </span>
             </el-col>
 
             <el-col :span="12" v-if="booking.packageCustomerService">
@@ -134,6 +136,11 @@
           }, {
             value: 'pending',
             label: this.$root.labels.pending
+
+          },
+          {
+            value: 'partiallyPaid',
+            label: this.$root.labels.partially_paid
 
           }
         ]

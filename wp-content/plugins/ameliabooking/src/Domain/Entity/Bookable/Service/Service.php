@@ -9,6 +9,7 @@ namespace AmeliaBooking\Domain\Entity\Bookable\Service;
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Float\Price;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\IntegerValue;
@@ -76,6 +77,8 @@ class Service extends AbstractBookable
     /** @var  WholeNumber */
     protected $recurringPayment;
 
+    /** @var  Json */
+    protected $translations;
     /**
      * Service constructor.
      *
@@ -368,6 +371,22 @@ class Service extends AbstractBookable
     }
 
     /**
+     * @return Json
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * @param Json $translations
+     */
+    public function setTranslations(Json $translations)
+    {
+        $this->translations = $translations;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -391,6 +410,7 @@ class Service extends AbstractBookable
                 'recurringCycle'   => $this->getRecurringCycle() ? $this->getRecurringCycle()->getValue() : null,
                 'recurringSub'     => $this->getRecurringSub() ? $this->getRecurringSub()->getValue() : null,
                 'recurringPayment' => $this->getRecurringPayment() ? $this->getRecurringPayment()->getValue() : null,
+                'translations'     => $this->getTranslations() ? $this->getTranslations()->getValue() : null,
             ]
         );
     }

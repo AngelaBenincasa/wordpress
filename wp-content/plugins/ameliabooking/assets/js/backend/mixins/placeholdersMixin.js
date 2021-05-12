@@ -1,4 +1,7 @@
+import notifyMixin from '../../../js/backend/mixins/notifyMixin'
+
 export default {
+  mixins: [notifyMixin],
 
   data () {
     return {
@@ -75,6 +78,10 @@ export default {
           {
             value: '%package_price%',
             label: this.$root.labels.ph_package_price
+          },
+          {
+            value: '%time_zone%',
+            label: this.$root.labels.ph_time_zone
           }
         ],
 
@@ -221,6 +228,10 @@ export default {
           {
             value: '%reservation_description%',
             label: this.$root.labels.ph_reservation_description
+          },
+          {
+            value: '%time_zone%',
+            label: this.$root.labels.ph_time_zone
           }
         ],
 
@@ -313,6 +324,10 @@ export default {
           {
             value: '%reservation_description%',
             label: this.$root.labels.ph_reservation_description
+          },
+          {
+            value: '%time_zone%',
+            label: this.$root.labels.ph_time_zone
           }
         ],
 
@@ -425,6 +440,8 @@ export default {
       textArea.select()
       document.execCommand('Copy')
       document.body.removeChild(textArea)
+
+      this.notify('', this.$root.labels.placeholder_copied, 'info', 'no-title')
     },
 
     addCustomFieldsPlaceholders (userTypeTab) {

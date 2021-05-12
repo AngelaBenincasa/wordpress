@@ -115,7 +115,7 @@ class TimeSlotService
             ];
         }
 
-        return $intervals;
+        return array_reverse($intervals);
     }
 
     /** @noinspection MoreThanThreeArgumentsInspection */
@@ -533,9 +533,25 @@ class TimeSlotService
                     );
                 } elseif (isset($weekDayIntervals[$providerKey][$dayIndex]['free']) && !isset($specialDayIntervals[$providerKey][$specialDayDateKey]['intervals'])) {
                     // get free intervals if it is working day
+                    $unavailableIntervals =
+                        $weekDayIntervals[$providerKey][$dayIndex]['busy'] + $dateIntervals['occupied'];
+
+                    $intersectedTimes = array_intersect(
+                        array_keys($weekDayIntervals[$providerKey][$dayIndex]['busy']),
+                        array_keys($dateIntervals['occupied'])
+                    );
+
+                    foreach ($intersectedTimes as $time) {
+                        $unavailableIntervals[$time] =
+                            $weekDayIntervals[$providerKey][$dayIndex]['busy'][$time] >
+                            $dateIntervals['occupied'][$time] ?
+                                $weekDayIntervals[$providerKey][$dayIndex]['busy'][$time] :
+                                $dateIntervals['occupied'][$time];
+                    }
+
                     $freeDateIntervals[$providerKey][$dateKey] = $this->getAvailableIntervals(
                         $weekDayIntervals[$providerKey][$dayIndex]['free'],
-                        $weekDayIntervals[$providerKey][$dayIndex]['busy'] + $dateIntervals['occupied']
+                        $unavailableIntervals
                     );
                 }
             }
@@ -569,6 +585,7 @@ class TimeSlotService
                     foreach ((array)$specialDayIntervals[$providerKey] as $specialDayKey => $specialDays) {
                         if (array_key_exists($currentDate, $specialDays['dates'])) {
                             $specialDayDateKey = $specialDayKey;
+                            break;
                         }
                     }
 
@@ -722,6 +739,10 @@ class TimeSlotService
         foreach ($freeIntervals as $dateKey => $dateProviders) {
             foreach ((array)$dateProviders as $providerKey => $provider) {
                 foreach ((array)$provider['intervals'] as $timePeriod) {
+                    if (!$bufferTimeInSlot && $serviceDurationAsSlot) {
+                        $timePeriod[1] = $timePeriod[1] - $service->getTimeAfter()->getValue();
+                    }
+
                     $customerTimeStart = $timePeriod[0] + $service->getTimeBefore()->getValue();
 
                     $providerTimeStart = $customerTimeStart - $service->getTimeBefore()->getValue();

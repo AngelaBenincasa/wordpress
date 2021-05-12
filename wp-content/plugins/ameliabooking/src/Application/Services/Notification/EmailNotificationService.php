@@ -38,7 +38,6 @@ class EmailNotificationService extends AbstractNotificationService
      * @param array        $appointmentArray
      * @param Notification $notification
      * @param bool         $logNotification
-     *
      * @param int|null     $bookingKey
      *
      * @throws \AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException
@@ -55,15 +54,50 @@ class EmailNotificationService extends AbstractNotificationService
     ) {
         /** @var NotificationLogRepository $notificationLogRepo */
         $notificationLogRepo = $this->container->get('domain.notificationLog.repository');
+
         /** @var UserRepository $userRepository */
         $userRepository = $this->container->get('domain.users.repository');
 
         /** @var PHPMailService|SMTPService|MailgunService $mailService */
         $mailService = $this->container->get('infrastructure.mail.service');
+
         /** @var PlaceholderService $placeholderService */
         $placeholderService = $this->container->get("application.placeholder.{$appointmentArray['type']}.service");
+
         /** @var SettingsService $settingsAS */
         $settingsAS = $this->container->get('application.settings.service');
+
+        /** @var \AmeliaBooking\Domain\Services\Settings\SettingsService $settingsService */
+        $settingsService = $this->container->get('domain.settings.service');
+
+        /** @var HelperService $helperService */
+        $helperService = $this->container->get('application.helper.service');
+
+        $notificationSettings = $settingsService->getCategorySettings('notifications');
+
+        if (!$notificationSettings['senderEmail'] || !$notificationSettings['senderName']) {
+            return;
+        }
+
+        $isCustomerPackage = isset($appointmentArray['isForCustomer']) && $appointmentArray['isForCustomer'];
+
+        if ($appointmentArray['type'] === Entities::PACKAGE) {
+            $info = $isCustomerPackage ? json_encode($appointmentArray['customer']) : null;
+        } else {
+            $info = $bookingKey !== null ? $appointmentArray['bookings'][$bookingKey]['info'] : null;
+        }
+
+        $notificationSubject = $helperService->getBookingTranslation(
+            $info,
+            $notification->getTranslations() ? $notification->getTranslations()->getValue() : null,
+            'subject'
+        ) ?: $notification->getSubject()->getValue();
+
+        $notificationContent = $helperService->getBookingTranslation(
+            $info,
+            $notification->getTranslations() ? $notification->getTranslations()->getValue() : null,
+            'content'
+        ) ?: $notification->getContent()->getValue();
 
         $data = $placeholderService->getPlaceholdersData(
             $appointmentArray,
@@ -71,19 +105,16 @@ class EmailNotificationService extends AbstractNotificationService
             'email'
         );
 
-        if (!empty($data['icsFiles']) && $notification->getSendTo()->getValue() === Entities::CUSTOMER) {
-            /** @var \AmeliaBooking\Domain\Services\Settings\SettingsService $settingsService */
-            $settingsService = $this->container->get('domain.settings.service');
-
+        if (!empty($data['icsFiles'])) {
             $icsFiles = $settingsService->getSetting(
                 'general',
                 'sendIcsAttachment'
-            ) ? $data['icsFiles'] : [];
+            ) ? $data['icsFiles'][$isCustomerPackage || $bookingKey !== null ? 'translated' : 'original'] : [];
         }
 
-        $subject = $placeholderService->applyPlaceholders($notification->getSubject()->getValue(), $data);
+        $subject = $placeholderService->applyPlaceholders($notificationSubject, $data);
 
-        $body = $placeholderService->applyPlaceholders($notification->getContent()->getValue(), $data);
+        $body = $placeholderService->applyPlaceholders($notificationContent, $data);
 
         $users = $this->getUsersInfo(
             $notification->getSendTo()->getValue(),
@@ -95,8 +126,7 @@ class EmailNotificationService extends AbstractNotificationService
         foreach ($users as $user) {
             try {
                 if ($user['email']) {
-                    $reParsedData = $appointmentArray['type'] === Entities::PACKAGE &&
-                        !(isset($appointmentArray['isForCustomer']) && $appointmentArray['isForCustomer']) ?
+                    $reParsedData = !$isCustomerPackage ?
                         $placeholderService->reParseContentForProvider(
                             $appointmentArray,
                             $subject,
@@ -158,8 +188,19 @@ class EmailNotificationService extends AbstractNotificationService
             /** @var SettingsService $settingsAS */
             $settingsAS = $this->container->get('application.settings.service');
 
+            /** @var \AmeliaBooking\Domain\Services\Settings\SettingsService $settingsService */
+            $settingsService = $this->container->get('domain.settings.service');
+
+            $notificationSettings = $settingsService->getCategorySettings('notifications');
+
+            if (!$notificationSettings['senderEmail'] || !$notificationSettings['senderName']) {
+                return;
+            }
+
             $customers = $notificationLogRepo->getBirthdayCustomers($this->type);
+
             $companyData = $placeholderService->getCompanyData();
+
             $customersArray = $customers->toArray();
 
             foreach ($customersArray as $bookingKey => $customerArray) {
@@ -206,6 +247,7 @@ class EmailNotificationService extends AbstractNotificationService
 
     /**
      * @param Customer $customer
+     * @param string   $locale
      *
      * @return void
      *
@@ -213,10 +255,9 @@ class EmailNotificationService extends AbstractNotificationService
      * @throws ContainerException
      * @throws InvalidArgumentException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
      * @throws Exception
      */
-    public function sendRecoveryEmail($customer)
+    public function sendRecoveryEmail($customer, $locale)
     {
         /** @var Notification $notification */
         $notification = $this->getByNameAndType('customer_account_recovery', 'email');
@@ -230,6 +271,15 @@ class EmailNotificationService extends AbstractNotificationService
         /** @var HelperService $helperService */
         $helperService = $this->container->get('application.helper.service');
 
+        /** @var \AmeliaBooking\Domain\Services\Settings\SettingsService $settingsService */
+        $settingsService = $this->container->get('domain.settings.service');
+
+        $notificationSettings = $settingsService->getCategorySettings('notifications');
+
+        if (!$notificationSettings['senderEmail'] || !$notificationSettings['senderName']) {
+            return;
+        }
+
         if ($notification->getStatus()->getValue() === NotificationStatus::ENABLED) {
             $data = [
                 'customer_email'      => $customer->getEmail()->getValue(),
@@ -242,7 +292,8 @@ class EmailNotificationService extends AbstractNotificationService
                     $customer->getEmail()->getValue(),
                     'email',
                     null,
-                    null
+                    null,
+                    $locale
                 )
             ];
 
@@ -273,7 +324,6 @@ class EmailNotificationService extends AbstractNotificationService
      * @return void
      *
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
      */
     public function sendEmployeePanelAccess($provider, $plainPassword)
     {
@@ -286,6 +336,15 @@ class EmailNotificationService extends AbstractNotificationService
         /** @var PlaceholderService $placeholderService */
         $placeholderService = $this->container->get('application.placeholder.appointment.service');
 
+        /** @var \AmeliaBooking\Domain\Services\Settings\SettingsService $settingsService */
+        $settingsService = $this->container->get('domain.settings.service');
+
+        $notificationSettings = $settingsService->getCategorySettings('notifications');
+
+        if (!$notificationSettings['senderEmail'] || !$notificationSettings['senderName']) {
+            return;
+        }
+
         if ($notification->getStatus()->getValue() === NotificationStatus::ENABLED) {
             $data = [
                 'employee_email'      => $provider['email'],
@@ -295,8 +354,9 @@ class EmailNotificationService extends AbstractNotificationService
                     $provider['firstName'] . ' ' . $provider['lastName'],
                 'employee_phone'      => $provider['phone'],
                 'employee_password'   => $plainPassword,
-                'employee_panel_url'  => trim($this->container->get('domain.settings.service')
-                    ->getSetting('roles', 'providerCabinet')['pageUrl'])
+                'employee_panel_url'  => trim(
+                    $this->container->get('domain.settings.service')->getSetting('roles', 'providerCabinet')['pageUrl']
+                )
             ];
 
             /** @noinspection AdditionOperationOnArraysInspection */

@@ -13,15 +13,21 @@
         </el-row>
       </div>
 
+      <!-- Select Language -->
+      <div class="align-right" v-if="userTypeTab === 'customer' && selectedLanguage">
+        <img class="option-languages-flag" :src="getLanguageFlag(selectedLanguage)">
+      </div>
+      <!-- /Select Language -->
+
       <div v-if="entity === 'package'">
-        <p><strong>{{ $root.labels.package_placeholder_label }}</strong> %package_appointments_details%</p>
+        <p><strong>{{ $root.labels.ph_package_details_setup }}</strong></p>
       </div>
 
       <div v-if="entity === 'appointment'">
-        <p><strong>{{ $root.labels.ph_recurring_appointments_details }}</strong> %recurring_appointments_details%</p>
+        <p><strong>{{ $root.labels.ph_recurring_details_setup }}</strong></p>
       </div>
 
-      <div>
+      <div v-if="!selectedLanguage">
         <!-- Quill Editor -->
         <quill-editor
           v-model="appointmentsSettings[name]"
@@ -43,6 +49,28 @@
         </el-input>
         <!-- /Textarea -->
       </div>
+      <div v-else>
+        <!-- Quill Editor -->
+        <quill-editor
+            v-model="appointmentsSettings['translations'][name][selectedLanguage]"
+            v-if="type === 'email'"
+            :options="editorOptions"
+            @change="parseQuillEditorContent"
+        >
+        </quill-editor>
+        <!-- /Quill Editor -->
+
+        <!-- Textarea -->
+        <el-input
+            v-if="type === 'sms'"
+            v-model="appointmentsSettings['translations'][name + 'Sms'][selectedLanguage]"
+            type="textarea"
+            :rows="7"
+            placeholder=""
+        >
+        </el-input>
+        <!-- /Textarea -->
+      </div>
 
       <inline-placeholders
         :placeholdersNames="placeholdersNames"
@@ -53,18 +81,26 @@
       >
       </inline-placeholders>
 
-      <!-- Dialog Footer -->
-      <div class="am-dialog-footer">
-        <div class="am-dialog-footer-actions">
-          <el-row>
-            <el-col :sm="24" class="align-right">
-              <el-button type="" @click="closeDialog" class="">{{ $root.labels.cancel }}</el-button>
-              <el-button type="primary" @click="saveSettings" class="am-dialog-create" :loading="loadingButton">
-                {{ $root.labels.save }}
-              </el-button>
-            </el-col>
-          </el-row>
-        </div>
+      <div v-if="entity === 'package'">
+        <p>{{ $root.labels.use_placeholder }} %package_appointments_details%</p>
+      </div>
+
+      <div v-if="entity === 'appointment'">
+        <p>{{ $root.labels.use_placeholder }} %recurring_appointments_details%</p>
+      </div>
+    </div>
+
+    <!-- Dialog Footer -->
+    <div class="am-dialog-footer">
+      <div class="am-dialog-footer-actions">
+        <el-row>
+          <el-col :sm="24" class="align-right">
+            <el-button type="" @click="closeDialog" class="">{{ $root.labels.cancel }}</el-button>
+            <el-button type="primary" @click="saveSettings" class="am-dialog-create" :loading="loadingButton">
+              {{ $root.labels.save }}
+            </el-button>
+          </el-col>
+        </el-row>
       </div>
     </div>
   </div>
@@ -82,6 +118,11 @@
     mixins: [placeholdersMixin, quillMixin, priceMixin, notifyMixin],
 
     props: {
+      selectedLanguage: null,
+      languagesData: {
+        default: () => {},
+        type: Object
+      },
       excludedPlaceholders: {
         default: () => []
       },
@@ -122,8 +163,29 @@
     },
 
     methods: {
+      getLanguageLabel (lang) {
+        return this.languagesData[lang] ? this.languagesData[lang].name : ''
+      },
+
+      getLanguageFlag (lang) {
+        if (lang && this.languagesData[lang] && this.languagesData[lang].country_code) {
+          return this.$root.getUrl + 'public/img/flags/' + this.languagesData[lang].country_code + '.png'
+        }
+        return this.$root.getUrl + 'public/img/grey.svg'
+      },
+
       saveSettings () {
         this.loadingButton = true
+
+        let name = this.name + (this.type === 'sms' ? 'Sms' : '')
+
+        if (this.selectedLanguage) {
+          Object.keys(this.appointmentsSettings.translations[name]).forEach((key) => {
+            if (!this.appointmentsSettings.translations[name][key].trim) {
+              delete this.appointmentsSettings.translations[name][key]
+            }
+          })
+        }
 
         this.$http.post(`${this.$root.getAjaxUrl}/settings`, {appointments: this.appointmentsSettings})
           .then(response => {

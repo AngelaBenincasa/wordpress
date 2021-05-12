@@ -169,6 +169,7 @@ class AppointmentPlaceholderService extends PlaceholderService
         }
 
         return [
+            'appointment_id'         => !empty($appointment['id']) ? $appointment['id'] : '',
             'appointment_status'     => BackendStrings::getCommonStrings()[$appointment['status']],
             'appointment_notes'      => !empty($appointment['internalNotes']) ? $appointment['internalNotes'] : '',
             'appointment_date'       => date_i18n($dateFormat, $bookingStart->getTimestamp()),
@@ -210,13 +211,31 @@ class AppointmentPlaceholderService extends PlaceholderService
         /** @var Category $category */
         $category = $categoryRepository->getById($service->getCategoryId()->getValue());
 
+        $categoryName = $helperService->getBookingTranslation(
+            $bookingKey !== null ? $appointmentArray['bookings'][$bookingKey]['info'] : null,
+            $category->getTranslations() ? $category->getTranslations()->getValue() : null,
+            'name'
+        ) ?: $category->getName()->getValue();
+
+        $serviceName = $helperService->getBookingTranslation(
+            $bookingKey !== null ? $appointmentArray['bookings'][$bookingKey]['info'] : null,
+            $service->getTranslations() ? $service->getTranslations()->getValue() : null,
+            'name'
+        ) ?: $service->getName()->getValue();
+
+        $serviceDescription = $helperService->getBookingTranslation(
+            $bookingKey !== null ? $appointmentArray['bookings'][$bookingKey]['info'] : null,
+            $service->getTranslations() ? $service->getTranslations()->getValue() : null,
+            'description'
+        ) ?: $service->getDescription()->getValue();
+
         $data = [
-            'category_name'           => $category->getName()->getValue(),
-            'service_description'     => $service->getDescription()->getValue(),
-            'reservation_description' => $service->getDescription()->getValue(),
+            'category_name'           => $categoryName,
+            'service_description'     => $serviceDescription,
+            'reservation_description' => $serviceDescription,
             'service_duration'        => $helperService->secondsToNiceDuration($service->getDuration()->getValue()),
-            'service_name'            => $service->getName()->getValue(),
-            'reservation_name'        => $service->getName()->getValue(),
+            'service_name'            => $serviceName,
+            'reservation_name'        => $serviceName,
             'service_price'           => $helperService->getFormattedPrice($service->getPrice()->getValue())
         ];
 
@@ -277,6 +296,13 @@ class AppointmentPlaceholderService extends PlaceholderService
 
             $data["service_extra_{$extraId}_name"] =
                 array_key_exists($extraId, $bookingExtras) ? $extra->getName()->getValue() : '';
+
+            $data["service_extra_{$extraId}_name"] = $helperService->getBookingTranslation(
+                $bookingKey !== null ? $appointmentArray['bookings'][$bookingKey]['info'] : null,
+                $data["service_extra_{$extraId}_name"] && $extra->getTranslations() ?
+                    $extra->getTranslations()->getValue() : null,
+                'name'
+            ) ?: $data["service_extra_{$extraId}_name"];
 
             $data["service_extra_{$extraId}_quantity"] =
                 array_key_exists($extraId, $bookingExtras) ? $bookingExtras[$extraId]['quantity'] : '';
@@ -432,24 +458,17 @@ class AppointmentPlaceholderService extends PlaceholderService
                 ($isForCustomer && $placeholderType === 'recurring' ? 'Customer' : '') .
                 ($type === 'email' ? '' : 'Sms');
 
-            if (!empty($recurringPlaceholders['employee_panel_url']) &&
-                strpos($appointmentsSettings[$placeholderString], 'href="%employee_panel_url%"') === false
-            ) {
-                $recurringPlaceholders['employee_panel_url'] = $type === 'email' ?
-                    '<a href="' . $recurringPlaceholders['employee_panel_url'] . '">' . BackendStrings::getNotificationsStrings()['ph_employee_cabinet_url'] . '</a>'
-                    : $recurringPlaceholders['employee_panel_url'];
-            }
+            /** @var HelperService $helperService */
+            $helperService = $this->container->get('application.helper.service');
 
-            if (!empty($recurringPlaceholders['appointment_cancel_url']) &&
-                strpos($appointmentsSettings[$placeholderString], 'href="%appointment_cancel_url%"') === false
-            ) {
-                $recurringPlaceholders['appointment_cancel_url'] = $type === 'email' ?
-                    '<a href="' . $recurringPlaceholders['appointment_cancel_url'] . '">' . BackendStrings::getAppointmentStrings()['cancel_appointment'] . '</a>'
-                    : $recurringPlaceholders['appointment_cancel_url'];
-            }
+            $content = $helperService->getBookingTranslation(
+                $recurringBookingKey !== null ? $recurringData['appointment']['bookings'][$recurringBookingKey]['info'] : null,
+                json_encode($appointmentsSettings['translations']),
+                $placeholderString
+            ) ?: $appointmentsSettings[$placeholderString];
 
             $recurringAppointmentDetails[] = $placeholderService->applyPlaceholders(
-                $appointmentsSettings[$placeholderString],
+                $content,
                 $recurringPlaceholders
             );
         }

@@ -39,7 +39,11 @@ class AddEventController extends Controller
         'locationId',
         'settings',
         'customLocation',
-        'zoomUserId'
+        'zoomUserId',
+        'translations',
+        'deposit',
+        'depositPayment',
+        'depositPerPerson',
     ];
 
     /**

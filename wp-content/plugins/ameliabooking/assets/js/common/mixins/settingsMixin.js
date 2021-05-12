@@ -89,6 +89,7 @@ export default {
         case ('service'):
           entitySettings.general = {
             minimumTimeRequirementPriorToCanceling: null,
+            minimumTimeRequirementPriorToRescheduling: null,
             redirectUrlAfterAppointment: null
           }
 
@@ -198,6 +199,12 @@ export default {
           serviceSettings.general.minimumTimeRequirementPriorToCanceling === ''
         ) {
           delete serviceSettings.general.minimumTimeRequirementPriorToCanceling
+        }
+
+        if ((!serviceSettings.general.minimumTimeRequirementPriorToRescheduling && !this.$root.settings.general.minimumTimeRequirementPriorToRescheduling) ||
+            serviceSettings.general.minimumTimeRequirementPriorToRescheduling === ''
+        ) {
+          delete serviceSettings.general.minimumTimeRequirementPriorToRescheduling
         }
 
         if (!serviceSettings.general.numberOfDaysAvailableForBooking) {

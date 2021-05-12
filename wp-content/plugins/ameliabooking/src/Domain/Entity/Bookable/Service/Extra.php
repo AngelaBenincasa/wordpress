@@ -4,6 +4,7 @@ namespace AmeliaBooking\Domain\Entity\Bookable\Service;
 
 use AmeliaBooking\Domain\Entity\Bookable\AbstractExtra;
 use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\Duration;
 
@@ -23,6 +24,9 @@ class Extra extends AbstractExtra
 
     /** @var  BooleanValueObject */
     protected $aggregatedPrice;
+
+    /** @var  Json */
+    private $translations;
 
     /**
      * @return Duration
@@ -73,6 +77,22 @@ class Extra extends AbstractExtra
     }
 
     /**
+     * @return Json
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * @param Json $translations
+     */
+    public function setTranslations(Json $translations)
+    {
+        $this->translations = $translations;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -83,6 +103,7 @@ class Extra extends AbstractExtra
                 'duration'        => $this->getDuration() ? $this->getDuration()->getValue() : null,
                 'serviceId'       => $this->getServiceId() ? $this->getServiceId()->getValue() : null,
                 'aggregatedPrice' => $this->getAggregatedPrice() ? $this->getAggregatedPrice()->getValue() : null,
+                'translations'    => $this->getTranslations() ? $this->getTranslations()->getValue() : null,
             ]
         );
     }

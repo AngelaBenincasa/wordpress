@@ -10,7 +10,7 @@ use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\Stats\StatsService;
-use AmeliaBooking\Domain\Collection\AbstractCollection;
+use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
 use AmeliaBooking\Domain\Entity\Entities;
@@ -19,6 +19,9 @@ use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Booking\Appointment\AppointmentRepository;
+use Exception;
+use Interop\Container\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class GetStatsCommandHandler
@@ -31,12 +34,12 @@ class GetStatsCommandHandler extends CommandHandler
      * @param GetStatsCommand $command
      *
      * @return CommandResult
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws AccessDeniedException
      * @throws InvalidArgumentException
      * @throws QueryExecutionException
-     * @throws \Exception
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws Exception
+     * @throws ContainerException
      */
     public function handle(GetStatsCommand $command)
     {
@@ -54,28 +57,38 @@ class GetStatsCommandHandler extends CommandHandler
         $settingsDS = $this->container->get('domain.settings.service');
 
         $startDate = $command->getField('params')['dates'][0] . ' 00:00:00';
+
         $endDate = $command->getField('params')['dates'][1] . ' 23:59:59';
 
         $previousPeriodStart = DateTimeService::getCustomDateTimeObject($startDate);
+
         $previousPeriodEnd = DateTimeService::getCustomDateTimeObject($endDate);
 
         $numberOfDays = $previousPeriodEnd->diff($previousPeriodStart)->days + 1;
 
         $serviceStatsParams = ['dates' => [$startDate, $endDate]];
+
         $customerStatsParams = ['dates' => [$startDate, $endDate]];
+
         $locationStatsParams = ['dates' => [$startDate, $endDate]];
+
         $employeeStatsParams = ['dates' => [$startDate, $endDate]];
+
         $appointmentStatsParams = ['dates' => [$startDate, $endDate], 'status' => BookingStatus::APPROVED];
 
         // Statistic
         $selectedPeriodStatistics = $statsAS->getRangeStatisticsData($appointmentStatsParams);
+
         $previousPeriodStatistics = $statsAS->getRangeStatisticsData(
-            array_merge($appointmentStatsParams, [
-                'dates' => [
-                    $previousPeriodStart->modify("-{$numberOfDays} day")->format('Y-m-d H:i:s'),
-                    $previousPeriodEnd->modify("-{$numberOfDays} day")->format('Y-m-d H:i:s'),
+            array_merge(
+                $appointmentStatsParams,
+                [
+                    'dates' => [
+                        $previousPeriodStart->modify("-{$numberOfDays} day")->format('Y-m-d H:i:s'),
+                        $previousPeriodEnd->modify("-{$numberOfDays} day")->format('Y-m-d H:i:s'),
+                    ]
                 ]
-            ])
+            )
         );
 
         // Charts
@@ -87,33 +100,39 @@ class GetStatsCommandHandler extends CommandHandler
 
         $locationsStats = $statsAS->getLocationsStats($locationStatsParams);
 
-        // Today Appointments
-        $upcomingAppointments = $appointmentRepo->getFiltered(['dates' => [
-            DateTimeService::getNowDateTimeObject()->setTime(0, 0, 0)->format('Y-m-d H:i:s')
-        ]
-        ]);
+        /** @var Collection $periodAppointments */
+        $periodAppointments = $appointmentRepo->getPeriodAppointments(
+            [
+                'dates' => [
+                    DateTimeService::getNowDateTime(),
+                ],
+                'page' => 1
+            ],
+            10
+        );
 
-        if (!$upcomingAppointments instanceof AbstractCollection) {
-            $result->setResult(CommandResult::RESULT_ERROR);
-            $result->setMessage('Could not get appointments');
+        /** @var Collection $upcomingAppointments */
+        $upcomingAppointments = $periodAppointments->length() ? $appointmentRepo->getFiltered(
+            array_merge(
+                [
+                    'ids'           => $periodAppointments->keys(),
+                    'skipProviders' => true,
+                ]
+            )
+        ) : new Collection();
 
-            return $result;
-        }
-
-        // Get current date time object
         $currentDateTime = DateTimeService::getNowDateTimeObject();
 
         $upcomingAppointmentsArr = [];
 
         $todayApprovedAppointmentsCount = 0;
+
         $todayPendingAppointmentsCount = 0;
 
         $todayDateString = explode(' ', DateTimeService::getNowDateTime())[0];
 
-        foreach ($upcomingAppointments->keys() as $appointmentKey) {
-            /** @var Appointment $appointment */
-            $appointment = $upcomingAppointments->getItem($appointmentKey);
-
+        /** @var Appointment $appointment */
+        foreach ($upcomingAppointments->getItems() as $appointment) {
             if ($appointment->getBookingStart()->getValue()->format('Y-m-d') === $todayDateString) {
                 if ($appointment->getStatus()->getValue() === BookingStatus::APPROVED) {
                     $todayApprovedAppointmentsCount++;
@@ -143,7 +162,7 @@ class GetStatsCommandHandler extends CommandHandler
         }
 
         $result->setResult(CommandResult::RESULT_SUCCESS);
-        $result->setMessage('Successfully retrieved coupons.');
+        $result->setMessage('Successfully retrieved appointments.');
         $result->setData(
             [
                 'count'                => [
@@ -156,7 +175,7 @@ class GetStatsCommandHandler extends CommandHandler
                 'servicesStats'        => $servicesStats,
                 'locationsStats'       => $locationsStats,
                 'customersStats'       => $customersStats,
-                Entities::APPOINTMENTS => array_slice($upcomingAppointmentsArr, 0, 10),
+                Entities::APPOINTMENTS => $upcomingAppointmentsArr,
                 'appointmentsCount'    => 10
             ]
         );

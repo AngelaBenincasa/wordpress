@@ -311,6 +311,10 @@
                   <div slot="content" v-html="$root.labels.customer_cabinet_tooltip"></div>
                   <i class="el-icon-question am-tooltip-icon"></i>
                 </el-tooltip>
+                <div class="am-service-translate" @click="showDialogTranslate()">
+                  <img class="am-dialog-translate-svg" width="16px" :src="$root.getUrl+'public/img/translate.svg'">
+                  {{ $root.labels.manage_languages }}
+                </div>
               </label>
               <el-input v-model="settings.customerCabinet.pageUrl" auto-complete="off"/>
             </el-form-item>
@@ -403,9 +407,11 @@
       closeDialog () {
         this.$emit('closeDialogSettingsRoles')
       },
+
       clearValidation () {
         this.$refs.settings.clearValidate()
       },
+
       onSubmit () {
         this.$refs.settings.validate((valid) => {
           if (valid) {
@@ -415,6 +421,10 @@
             return false
           }
         })
+      },
+
+      showDialogTranslate () {
+        this.$emit('showDialogTranslate', this.$root.labels.customer_cabinet)
       }
     }
   }

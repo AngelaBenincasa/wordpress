@@ -101,6 +101,55 @@ class TimeSlotService
 
         $bookableApplicationService->checkServiceTimes($service);
 
+        $providersCriteria = [
+            'providers'      => $providerIds,
+        ];
+
+        if ($isFrontEndBooking) {
+            $providersCriteria['serviceStatus'] = Status::VISIBLE;
+
+            $providersCriteria['providerStatus'] = Status::VISIBLE;
+        }
+
+        /** @var Collection $selectedProviders */
+        $selectedProviders = $providerRepository->getByCriteria($providersCriteria);
+
+        /** @var Collection $providers */
+        $providers = new Collection();
+
+        $providersServicesIds = [];
+
+        /** @var Provider $selectedProvider */
+        foreach ($selectedProviders->getItems() as $selectedProvider) {
+            if ($selectedProvider->getServiceList()->keyExists($service->getId()->getValue())) {
+                $providers->addItem($selectedProvider, $selectedProvider->getId()->getValue());
+            }
+
+            $providersServicesIds[$selectedProvider->getId()->getValue()] = $selectedProvider->getServiceList()->keys();
+        }
+
+        $providerIds = $providers->keys();
+
+        if (!$providerIds) {
+            return [];
+        }
+
+        if ($googleCalendarService) {
+            try {
+                // Remove Google Calendar Busy Slots
+                $googleCalendarService->removeSlotsFromGoogleCalendar($providers, $excludeAppointmentId);
+            } catch (Exception $e) {
+            }
+        }
+
+        if ($outlookCalendarService) {
+            try {
+                // Remove Outlook Calendar Busy Slots
+                $outlookCalendarService->removeSlotsFromOutlookCalendar($providers, $excludeAppointmentId);
+            } catch (Exception $e) {
+            }
+        }
+
         /** @var Collection $extras */
         $extras = $bookableApplicationService->filterServiceExtras(array_column($selectedExtras, 'id'), $service);
 
@@ -117,33 +166,54 @@ class TimeSlotService
             DateTimeService::getCustomDateTime($endDateTime->format('Y-m-d H:i:s'))
         );
 
-        $providersCriteria = [
-            'services'       => [],
-            'providers'      => $providerIds,
-        ];
-
-        if ($isFrontEndBooking) {
-            $providersCriteria['serviceStatus'] = Status::VISIBLE;
-
-            $providersCriteria['providerStatus'] = Status::VISIBLE;
-        }
-
-        /** @var Collection $providers */
-        $providers = $providerRepository->getByCriteria($providersCriteria);
-
         $lastIndex = null;
 
         if ($excludeAppointmentId && $futureAppointments->keyExists($excludeAppointmentId)) {
             $futureAppointments->deleteItem($excludeAppointmentId);
         }
 
+        $missingServicesIds = [];
+
+        $missingProvidersIds = [];
+
+        /** @var Appointment $appointment */
+        foreach ($futureAppointments->getItems() as $index => $appointment) {
+            if (!$providersServicesIds[$appointment->getProviderId()->getValue()] ||
+                !in_array(
+                    $appointment->getServiceId()->getValue(),
+                    $providersServicesIds[$appointment->getProviderId()->getValue()]
+                )
+            ) {
+                $missingServicesIds[$appointment->getServiceId()->getValue()] = true;
+            }
+
+            if (!$providers->keyExists($appointment->getProviderId()->getValue())) {
+                $missingProvidersIds[$appointment->getProviderId()->getValue()] = true;
+            }
+        }
+
+        /** @var ServiceRepository $serviceRepository */
+        $serviceRepository = $this->container->get('domain.bookable.service.repository');
+
+        /** @var Collection $missingServices */
+        $missingServices = $missingServicesIds ?
+            $serviceRepository->getByCriteria(['services' => array_keys($missingServicesIds)]) : new Collection();
+
+        /** @var Collection $missingProviders */
+        $missingProviders = $missingProvidersIds ?
+            $providerRepository->getByCriteria(['providers' => array_keys($missingProvidersIds)]) : new Collection();
+
         /** @var Appointment $appointment */
         foreach ($futureAppointments->getItems() as $index => $appointment) {
             /** @var Provider $provider */
-            $provider = $providers->getItem($appointment->getProviderId()->getValue());
+            $provider = $providers->keyExists($appointment->getProviderId()->getValue()) ?
+                $providers->getItem($appointment->getProviderId()->getValue()) :
+                $missingProviders->getItem($appointment->getProviderId()->getValue());
 
             /** @var Service $providerService */
-            $providerService = $provider->getServiceList()->getItem($appointment->getServiceId()->getValue());
+            $providerService = $provider->getServiceList()->keyExists($appointment->getServiceId()->getValue()) ?
+                $provider->getServiceList()->getItem($appointment->getServiceId()->getValue()) :
+                $missingServices->getItem($appointment->getServiceId()->getValue());
 
             $bookableApplicationService->checkServiceTimes($providerService);
 
@@ -158,6 +228,7 @@ class TimeSlotService
                         $previousAppointment->getLocationId()->getValue() === $appointment->getLocationId()->getValue() : true
                     ) &&
                     $previousAppointment->getProviderId()->getValue() === $appointment->getProviderId()->getValue() &&
+                    $previousAppointment->getServiceId()->getValue() === $appointment->getServiceId()->getValue() &&
                     $providerService->getMaxCapacity()->getValue() === 1 &&
                     $appointment->getBookingStart()->getValue()->format('H:i') !== '00:00' &&
                     $previousAppointment->getBookingEnd()->getValue()->format('Y-m-d H:i') ===
@@ -213,22 +284,6 @@ class TimeSlotService
                     ->format('Y-m-d H:i:s')
             ]
         );
-
-        if ($googleCalendarService) {
-            try {
-                // Remove Google Calendar Busy Slots
-                $googleCalendarService->removeSlotsFromGoogleCalendar($providers, $excludeAppointmentId);
-            } catch (\Exception $e) {
-            }
-        }
-
-        if ($outlookCalendarService) {
-            try {
-                // Remove Outlook Calendar Busy Slots
-                $outlookCalendarService->removeSlotsFromOutlookCalendar($providers, $excludeAppointmentId);
-            } catch (\Exception $e) {
-            }
-        }
 
         $providerApplicationService->addAppointmentsToAppointmentList($providers, $futureAppointmentsFiltered);
 

@@ -370,6 +370,8 @@ class PaymentApplicationService
                     $reservation->getBooking()->getId()->getValue() : 0 => $reservation->getBooking()->toArray()
             ] : [];
 
+            $reservationData['customer'] = $reservation->getCustomer()->toArray();
+
             try {
                 $placeholderData = $placeholderService->getPlaceholdersData(
                     $reservationData,

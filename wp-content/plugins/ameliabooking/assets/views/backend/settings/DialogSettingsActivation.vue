@@ -41,13 +41,14 @@
 
         <!-- Purchase Code -->
         <el-form-item
-            v-if="settings.active === false || (settings.active === true && settings.purchaseCodeStore !== '')"
+            v-if="settings.active === false || (settings.active === true && settings.purchaseCodeStore === null)"
             class="am-purchase-code"
-            :label="$root.labels.purchase_code + ':'"
+            :label="(settings.active === false) ? $root.labels.purchase_code + ':' : ''"
             prop="code"
         >
           <el-col :span="settings.active === true ? 24 : 18">
             <el-input
+                v-if="settings.active === false"
                 v-model.trim="settings.purchaseCodeStore"
                 @input="clearValidation"
                 :disabled="settings.active === true"
@@ -60,6 +61,13 @@
               >
               </i>
             </el-input>
+            <div class="am-purchase-code-hidden" v-else>
+              <i class="el-icon-info"></i>
+              <p>
+                {{ $root.labels.activation_settings_hidden_code }}
+                <a href="https://store.tms-plugins.com/login" target="_blank">store.tms-plugins.com</a>
+              </p>
+            </div>
           </el-col>
 
           <el-col :span="6" v-if="settings.active === false">
@@ -200,6 +208,12 @@
       this.authenticateEnvatoOAuthCallback()
     },
 
+    mounted () {
+      if (this.settings.active === true && this.settings.purchaseCodeStore) {
+        this.settings.purchaseCodeStore = null
+      }
+    },
+
     methods: {
       closeDialog () {
         this.$emit('closeDialogSettingsActivation')
@@ -231,10 +245,9 @@
         let domain = location.hostname
         let subdomain = location.hostname
 
-        if (this.settings.purchaseCodeStore) {
+        if (this.settings.purchaseCodeStore === null) {
           route = '/activation/code/deactivate'
           params = {
-            purchaseCodeStore: this.settings.purchaseCodeStore,
             domain: domain,
             subdomain: subdomain
           }

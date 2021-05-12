@@ -14,6 +14,11 @@
 
       <!-- Actions -->
       <span class="am-custom-field-actions">
+        <!-- Translate -->
+        <div class="am-custom-field-translate" @click="showDialogTranslate()">
+          <img class="am-dialog-translate-svg" width="16px" :src="$root.getUrl+'public/img/translate-grey.svg'">
+          {{ $root.labels.translate }}
+        </div>
 
         <!-- Delete -->
         <span @click="deleteCustomField">
@@ -188,15 +193,40 @@
       </el-col>
     </el-row>
 
+    <!-- Dialog Translate -->
+    <transition name="slide">
+      <el-dialog
+        class="am-side-dialog am-dialog-translate am-edit"
+        :show-close="true"
+        :visible.sync="dialogTranslate"
+        v-if="dialogTranslate"
+      >
+        <dialog-translate
+          :passed-translations="customField.translations"
+          :name="customField.label"
+          :allLanguagesData="languagesData"
+          :used-languages="usedLanguages"
+          type="name"
+          tab="cf"
+          :cf-options="JSON.parse(JSON.stringify(customField.options))"
+          @saveDialogTranslate="saveDialogTranslate"
+          @closeDialogTranslate="dialogTranslate = false"
+        >
+        </dialog-translate>
+      </el-dialog>
+    </transition>
+
   </div>
 </template>
 
 <script>
   import Draggable from 'vuedraggable'
   import imageMixin from '../../../../js/common/mixins/imageMixin'
+  import DialogTranslate from '../../parts/DialogTranslate'
+  import notifyMixin from '../../../../js/backend/mixins/notifyMixin'
 
   export default {
-    mixins: [imageMixin],
+    mixins: [imageMixin, notifyMixin],
 
     props: {
       customField: {
@@ -211,6 +241,12 @@
       },
       services: {
         default: () => []
+      },
+      languagesData: {
+        default: () => []
+      },
+      passedUsedLanguages: {
+        default: () => []
       }
     },
 
@@ -223,7 +259,9 @@
         },
         loading: false,
         loadingOption: false,
-        timer: null
+        timer: null,
+        dialogTranslate: false,
+        usedLanguages: null
       }
     },
 
@@ -233,6 +271,7 @@
         this.$set(option, 'deleted', false)
         this.$set(option, 'new', false)
       })
+      this.usedLanguages = this.passedUsedLanguages
     },
 
     methods: {
@@ -347,6 +386,28 @@
         }
 
         this.updateCustomField()
+      },
+
+      showDialogTranslate () {
+        this.dialogTranslate = true
+      },
+
+      saveDialogTranslate (translations, newLanguages, tab, options) {
+        this.customField.translations = translations
+        this.customField.options = options
+        this.dialogTranslate = false
+        this.updateCustomField()
+        this.notify(this.$root.labels.success, this.$root.labels.custom_field_saved, 'success')
+
+        if (newLanguages.length) {
+          this.usedLanguages = this.usedLanguages.concat(newLanguages)
+          this.$emit('usedLanguagesUpdated', this.usedLanguages)
+
+          this.$http.post(`${this.$root.getAjaxUrl}/settings`, {usedLanguages: this.usedLanguages})
+            .catch((e) => {
+              console.log(e)
+            })
+        }
       }
     },
 
@@ -360,8 +421,15 @@
       }
     },
 
+    watch: {
+      'passedUsedLanguages' () {
+        this.usedLanguages = this.passedUsedLanguages
+      }
+    },
+
     components: {
-      Draggable
+      Draggable,
+      DialogTranslate
     }
   }
 </script>

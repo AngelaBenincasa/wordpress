@@ -8,11 +8,13 @@ namespace AmeliaBooking\Infrastructure\WP\EventListeners\Booking\Appointment;
 
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Services\Booking\BookingApplicationService;
+use AmeliaBooking\Application\Services\Booking\IcsApplicationService;
 use AmeliaBooking\Application\Services\Notification\EmailNotificationService;
 use AmeliaBooking\Application\Services\Notification\SMSNotificationService;
 use AmeliaBooking\Application\Services\WebHook\WebHookApplicationService;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
+use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Factory\Booking\Appointment\AppointmentFactory;
 use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
@@ -77,9 +79,18 @@ class BookingReassignedEventHandler
         $bookingApplicationService = $container->get('application.booking.booking.service');
         /** @var ZoomApplicationService $zoomService */
         $zoomService = $container->get('application.zoom.service');
+        /** @var IcsApplicationService $icsService */
+        $icsService = $container->get('application.ics.service');
 
 
         $booking = $commandResult->getData()['booking'];
+
+        $booking['icsFiles'] = $icsService->getIcsData(
+            Entities::APPOINTMENT,
+            $booking['id'],
+            [],
+            true
+        );
 
 
         $oldAppointment = $commandResult->getData()['oldAppointment'];
@@ -120,6 +131,22 @@ class BookingReassignedEventHandler
 
         // appointment is rescheduled
         if ($existingAppointment === null && $newAppointment === null) {
+            foreach ($oldAppointment['bookings'] as $bookingKey => $bookingArray) {
+                if ($booking['id'] === $bookingArray['id'] &&
+                    (
+                        $bookingArray['status'] === BookingStatus::APPROVED ||
+                        $bookingArray['status'] === BookingStatus::PENDING
+                    )
+                ) {
+                    $oldAppointment['bookings'][$bookingKey]['icsFiles'] = $icsService->getIcsData(
+                        Entities::APPOINTMENT,
+                        $bookingArray['id'],
+                        [],
+                        true
+                    );
+                }
+            }
+
             if ($zoomService) {
                 $zoomService->handleAppointmentMeeting($oldAppointmentObject, self::TIME_UPDATED);
 
@@ -232,6 +259,15 @@ class BookingReassignedEventHandler
                         $oldAppointment['status'] === BookingStatus::PENDING
                     ) {
                         $oldAppointment['bookings'][$bookingKey]['isChangedStatus'] = true;
+
+                        if ($booking['id'] === $bookingArray['id']) {
+                            $oldAppointment['bookings'][$bookingKey]['icsFiles'] = $icsService->getIcsData(
+                                Entities::APPOINTMENT,
+                                $bookingArray['id'],
+                                [],
+                                true
+                            );
+                        }
                     }
                 }
 
@@ -274,6 +310,22 @@ class BookingReassignedEventHandler
                 }
             }
 
+            foreach ($newAppointment['bookings'] as $bookingKey => $bookingArray) {
+                if ($booking['id'] === $bookingArray['id'] &&
+                    (
+                        $bookingArray['status'] === BookingStatus::APPROVED ||
+                        $bookingArray['status'] === BookingStatus::PENDING
+                    )
+                ) {
+                    $newAppointment['bookings'][$bookingKey]['icsFiles'] = $icsService->getIcsData(
+                        Entities::APPOINTMENT,
+                        $bookingArray['id'],
+                        [],
+                        true
+                    );
+                }
+            }
+
             $emailNotificationService->sendAppointmentRescheduleNotifications($newAppointment);
 
             if ($settingsService->getSetting('notifications', 'smsSignedIn') === true) {
@@ -311,6 +363,13 @@ class BookingReassignedEventHandler
                     $existingAppointment['outlookCalendarEventId'] = $existingAppointmentObject->getOutlookCalendarEventId()->getValue();
                 }
             }
+
+            $booking['icsFiles'] = $icsService->getIcsData(
+                Entities::APPOINTMENT,
+                $booking['id'],
+                [],
+                true
+            );
 
             $emailNotificationService->sendAppointmentRescheduleNotifications(
                 array_merge(

@@ -52,6 +52,7 @@ class NotificationsTable extends AbstractDatabaseTable
                    `sendTo` ENUM('{$sendToCustomer}', '{$sendToProvider}') NOT NULL,
                    `subject` VARCHAR(255) NOT NULL DEFAULT '',
                    `content` TEXT NULL,
+                   `translations` TEXT NULL DEFAULT NULL,
                     PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
     }

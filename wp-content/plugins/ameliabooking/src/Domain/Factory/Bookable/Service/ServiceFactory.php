@@ -23,6 +23,7 @@ use AmeliaBooking\Domain\ValueObjects\Number\Float\Price;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\IntegerValue;
 use AmeliaBooking\Domain\ValueObjects\String\Cycle;
+use AmeliaBooking\Domain\ValueObjects\String\DepositType;
 use AmeliaBooking\Domain\ValueObjects\String\EntityType;
 use AmeliaBooking\Domain\ValueObjects\String\Status;
 use AmeliaBooking\Domain\ValueObjects\Priority;
@@ -113,7 +114,23 @@ class ServiceFactory
         }
 
         if (isset($data['recurringPayment'])) {
-            $service->setRecurringPayment(new WholeNumber ($data['recurringPayment']));
+            $service->setRecurringPayment(new WholeNumber($data['recurringPayment']));
+        }
+
+        if (isset($data['translations'])) {
+            $service->setTranslations(new Json($data['translations']));
+        }
+
+        if (isset($data['deposit'])) {
+            $service->setDeposit(new Price($data['deposit']));
+        }
+
+        if (isset($data['depositPayment'])) {
+            $service->setDepositPayment(new DepositType($data['depositPayment']));
+        }
+
+        if (isset($data['depositPerPerson'])) {
+            $service->setDepositPerPerson(new BooleanValueObject($data['depositPerPerson']));
         }
 
         $gallery = new Collection();
@@ -205,6 +222,13 @@ class ServiceFactory
                 $row['service_recurringSub'] : null;
             $services[$serviceId]['recurringPayment'] = isset($row['service_recurringPayment']) ?
                 $row['service_recurringPayment'] : null;
+            $services[$serviceId]['translations'] = isset($row['service_translations']) ?
+                $row['service_translations'] : null;
+            $services[$serviceId]['deposit'] = isset($row['service_deposit']) ? $row['service_deposit'] : null;
+            $services[$serviceId]['depositPayment'] = isset($row['service_depositPayment']) ?
+                $row['service_depositPayment'] : null;
+            $services[$serviceId]['depositPerPerson'] = isset($row['service_depositPerPerson']) ?
+                $row['service_depositPerPerson'] : null;
 
             if ($extraId) {
                 $services[$serviceId]['extras'][$extraId]['id'] = $row['extra_id'];
@@ -216,6 +240,7 @@ class ServiceFactory
                 $services[$serviceId]['extras'][$extraId]['duration'] = $row['extra_duration'];
                 $services[$serviceId]['extras'][$extraId]['position'] = $row['extra_position'];
                 $services[$serviceId]['extras'][$extraId]['aggregatedPrice'] = $row['extra_aggregatedPrice'];
+                $services[$serviceId]['extras'][$extraId]['translations'] = $row['extra_translations'];
             }
 
             if ($galleryId) {

@@ -164,6 +164,22 @@ class EventDomainService
         $followingEvent->setBringingAnyone($originEvent->getBringingAnyone());
         $followingEvent->setBookMultipleTimes($originEvent->getBookMultipleTimes());
 
+        if ($originEvent->getTranslations()) {
+            $followingEvent->setTranslations($originEvent->getTranslations());
+        }
+
+        if ($originEvent->getDeposit()) {
+            $followingEvent->setDeposit($originEvent->getDeposit());
+        }
+
+        if ($originEvent->getDepositPayment()) {
+            $followingEvent->setDepositPayment($originEvent->getDepositPayment());
+        }
+
+        if ($originEvent->getDepositPerPerson()) {
+            $followingEvent->setDepositPerPerson($originEvent->getDepositPerPerson());
+        }
+
         $followingEventGallery = new Collection();
 
         /** @var GalleryImage $image **/

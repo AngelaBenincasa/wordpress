@@ -32,7 +32,7 @@ class PaymentsTable extends AbstractDatabaseTable
                    `customerBookingId` int(11) NULL,
                    `amount` DOUBLE NOT NULL default 0,
                    `dateTime` datetime NULL,
-                   `status` ENUM('paid', 'pending') NOT NULL,
+                   `status` ENUM('paid', 'pending', 'partiallyPaid') NOT NULL,
                    `gateway` ENUM('onSite', 'payPal', 'stripe', 'wc') NOT NULL,
                    `gatewayTitle` varchar(255) NULL,
                    `data` text NULL,

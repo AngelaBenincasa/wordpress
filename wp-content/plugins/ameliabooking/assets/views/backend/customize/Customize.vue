@@ -54,34 +54,40 @@
                   <div class="am-setting">
                     <p>{{ $root.labels.font }}</p>
                     <el-select
-                        v-model="customization.font"
-                        value-key="customer.id"
-                        placeholder=""
+                      v-model="customization.font"
+                      value-key="customer.id"
+                      placeholder=""
                     >
                       <el-option
-                          v-for="font in fonts"
-                          :key="font.id"
-                          :label="font.name"
-                          :value="font.value"
+                        v-for="font in fonts"
+                        :key="font.id"
+                        :label="font.name"
+                        :value="font.value"
                       >
                       </el-option>
                     </el-select>
                   </div>
 
-                  <div class="am-setting">
-                    <p>{{ $root.labels.window_vue }}</p>
-                    <el-tooltip placement="top">
-                      <div slot="content" v-html="$root.labels.window_vue_tooltip"></div>
-                      <i class="el-icon-question am-tooltip-icon"></i>
-                    </el-tooltip>
-                    <el-switch
-                      v-model="useWindowVueInAmelia"
-                      active-text=""
-                      inactive-text=""
-                      @change="saveWindowVueSettings"
-                    >
-                    </el-switch>
-                  </div>
+                  <el-row class="am-setting">
+                    <el-col :span="16">
+                      <p style="display: inline-block">
+                        {{ $root.labels.window_vue }}
+                      </p>
+                      <el-tooltip placement="top">
+                        <div slot="content" v-html="$root.labels.window_vue_tooltip"></div>
+                        <i class="el-icon-question am-tooltip-icon"></i>
+                      </el-tooltip>
+                    </el-col>
+                    <el-col :span="8" class="align-right">
+                      <el-switch
+                          v-model="useWindowVueInAmelia"
+                          active-text=""
+                          inactive-text=""
+                          @change="saveWindowVueSettings"
+                      >
+                      </el-switch>
+                    </el-col>
+                  </el-row>
 
                   <!-- Reset & Save Buttons -->
                   <div class="am-actions">
@@ -105,6 +111,18 @@
 
               <!-- Preview Fonts Import -->
               <link href="https://fonts.googleapis.com/css?family=Lato:300,400|Roboto:300,400,500,700" rel="stylesheet">
+              <link rel="preconnect" href="https://fonts.gstatic.com">
+              <link href="https://fonts.googleapis.com/css2?family=Carme&display=swap" rel="stylesheet">
+              <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+              <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+              <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+              <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+              <link href="https://fonts.googleapis.com/css2?family=Asap+Condensed:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+              <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
+              <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+              <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+              <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+              <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
               <!-- Customize Preview -->
               <el-col :lg="18" class="">
@@ -121,18 +139,18 @@
 
                       <!-- Service -->
                       <el-form-item
-                          :label="$root.labels.service + ':'"
-                          :style="{ 'color': customization.textColor }"
+                        :label="$root.labels.service + ':'"
+                        :style="{ 'color': customization.textColor }"
                       >
                         <el-select
-                            v-model="service"
-                            placeholder=""
-                            :disabled=true
+                          v-model="service"
+                          placeholder=""
+                          :disabled=true
                         >
                           <el-option
-                              :key="0"
-                              :label="$root.labels.any_service"
-                              :value="0"
+                            :key="0"
+                            :label="$root.labels.any_service"
+                            :value="0"
                           >
                           </el-option>
                         </el-select>
@@ -140,19 +158,19 @@
 
                       <!-- Employee -->
                       <el-form-item
-                          :label="$root.labels.employee + ':'"
-                          :style="{ 'color': customization.textColor }"
+                        :label="$root.labels.employee + ':'"
+                        :style="{ 'color': customization.textColor }"
                       >
                         <el-select
-                            v-model="employee"
-                            placeholder=""
-                            :style="{ 'color': customization.textColor}"
-                            :disabled=true
+                          v-model="employee"
+                          placeholder=""
+                          :style="{ 'color': customization.textColor}"
+                          :disabled=true
                         >
                           <el-option
-                              :key="0"
-                              :label="$root.labels.any_employee"
-                              :value="0"
+                            :key="0"
+                            :label="$root.labels.any_employee"
+                            :value="0"
                           >
                           </el-option>
                         </el-select>
@@ -169,13 +187,16 @@
                           </el-col>
 
                           <el-col :span="6" class="am-align-right">
-                            <div role="switch"
-                                 class="el-switch is-checked"
-                                 aria-checked="true">
+                            <div
+                              role="switch"
+                              class="el-switch is-checked"
+                              aria-checked="true"
+                            >
                               <input type="checkbox" name="" true-value="true" class="el-switch__input">
-                              <span class="el-switch__core"
-                                    style="width: 40px;"
-                                    :style="{ 'background-color': customization.primaryColor, 'border-color': customization.primaryColor }"
+                              <span
+                                class="el-switch__core"
+                                style="width: 40px;"
+                                :style="{ 'background-color': customization.primaryColor, 'border-color': customization.primaryColor }"
                               >
                             <span class="el-switch__button" style="transform: translate3d(20px, 0px, 0px);"></span>
                           </span>
@@ -195,8 +216,8 @@
 
                   <!-- Pick Date & Time -->
                   <div
-                      class="am-select-date"
-                      :style="{'background': 'linear-gradient(135deg, '+ customization.primaryGradient1 +' 0%, '+ customization.primaryGradient2 +' 100%)'}"
+                    class="am-select-date"
+                    :style="{'background': 'linear-gradient(135deg, '+ customization.primaryGradient1 +' 0%, '+ customization.primaryGradient2 +' 100%)'}"
                   >
 
                     <p :style="{ 'color': customization.textColorOnBackground }">
@@ -205,24 +226,24 @@
 
                     <!-- Datepicker -->
                     <v-date-picker
-                        v-model="selectedDate"
-                        mode="single"
-                        id="am-calendar-picker"
-                        class='am-calendar-picker'
-                        :show-day-popover=false
-                        :is-expanded=true
-                        :is-inline=true
-                        :style="{ 'color': this.customization.textColorOnBackground, 'fontFamily': customization.font }"
-                        :formats="vCalendarFormats"
+                      v-model="selectedDate"
+                      mode="single"
+                      id="am-calendar-picker"
+                      class='am-calendar-picker'
+                      :show-day-popover=false
+                      :is-expanded=true
+                      :is-inline=true
+                      :style="{ 'color': this.customization.textColorOnBackground, 'fontFamily': customization.font }"
+                      :formats="vCalendarFormats"
                     >
                     </v-date-picker>
 
                     <!-- Continue -->
                     <div class="am-button-wrapper">
                       <button
-                          type="button"
-                          class="el-button el-button--default"
-                          :style="{ 'background-color': '#FFFFFF' }"
+                        type="button"
+                        class="el-button el-button--default"
+                        :style="{ 'background-color': '#FFFFFF' }"
                       >
                         <span :style="{ 'color': customization.primaryColor}">{{ $root.labels.continue }}</span>
                       </button>
@@ -243,8 +264,8 @@
 
           <!-- Custom Fields -->
           <custom-fields
-              :dialogCustomFields="dialogCustomFields"
-              @closeDialogCustomFields="closeDialogCustomFields"
+            :dialogCustomFields="dialogCustomFields"
+            @closeDialogCustomFields="closeDialogCustomFields"
           >
           </custom-fields>
 
@@ -284,7 +305,73 @@
         customization: this.$root.settings.customization,
         dialogCustomFields: false,
         employee: this.$root.labels.any_employee,
-        fonts: [{id: 1, name: 'Roboto', value: 'Roboto, sans-serif'}, {id: 2, name: 'Lato', value: 'Lato'}],
+        fonts: [
+          {
+            id: 1,
+            name: 'Roboto',
+            value: 'Roboto, sans-serif'
+          },
+          {
+            id: 2,
+            name: 'Lato',
+            value: 'Lato'
+          },
+          {
+            id: 3,
+            name: 'Merriweather',
+            value: 'Merriweather, serif'
+          },
+          {
+            id: 4,
+            name: 'Montserrat',
+            value: 'Montserrat, sans-serif'
+          },
+          {
+            id: 5,
+            name: 'Mulish',
+            value: 'Mulish, sans-serif'
+          },
+          {
+            id: 6,
+            name: 'Nunito',
+            value: 'Nunito, sans-serif'
+          },
+          {
+            id: 7,
+            name: 'Asap Condensed',
+            value: 'Asap Condensed, sans-serif'
+          },
+          {
+            id: 8,
+            name: 'Open Sans',
+            value: 'Open Sans, sans-serif'
+          },
+          {
+            id: 9,
+            name: 'Barlow',
+            value: 'Barlow, sans-serif'
+          },
+          {
+            id: 10,
+            name: 'Oswald',
+            value: 'Oswald, sans-serif'
+          },
+          {
+            id: 11,
+            name: 'Bitter',
+            value: 'Bitter, serif'
+          },
+          {
+            id: 12,
+            name: 'Poppins',
+            value: 'Poppins, sans-serif'
+          },
+          {
+            id: 13,
+            name: 'Carme',
+            value: 'Carme, sans-serif'
+          }
+        ],
         loadingButton: false,
         selectedDate: this.$moment().toDate(),
         service: '',
@@ -301,6 +388,10 @@
     },
 
     mounted () {
+      if ('useGenerated' in this.customization) {
+        delete this.customization.useGenerated
+      }
+
       this.useWindowVueInAmelia = this.$root.settings.general.useWindowVueInAmelia
       this.handleResize()
       this.inlineSVG()

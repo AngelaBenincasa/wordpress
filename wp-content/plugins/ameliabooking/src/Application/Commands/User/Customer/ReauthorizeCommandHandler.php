@@ -24,7 +24,6 @@ class ReauthorizeCommandHandler extends CommandHandler
      * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
      * @throws \Slim\Exception\ContainerValueNotFoundException
-     * @throws \Interop\Container\Exception\ContainerException
      * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
      * @throws \Exception
      */
@@ -42,7 +41,7 @@ class ReauthorizeCommandHandler extends CommandHandler
         $customer = $userRepository->getByEmail($command->getField('email'));
 
         if ($customer !== null) {
-            $notificationService->sendRecoveryEmail($customer);
+            $notificationService->sendRecoveryEmail($customer, $command->getField('email'));
         }
 
         $result->setResult(CommandResult::RESULT_SUCCESS);

@@ -182,7 +182,6 @@
           <el-form :inline="true" class="demo-form-inline">
 
             <!-- Service Filter -->
-            <el-popover :disabled="!$root.isLite" ref="filterEmployeePop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
             <el-form-item :label="$root.labels.services + ':'">
               <el-select
                   v-model="params.services"
@@ -192,8 +191,6 @@
                   @change="changeFilter"
                   collapse-tags
                   :loading=!fetched
-                  v-popover:filterEmployeePop
-                  :disabled="$root.isLite"
               >
                 <div v-for="category in categories"
                      :key="category.id">

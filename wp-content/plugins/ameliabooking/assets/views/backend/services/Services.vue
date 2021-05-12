@@ -92,6 +92,14 @@
                         <!-- Category Actions -->
                         <el-col :span="12" class="align-right category-actions">
 
+                          <!-- Translate Category Name -->
+                          <span
+                            :class="{active: editedCategoryId === category.id }"
+                            @click="showDialogTranslateCategory(category)"
+                          >
+                            <img class="svg edit gray" width="16px" :src="$root.getUrl+'public/img/translate.svg'">
+                          </span>
+
                           <!-- Edit Category Name -->
                           <span
                               :class="{active: editedCategoryId === category.id }"
@@ -368,13 +376,40 @@
               :employees=options.employees
               :settings=options.settings
               :futureAppointments="futureAppointments"
+              :newExtraTranslations="newExtraTranslations"
               @saveCallback="saveServiceCallback"
               @duplicateCallback="duplicateServiceCallback"
               @closeDialog="dialogService = false"
+              @showDialogTranslate ="showDialogTranslate"
+              @extraSaved ="extraSaved"
           >
           </dialog-service>
         </el-dialog>
       </transition>
+
+      <!-- Dialog Translate -->
+      <transition name="slide">
+        <el-dialog
+          class="am-side-dialog am-dialog-translate am-edit"
+          :show-close="true"
+          :visible.sync="dialogTranslate"
+          :service="service"
+          v-if="dialogTranslate"
+        >
+          <dialog-translate
+            :passed-translations="dialogTranslateData"
+            :name="dialogTranslateName"
+            :allLanguagesData="languagesData"
+            :used-languages="options.settings.general.usedLanguages"
+            :type="dialogTranslateType"
+            :tab="dialogTranslateTab"
+            @saveDialogTranslate="saveDialogTranslate"
+            @closeDialogTranslate="dialogTranslate = false"
+          >
+          </dialog-translate>
+        </el-dialog>
+      </transition>
+
 
       <!-- Dialog Package -->
       <transition name="slide">
@@ -398,6 +433,7 @@
             @saveCallback="savePackageCallback"
             @duplicateCallback="duplicatePackageCallback"
             @closeDialog="dialogPackage = false"
+            @showDialogTranslate ="showDialogTranslate"
           >
           </dialog-package>
         </el-dialog>
@@ -429,6 +465,7 @@
   import durationMixin from '../../../js/common/mixins/durationMixin'
   import priceMixin from '../../../js/common/mixins/priceMixin'
   import notifyMixin from '../../../js/backend/mixins/notifyMixin'
+  import DialogTranslate from '../parts/DialogTranslate'
 
   export default {
 
@@ -465,6 +502,7 @@
               wc: []
             },
             general: {
+              usedLanguages: []
             }
           }
         },
@@ -494,7 +532,17 @@
             sortValue: 'custom'
           }
         ],
-        svgLoaded: false
+        svgLoaded: false,
+        dialogTranslate: false,
+        dialogTranslateExtra: false,
+        dialogTranslateCategory: false,
+        dialogTranslateType: 'name',
+        dialogTranslateTab: 'service',
+        dialogTranslateData: {},
+        dialogTranslateName: '',
+        extrasTranslateIndex: 0,
+        languagesData: [],
+        newExtraTranslations: null
       }
     },
 
@@ -600,10 +648,12 @@
         })
       } : function () {},
 
-      getOptions () {
+      getOptions (usedLanguages = null) {
         this.$http.get(`${this.$root.getAjaxUrl}/entities`, {params: {types: ['employees', 'categories', 'packages', 'locations', 'settings']}})
           .then(response => {
             this.options.settings.payments.wc = response.data.data.settings.payments.wc
+
+            this.options.settings.general.usedLanguages = []
 
             this.options.locations = []
 
@@ -612,6 +662,8 @@
             this.packages = []
 
             this.setInitialEmployee(response.data.data.employees)
+
+            this.languagesData = response.data.data.settings.languages
 
             this.categories = response.data.data.categories
             this.services = []
@@ -636,6 +688,10 @@
             this.filterServices(this.activeCategory)
 
             this.fetched = true
+
+            if (usedLanguages) {
+              this.options.settings.general.usedLanguages = usedLanguages
+            }
           })
           .catch(e => {
             console.log(e.message)
@@ -751,15 +807,33 @@
       } : function () {},
 
       duplicateCategory (category) {
-        let newCategory = Object.assign({}, category)
+        let newCategory = JSON.parse(JSON.stringify(category))
+
         delete newCategory.id
+
         newCategory.position = this.categories.length + 1
+
         this.svgLoaded = false
+
+        newCategory.serviceList.forEach((service) => {
+          delete service.id
+
+          service.extras.forEach((extra) => {
+            delete extra.id
+          })
+
+          service.settings = service.settings ? JSON.stringify(service.settings) : null
+        })
 
         this.form.post(`${this.$root.getAjaxUrl}/categories`, newCategory)
           .then(response => {
             this.categories.push(response.data.category)
             this.services = this.services.concat(response.data.category.serviceList)
+
+            this.activeCategory = this.categories[this.categories.length - 1]
+
+            this.filterServices(this.activeCategory)
+
             this.notify(this.$root.labels.success, this.$root.labels.category_duplicated, 'success')
           })
           .catch(e => {
@@ -895,13 +969,21 @@
       },
 
       saveServiceCallback () {
+        this.$http.post(`${this.$root.getAjaxUrl}/settings`, {usedLanguages: this.options.settings.general.usedLanguages})
+          .catch((e) => {
+            console.log(e)
+          })
         this.dialogService = false
-        this.getOptions()
+        this.getOptions(this.options.settings.general.usedLanguages)
       },
 
       savePackageCallback: !AMELIA_LITE_VERSION ? function () {
+        this.$http.post(`${this.$root.getAjaxUrl}/settings`, {usedLanguages: this.options.settings.general.usedLanguages})
+          .catch((e) => {
+            console.log(e)
+          })
         this.dialogPackage = false
-        this.getOptions()
+        this.getOptions(this.options.settings.general.usedLanguages)
       } : function () {},
 
       getInitPackageObject: !AMELIA_LITE_VERSION ? function () {
@@ -922,7 +1004,10 @@
           settings: this.getInitEntitySettings('package'),
           endDate: null,
           durationCount: null,
-          durationType: null
+          durationType: null,
+          deposit: 0,
+          depositPayment: 'disabled',
+          translations: null
         }
       } : function () {},
 
@@ -953,17 +1038,113 @@
           recurringCycle: 'disabled',
           recurringSub: 'future',
           recurringPayment: 0,
-          position: 0
+          position: 0,
+          deposit: 0,
+          depositPayment: 'disabled',
+          depositPerPerson: 1,
+          translations: null
         }
-      }
+      },
 
+      showDialogTranslate (type, dialogTranslateTab, extraIndex) {
+        this.dialogTranslateTab = dialogTranslateTab
+        this.dialogTranslateType = type
+        switch (dialogTranslateTab) {
+          case 'service':
+            this.dialogTranslateData = this.service.translations
+            this.dialogTranslateName = this.service.name
+            this.dialogTranslate = true
+            break
+          case 'extra':
+            this.extrasTranslateIndex = extraIndex
+            this.dialogTranslateData = this.service.extras[extraIndex] ? this.service.extras[extraIndex].translations : this.newExtraTranslations
+            this.dialogTranslateName = this.service.extras[extraIndex] ? this.service.extras[extraIndex].name : null
+            this.dialogTranslate = true
+            break
+          case 'category':
+            this.dialogTranslateName = this.activeCategory.name
+            this.dialogTranslate = true
+            break
+          case 'package':
+            this.dialogTranslateData = this.package.translations
+            this.dialogTranslateName = this.package.name
+            this.dialogTranslate = true
+            break
+        }
+      },
+
+      showDialogTranslateCategory (category) {
+        this.activeCategory = category
+        this.dialogTranslateType = 'name'
+        this.dialogTranslateTab = 'category'
+        this.dialogTranslateName = this.activeCategory.name
+        this.dialogTranslateData = this.activeCategory.translations
+        this.dialogTranslate = true
+      },
+
+      saveDialogTranslate (translations, newLanguages, tab) {
+        this.options.settings.general.usedLanguages = this.options.settings.general.usedLanguages.concat(newLanguages)
+        this.dialogTranslate = false
+
+        switch (tab) {
+          case ('service'):
+            this.service['translations'] = translations
+
+            break
+
+          case ('extra'):
+            if (this.service.extras[this.extrasTranslateIndex]) {
+              this.service.extras[this.extrasTranslateIndex]['translations'] = translations
+            } else {
+              if (this.newExtraTranslations) {
+                let newTranslations = JSON.parse(this.newExtraTranslations)
+                if (JSON.parse(translations)['name']) {
+                  newTranslations['name'] = JSON.parse(translations)['name']
+                }
+                if (JSON.parse(translations)['description']) {
+                  newTranslations['description'] = JSON.parse(translations)['description']
+                }
+                this.newExtraTranslations = JSON.stringify(newTranslations)
+              } else {
+                this.newExtraTranslations = translations
+              }
+            }
+
+            break
+
+          case ('category'):
+            this.activeCategory['translations'] = translations
+            this.updateCategory(this.activeCategory)
+            this.$http.post(`${this.$root.getAjaxUrl}/settings`, {usedLanguages: this.options.settings.general.usedLanguages})
+              .catch((e) => {
+                console.log(e)
+              })
+
+            break
+
+          case ('package'):
+            this.package['translations'] = translations
+
+            break
+        }
+      },
+
+      closeDialogTranslate () {
+        this.dialogTranslate = false
+      },
+
+      extraSaved (extra, index) {
+        this.newExtraTranslations = null
+        this.service.extras[index] = extra
+      }
     },
 
     components: {
       PageHeader,
       Draggable,
       DialogPackage,
-      DialogService
+      DialogService,
+      DialogTranslate
     }
 
   }

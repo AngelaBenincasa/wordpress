@@ -13,11 +13,13 @@ use AmeliaBooking\Application\Services\Bookable\BookableApplicationService;
 use AmeliaBooking\Application\Services\Gallery\GalleryApplicationService;
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
+use AmeliaBooking\Domain\Entity\Bookable\Service\Category;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Factory\Bookable\Service\ServiceFactory;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
+use AmeliaBooking\Infrastructure\Repository\Bookable\Service\CategoryRepository;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ServiceRepository;
 use AmeliaBooking\Infrastructure\Repository\User\ProviderRepository;
 
@@ -48,6 +50,7 @@ class AddServiceCommandHandler extends CommandHandler
      * @throws QueryExecutionException
      * @throws AccessDeniedException
      * @throws \Interop\Container\Exception\ContainerException
+     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException
      */
     public function handle(AddServiceCommand $command)
     {
@@ -77,10 +80,15 @@ class AddServiceCommandHandler extends CommandHandler
         $galleryService = $this->container->get('application.gallery.service');
         /** @var ProviderRepository $providerRepository */
         $providerRepository = $this->container->get('domain.users.providers.repository');
+        /** @var CategoryRepository $categoryRepository */
+        $categoryRepository = $this->container->get('domain.bookable.category.repository');
 
         $serviceRepository->beginTransaction();
 
-        if (!($serviceId = $serviceRepository->add($service))) {
+        /** @var Category $category */
+        $category = $categoryRepository->getById($service->getCategoryId()->getValue());
+
+        if (!$category || !($serviceId = $serviceRepository->add($service))) {
             $serviceRepository->rollback();
 
             $result->setResult(CommandResult::RESULT_ERROR);

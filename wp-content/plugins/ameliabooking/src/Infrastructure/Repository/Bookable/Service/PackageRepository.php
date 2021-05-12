@@ -66,6 +66,9 @@ class PackageRepository extends AbstractRepository
             ':endDate'          => $data['endDate'],
             ':durationCount'    => $data['durationCount'],
             ':durationType'     => $data['durationType'],
+            ':translations'     => $data['translations'],
+            ':deposit'          => $data['deposit'],
+            ':depositPayment'   => $data['depositPayment'],
         ];
 
         try {
@@ -86,7 +89,10 @@ class PackageRepository extends AbstractRepository
                 `settings`,
                 `endDate`,
                 `durationCount`,
-                `durationType`
+                `durationType`,
+                `translations`,
+                `deposit`,
+                `depositPayment`
                 ) VALUES (
                 :name,
                 :description,
@@ -101,7 +107,10 @@ class PackageRepository extends AbstractRepository
                 :settings,
                 :endDate,
                 :durationCount,
-                :durationType
+                :durationType,
+                :translations,
+                :deposit,
+                :depositPayment
                 )"
             );
 
@@ -142,6 +151,9 @@ class PackageRepository extends AbstractRepository
             ':endDate'          => $data['endDate'],
             ':durationCount'    => $data['durationCount'],
             ':durationType'     => $data['durationType'],
+            ':translations'     => $data['translations'],
+            ':deposit'          => $data['deposit'],
+            ':depositPayment'   => $data['depositPayment'],
             ':id'               => $packageId
         ];
 
@@ -163,7 +175,10 @@ class PackageRepository extends AbstractRepository
                 `settings`          = :settings,
                 `endDate`           = :endDate,
                 `durationCount`     = :durationCount,
-                `durationType`      = :durationType
+                `durationType`      = :durationType,
+                `translations`      = :translations,
+                `deposit`           = :deposit,
+                `depositPayment`    = :depositPayment
                 WHERE
                 id = :id"
             );
@@ -263,6 +278,9 @@ class PackageRepository extends AbstractRepository
                 p.endDate AS package_endDate,
                 p.durationCount AS package_durationCount,
                 p.durationType AS package_durationType,
+                p.translations AS package_translations,
+                p.deposit AS package_deposit,
+                p.depositPayment AS package_depositPayment,
                 
                 ps.id AS package_service_id,
                 ps.quantity AS package_service_quantity,
@@ -281,6 +299,7 @@ class PackageRepository extends AbstractRepository
                 s.timeAfter AS service_timeAfter,
                 s.pictureFullPath AS service_picture_full,
                 s.pictureThumbPath AS service_picture_thumb,
+                s.translations AS service_translations,
                 
                 l.id AS location_id,
                 l.name AS location_name,
@@ -364,6 +383,9 @@ class PackageRepository extends AbstractRepository
                 p.endDate AS package_endDate,
                 p.durationCount AS package_durationCount,
                 p.durationType AS package_durationType,
+                p.translations AS package_translations,
+                p.deposit AS package_deposit,
+                p.depositPayment AS package_depositPayment,
                 
                 ps.id AS package_service_id,
                 ps.quantity AS package_service_quantity,

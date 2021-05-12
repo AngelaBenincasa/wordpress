@@ -34,8 +34,13 @@
           <el-tab-pane :label="$root.labels.event_details" name="details">
 
             <!-- Event Name -->
-            <el-form-item :label="$root.labels.event_name" prop="name" :rules="rules.name" @input="clearValidation()">
-              <el-input v-model="event.name" :placeholder="$root.labels.enter_event_name">
+            <el-form-item prop="name" :rules="rules.name" @input="clearValidation()">
+              {{ $root.labels.event_name }}
+              <div class="am-event-translate" @click="showDialogTranslate('name')" v-if="!isCabinet">
+                <img class="am-dialog-translate-svg" width="16px" :src="$root.getUrl+'public/img/translate.svg'">
+                {{ $root.labels.translate }}
+              </div>
+              <el-input v-model="event.name" :placeholder="$root.labels.enter_event_name" style="margin-top: 5px !important">
               </el-input>
             </el-form-item>
 
@@ -298,10 +303,87 @@
                   <p>{{$root.labels.price}}</p>
                 </el-col>
                 <el-col :lg="12" :md="12" :sm="24">
-                  <money v-model="event.price" v-bind="moneyComponentData" class="el-input el-input__inner">
+                  <money v-model="event.price" v-bind="moneyComponentData" @input="priceChanged" class="el-input el-input__inner">
                   </money>
                 </el-col>
               </el-row>
+              <el-popover :disabled="!$root.isLite" ref="depositPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
+              <div class="am-setting-box am-switch-box" v-if="parseFloat(event.price) > 0" v-popover:depositPop :class="{'am-lite-disabled': ($root.isLite)}">
+                <!-- Deposit Enabled -->
+                <el-row type="flex" align="middle" :gutter="24">
+                  <el-col :span="19">
+                    {{ $root.labels.deposit_enabled }}
+                  </el-col>
+                  <el-col :span="5" class="align-right">
+                    <el-switch
+                        v-model="depositEnabled"
+                        active-text=""
+                        inactive-text=""
+                        @change="depositEnabledChanged"
+                        :disabled="$root.isLite"
+                    >
+                    </el-switch>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="24" v-if="depositEnabled" class="am-service-deposit">
+                  <el-col :span="12">
+                    <el-form-item>
+                      <label :slot="!isCabinet ? 'label' : null">
+                        {{ $root.labels.deposit_payment }}:
+                        <el-tooltip placement="top">
+                          <div slot="content" v-html="$root.labels.deposit_payment_tooltip"></div>
+                          <i class="el-icon-question am-tooltip-icon"></i>
+                        </el-tooltip>
+                      </label>
+                      <el-select
+                          v-model="depositPayment"
+                          placeholder=""
+                          @change="depositChanged()"
+                      >
+                        <el-option
+                            v-for="(item, index) in depositOptions"
+                            :key="index"
+                            :label="item.label"
+                            :value="item.value"
+                        >
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+
+                  <el-col :span="12">
+                    <el-form-item :label="$root.labels.deposit_amount + (depositPayment === 'fixed' ? ' (' + getCurrencySymbol() + ')' : '') + (depositPayment === 'percentage' ? ' (%)' : '') +  ':'">
+                      <div v-if="depositPayment === 'fixed'" class="el-input">
+                        <money v-model="event.deposit" v-bind="moneyComponentData" @input="depositChanged" class="el-input__inner"></money>
+                      </div>
+
+                      <el-input-number
+                          v-if="depositPayment === 'percentage'"
+                          v-model="event.deposit"
+                          :min="0"
+                          :max="100"
+                          @input="depositChanged()"
+                      >
+                      </el-input-number>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row v-if="event.maxCapacity > 1 && depositPayment === 'fixed' && depositEnabled">
+                  <el-col>
+                    <el-checkbox v-model="event.depositPerPerson">{{$root.labels.deposit_per_person}}</el-checkbox>
+                    <hr>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="24" v-if="depositEnabled" class="am-service-deposit">
+                  <el-col :span="24">
+                    <i class="el-icon-warning-outline"></i>
+                    <label>{{$root.labels.deposit_info}}</label>
+                  </el-col>
+                </el-row>
+              </div>
               <el-row :gutter="10">
                 <el-col :lg="12" :md="12" :sm="24">
                   <p>{{$root.labels.event_max_capacity}}</p>
@@ -430,7 +512,7 @@
                       v-popover:tagsPop
                   >
                     <el-option
-                        v-for="tag, index in tags"
+                        v-for="(tag, index) in tags"
                         v-if="tag"
                         :key="index"
                         :label="tag"
@@ -447,8 +529,13 @@
             <div class="am-event-description">
               <el-row :gutter="10">
                 <el-col :span="24">
-                  <el-form-item :label="$root.labels.description">
-                    <el-input type="textarea" v-model="event.description">
+                  <el-form-item class="am-event-label">
+                    {{ $root.labels.description + ':' }}
+                    <div class="am-event-translate" @click="showDialogTranslate('description')" v-if="!isCabinet">
+                      <img class="am-dialog-translate-svg" width="16px" :src="$root.getUrl+'public/img/translate.svg'">
+                      {{ $root.labels.translate }}
+                    </div>
+                    <el-input type="textarea" v-model="event.description" style="margin-top: 5px !important">
                     </el-input>
                   </el-form-item>
                 </el-col>
@@ -693,6 +780,18 @@
       }
 
       return {
+        depositEnabled: false,
+        depositPayment: 'fixed',
+        depositOptions: [
+          {
+            value: 'fixed',
+            label: this.$root.labels.fixed_amount
+          },
+          {
+            value: 'percentage',
+            label: this.$root.labels.percentage
+          }
+        ],
         originRecurring: null,
         originPeriods: null,
         colors: [
@@ -777,6 +876,26 @@
     },
 
     methods: {
+      depositEnabledChanged () {
+        if (this.depositEnabled) {
+          this.event.depositPayment = this.depositPayment
+        } else {
+          this.event.depositPayment = 'disabled'
+        }
+      },
+
+      depositChanged () {
+        if (this.event.deposit > this.event.price && this.depositPayment === 'fixed') {
+          this.event.deposit = this.event.price
+        }
+      },
+
+      priceChanged () {
+        if (this.event.deposit > this.event.price && this.depositPayment === 'fixed') {
+          this.event.deposit = this.event.price
+        }
+      },
+
       canManage () {
         return this.$root.settings.role === 'admin' || this.$root.settings.role === 'manager'
       },
@@ -787,7 +906,7 @@
         this.defaultEventTab = 'details'
       },
 
-      tagsChanged:function () {},
+      tagsChanged: function () {},
 
       haveSaveConfirmation () {
         return this.event.id !== 0 && this.event.isRecurring
@@ -810,9 +929,25 @@
           this.originPeriods = JSON.parse(JSON.stringify(this.event.periods))
           this.originRecurring = JSON.parse(JSON.stringify(this.event.recurring))
 
+          if (this.event.depositPayment === 'disabled') {
+            this.depositEnabled = false
+          } else {
+            this.depositEnabled = true
+
+            this.depositPayment = this.event.depositPayment
+          }
+
           this.mounted = true
           this.executeUpdate = false
           this.dialogLoading = false
+        }
+
+        if (this.event && this.isCabinet) {
+          if (this.event.depositPayment === 'disabled') {
+            this.depositEnabled = false
+          } else {
+            this.depositPayment = this.event.depositPayment
+          }
         }
       },
 
@@ -867,6 +1002,8 @@
           delete eventSettings.payments.wc
         }
 
+        this.event.depositPayment = 'disabled'
+
         return {
           id: this.event.id,
           parentId: this.event.parentId,
@@ -889,7 +1026,11 @@
           customLocation: this.event.locationId === null ? this.event.customLocation : null,
           applyGlobally: applyGlobally,
           settings: JSON.stringify(eventSettings),
-          zoomUserId: this.event.zoomUserId
+          zoomUserId: this.event.zoomUserId,
+          translations: this.event.translations,
+          deposit: this.event.deposit,
+          depositPayment: this.event.depositPayment,
+          depositPerPerson: this.event.depositPerPerson
         }
       },
 
@@ -917,7 +1058,11 @@
         this.event.periods.splice(dateKey, 1)
       },
 
-      changeEventColor: function () {}
+      changeEventColor: function () {},
+
+      showDialogTranslate: function (type) {
+        this.$emit('showDialogTranslate', type)
+      }
     },
 
     mounted () {

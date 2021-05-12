@@ -47,7 +47,11 @@ class AddServiceController extends Controller
         'recurringCycle',
         'recurringSub',
         'recurringPayment',
-        'timeBefore'
+        'timeBefore',
+        'translations',
+        'deposit',
+        'depositPayment',
+        'depositPerPerson',
     ];
 
     /**

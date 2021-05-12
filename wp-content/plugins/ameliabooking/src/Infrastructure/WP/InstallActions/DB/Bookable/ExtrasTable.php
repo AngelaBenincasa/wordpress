@@ -38,6 +38,7 @@ class ExtrasTable extends AbstractDatabaseTable
                    `serviceId` int(11) NOT NULL,
                    `position` int(11) NOT NULL,
                    `aggregatedPrice` TINYINT(1) DEFAULT NULL,
+                   `translations` TEXT NULL DEFAULT NULL,
                     PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
     }

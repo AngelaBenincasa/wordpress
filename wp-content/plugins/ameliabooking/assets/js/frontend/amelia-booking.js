@@ -18,7 +18,7 @@ __webpack_public_path__ = wpAmeliaUrls.wpAmeliaPluginURL + '/public/'
 let components = null
 
 const Booking = () => import(/* webpackChunkName: "booking" */ '../../views/frontend/booking/Booking.vue')
-const Events = () => import(/* webpackChunkName: "service" */ '../../views/frontend/events/Events.vue')
+const Events = () => import(/* webpackChunkName: "events" */ '../../views/frontend/events/Events.vue')
 components = {Booking, Events}
 
 Vue.prototype.$http = axios
@@ -30,7 +30,7 @@ Vue.use(VueMomentJS, moment)
 Vue.use(ElementUI, {locale})
 Vue.use(VCalendar, {
   firstDayOfWeek: window.wpAmeliaSettings.wordpress.startOfWeek + 1,
-  locale: window.localeLanguage[0].replace('_', '-')
+  locale: 'ameliaCalendarLocale' in window && window.ameliaCalendarLocale[0] ? window.ameliaCalendarLocale[0].replace('_', '-') : window.localeLanguage[0].replace('_', '-')
 })
 Vue.use(Lightbox)
 
@@ -155,8 +155,11 @@ function ameliaLoading (element, selector, ids, isAutoLoading) {
             },
             hasCategoryShortcode: '',
             hasBookingShortcode: '',
+            hasEventShortcode: '',
             counter: manuallyLoadedData !== null ? manuallyLoadedData.counter : ''
           },
+          useTranslations: window.wpAmeliaSettings.general.usedLanguages
+            ? window.wpAmeliaSettings.general.usedLanguages.indexOf(window.localeLanguage[0]) !== -1 : false,
           fileUploadExtensions: fileUploadExtensions
         },
 
@@ -200,6 +203,7 @@ function ameliaLoading (element, selector, ids, isAutoLoading) {
           this.shortcodeData.counter = (bookingData ? bookingData.counter : '')
           this.shortcodeData.hasCategoryShortcode = typeof window.hasCategoryShortcode !== 'undefined' ? window.hasCategoryShortcode : ''
           this.shortcodeData.hasBookingShortcode = typeof window.hasBookingShortcode !== 'undefined' ? window.hasBookingShortcode : ''
+          this.shortcodeData.hasEventShortcode = typeof window.hasEventShortcode !== 'undefined' ? window.hasEventShortcode : ''
           this.shortcodeData.enabled = this.shortcodeData.booking !== null && !Object.values(this.shortcodeData.booking).every(x => (x === null || x === '' || isNaN(x)))
         }
       })

@@ -297,7 +297,8 @@
         }, {
           types: ['categories', 'employees', 'customers'],
           page: 'calendar',
-          isFrontEnd: false
+          isFrontEnd: false,
+          isPanel: false
         })
       },
 

@@ -23,7 +23,7 @@
 
       <!-- Events -->
       <div
-          v-show="fetched && options.fetched && (Object.keys(eventsDay).length !== 0 || (Object.keys(eventsDay).length === 0 && filterApplied) || !fetchedFiltered)">
+          v-show="(Object.keys(eventsDay).length !== 0 || (Object.keys(eventsDay).length === 0 && filterApplied) || !fetchedFiltered)">
 
         <!-- Search & Filter -->
         <div class="am-events-filter am-section">
@@ -53,17 +53,14 @@
                 </el-form-item>
               </el-col>
               <el-col :md="19">
-                <el-popover :disabled="!$root.isLite" ref="filterSearchPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                 <div class="am-search">
                   <el-form-item>
 
                     <!-- Search -->
                     <el-input
-                        v-popover:filterSearchPop
                         class=""
                         :placeholder="$root.labels.event_search_placeholder"
                         v-model="params.search"
-                        :disabled="$root.isLite"
                     >
                     </el-input>
 
@@ -82,7 +79,7 @@
         </div>
 
         <!-- Content Spinner -->
-        <div class="am-spinner am-section" v-show="!fetchedFiltered">
+        <div class="am-spinner am-section" v-show="!fetched || !fetchedFiltered || !options.fetched">
           <img :src="$root.getUrl + 'public/img/spinner.svg'"/>
         </div>
 
@@ -335,6 +332,7 @@
               :settings="options.entities.settings"
               @closeDialog="closeDialogEvent"
               @saveCallback="saveEventCallback"
+              @showDialogTranslate="showDialogTranslate"
           >
           </dialog-event>
         </el-dialog>
@@ -425,6 +423,28 @@
         </transition>
       </el-form>
 
+      <!-- Dialog Translate -->
+      <transition name="slide">
+        <el-dialog
+          class="am-side-dialog am-dialog-translate am-edit"
+          :show-close="true"
+          :visible.sync="dialogTranslate"
+          v-if="dialogTranslate"
+        >
+          <dialog-translate
+            :passed-translations="event.translations"
+            :name="event.name"
+            :used-languages="options.entities.settings.general.usedLanguages"
+            :all-languages-data="languagesData"
+            :type="dialogTranslateType"
+            tab="event"
+            @saveDialogTranslate="saveDialogTranslate"
+            @closeDialogTranslate="dialogTranslate = false"
+          >
+          </dialog-translate>
+        </el-dialog>
+      </transition>
+
       <!-- Help Button -->
       <el-col :md="6" class="">
         <a class="am-help-button" href="https://wpamelia.com/events/" target="_blank">
@@ -455,6 +475,7 @@
   import DialogCustomer from '../customers/DialogCustomer.vue'
   import customerMixin from '../../../js/backend/mixins/customerMixin'
   import DialogExport from '../parts/DialogExport.vue'
+  import DialogTranslate from '../parts/DialogTranslate'
 
   export default {
     mixins: [liteMixin, entitiesMixin, imageMixin, dateMixin, durationMixin, notifyMixin, helperMixin, backendEventMixin, commonEventMixin, customerMixin],
@@ -508,7 +529,10 @@
         count: {
           success: 0,
           error: 0
-        }
+        },
+        dialogTranslate: false,
+        dialogTranslateType: 'name',
+        languagesData: []
       }
     },
 
@@ -561,11 +585,17 @@
       },
 
       saveCustomerCallback (response) {
+        delete response.user['birthday']
+
         this.options.entities.customers.push(response.user)
         this.customerCreatedCount++
       },
 
       saveEventCallback () {
+        this.$http.post(`${this.$root.getAjaxUrl}/settings`, {usedLanguages: this.options.entities.settings.general.usedLanguages})
+          .catch((e) => {
+            console.log(e)
+          })
         this.getEvents()
       },
 
@@ -590,12 +620,15 @@
           .then(response => {
             if (this.$root.settings.role !== 'customer') {
               this.options.entities.settings.payments.wc = response.data.data.settings.payments.wc
+              this.options.entities.settings.general.usedLanguages = response.data.data.settings.general.usedLanguages
             }
 
             this.options.entities.locations = response.data.data.locations
             this.options.entities.employees = response.data.data.employees
             this.options.entities.customFields = response.data.data.customFields
             this.options.entities.customers = response.data.data.customers
+
+            this.languagesData = response.data.data.settings.languages
 
             this.fetched = true
             this.options.fetched = true
@@ -679,7 +712,8 @@
                     opened: event.opened,
                     closed: event.closed,
                     checked: false,
-                    zoomMeeting: eventPeriod.zoomMeeting
+                    zoomMeeting: eventPeriod.zoomMeeting,
+                    translations: event.translations
                   })
 
                   startDate.add(1, 'days')
@@ -718,6 +752,17 @@
 
       closeDialogAttendee () {
         this.dialogEventCustomFields = false
+      },
+
+      showDialogTranslate (type) {
+        this.dialogTranslateType = type
+        this.dialogTranslate = true
+      },
+
+      saveDialogTranslate (translations, newLanguages) {
+        this.options.entities.settings.general.usedLanguages = this.options.entities.settings.general.usedLanguages.concat(newLanguages)
+        this.event.translations = translations
+        this.dialogTranslate = false
       }
     },
 
@@ -749,7 +794,8 @@
       DialogExport,
       DialogEvent,
       DialogAttendees,
-      DialogAttendee
+      DialogAttendee,
+      DialogTranslate
     }
   }
 </script>

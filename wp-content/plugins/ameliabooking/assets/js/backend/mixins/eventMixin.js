@@ -55,6 +55,9 @@ export default {
           settings: {
             payments: {
               wc: null
+            },
+            general: {
+              usedLanguages: []
             }
           },
           employees: [],
@@ -122,9 +125,13 @@ export default {
         showAddToCalendar: false,
         showEventDetails: false,
         showEventBooking: false,
+        translations: null,
         canceling: false,
         deleting: false,
         bookable: true,
+        deposit: 0,
+        depositPayment: 'disabled',
+        depositPerPerson: 1,
         settings: this.getInitEntitySettings('event')
       }
     },

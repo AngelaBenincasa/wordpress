@@ -14,6 +14,7 @@ use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\Booking\Event\Event;
 use AmeliaBooking\Domain\Entity\User\Customer;
 use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
+use AmeliaBooking\Domain\ValueObjects\String\Label;
 
 /**
  * Class Reservation
@@ -34,11 +35,20 @@ class Reservation
     /** @var Customer */
     private $customer;
 
+    /** @var Label */
+    private $locale;
+
+    /** @var Label */
+    private $timeZone;
+
     /** @var BooleanValueObject */
     private $isNewUser;
 
     /** @var BooleanValueObject */
     private $isStatusChanged;
+
+    /** @var BooleanValueObject */
+    private $applyDeposit;
 
     /** @var array */
     private $uploadedCustomFieldFilesInfo;
@@ -114,6 +124,38 @@ class Reservation
     public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
+    }
+
+    /**
+     * @return Label
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param Label $locale
+     */
+    public function setLocale(Label $locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return Label
+     */
+    public function getTimeZone()
+    {
+        return $this->timeZone;
+    }
+
+    /**
+     * @param Label $timeZone
+     */
+    public function setTimeZone(Label $timeZone)
+    {
+        $this->timeZone = $timeZone;
     }
 
     /**
@@ -210,5 +252,21 @@ class Reservation
     public function setUploadedCustomFieldFilesInfo(array $uploadedCustomFieldFilesInfo)
     {
         $this->uploadedCustomFieldFilesInfo = $uploadedCustomFieldFilesInfo;
+    }
+
+    /**
+     * @return BooleanValueObject
+     */
+    public function getApplyDeposit()
+    {
+        return $this->applyDeposit;
+    }
+
+    /**
+     * @param BooleanValueObject $applyDeposit
+     */
+    public function setApplyDeposit(BooleanValueObject $applyDeposit)
+    {
+        $this->applyDeposit = $applyDeposit;
     }
 }

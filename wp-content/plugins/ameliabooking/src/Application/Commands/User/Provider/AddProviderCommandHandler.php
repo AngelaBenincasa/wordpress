@@ -10,10 +10,14 @@ use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
+use AmeliaBooking\Domain\Entity\User\Provider;
 use AmeliaBooking\Domain\Factory\User\UserFactory;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
+use AmeliaBooking\Domain\ValueObjects\String\Password;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\User\ProviderRepository;
+use Interop\Container\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class AddProviderCommandHandler
@@ -33,11 +37,11 @@ class AddProviderCommandHandler extends CommandHandler
      * @param AddProviderCommand $command
      *
      * @return CommandResult
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws AccessDeniedException
      * @throws InvalidArgumentException
      * @throws QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
+     * @throws ContainerException
      */
     public function handle(AddProviderCommand $command)
     {
@@ -46,6 +50,8 @@ class AddProviderCommandHandler extends CommandHandler
             throw new AccessDeniedException('You are not allowed to add employee.');
         }
 
+        /** @var UserApplicationService $userAS */
+        $userAS = $this->getContainer()->get('application.user.service');
         /** @var ProviderApplicationService $providerAS */
         $providerAS = $this->container->get('application.user.provider.service');
         /** @var ProviderRepository $providerRepository */
@@ -55,9 +61,10 @@ class AddProviderCommandHandler extends CommandHandler
 
         $this->checkMandatoryFields($command);
 
+        /** @var Provider $user */
         $user = UserFactory::create($command->getFields());
 
-        if (!$user instanceof AbstractUser) {
+        if (!($user instanceof AbstractUser)) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage('Could not create a new user entity.');
 
@@ -75,16 +82,16 @@ class AddProviderCommandHandler extends CommandHandler
         }
 
         try {
-            if (!($userId = $providerAS->add($user))) {
-                $providerRepository->rollback();
-                return $result;
-            }
+            $userId = $providerAS->add($user);
 
             if ($command->getField('externalId') === 0) {
-                /** @var UserApplicationService $userAS */
-                $userAS = $this->getContainer()->get('application.user.service');
-
                 $userAS->setWpUserIdForNewUser($userId, $user);
+            }
+
+            if ($command->getField('password')) {
+                $newPassword = new Password($command->getField('password'));
+
+                $providerRepository->updateFieldById($userId, $newPassword->getValue(), 'password');
             }
 
             $user->setId(new Id($userId));
@@ -95,12 +102,14 @@ class AddProviderCommandHandler extends CommandHandler
 
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Successfully added new user.');
-        $result->setData([
-            Entities::USER                 => $user->toArray(),
-            'sendEmployeePanelAccessEmail' =>
-                $command->getField('password') && $command->getField('sendEmployeePanelAccessEmail'),
-            'password'                     => $command->getField('password')
-        ]);
+        $result->setData(
+            [
+                Entities::USER                 => $user->toArray(),
+                'sendEmployeePanelAccessEmail' =>
+                    $command->getField('password') && $command->getField('sendEmployeePanelAccessEmail'),
+                'password'                     => $command->getField('password')
+            ]
+        );
 
         $providerRepository->commit();
 

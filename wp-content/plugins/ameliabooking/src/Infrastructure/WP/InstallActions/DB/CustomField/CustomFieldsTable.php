@@ -29,6 +29,7 @@ class CustomFieldsTable extends AbstractDatabaseTable
                    `type` ENUM('text', 'text-area', 'select', 'checkbox', 'radio', 'content', 'file', 'datepicker') NOT NULL DEFAULT 'text',
                    `required` TINYINT(1) NOT NULL DEFAULT 0,
                    `position` int(11) NOT NULL,
+                   `translations` TEXT NULL DEFAULT NULL,
                     PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
     }

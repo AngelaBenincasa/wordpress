@@ -480,6 +480,7 @@
         :hasHeader="!passedPackage"
         @confirmedBooking="confirmedBooking"
         @cancelBooking="cancelBooking"
+        :phonePopulated="phonePopulated"
       >
       </confirm-booking>
 
@@ -760,7 +761,8 @@
           }
         }, {
           types: ['categories', 'employees'],
-          isFrontEnd: true
+          isFrontEnd: true,
+          isPanel: false
         })
 
         this.times = document.getElementById(this.calendarId)
@@ -793,6 +795,11 @@
             id: this.selectedService.id,
             name: this.selectedService.name,
             price: this.selectedService.price,
+            depositData: this.selectedService.depositPayment !== 'disabled' ? {
+              deposit: this.selectedService.deposit,
+              depositPayment: this.selectedService.depositPayment,
+              depositPerPerson: this.selectedService.depositPerPerson
+            } : null,
             maxCapacity: this.selectedService.maxCapacity,
             pictureThumbPath: this.selectedService.pictureThumbPath,
             aggregatedPrice: this.selectedService.aggregatedPrice,
@@ -802,8 +809,12 @@
           return {
             id: this.selectedPackage.id,
             name: this.selectedPackage.name,
-            color: this.selectedPackage.color,
             price: this.getPackagePrice(this.selectedPackage),
+            depositData: this.selectedPackage.depositPayment !== 'disabled' ? {
+              deposit: this.selectedPackage.deposit,
+              depositPayment: this.selectedPackage.depositPayment,
+              depositPerPerson: this.selectedPackage.depositPerPerson
+            } : null,
             calculatedPrice: this.selectedPackage.calculatedPrice,
             discount: this.selectedPackage.discount,
             maxCapacity: 1,
@@ -948,7 +959,9 @@
 
         this.handleCapacity(true, false)
 
-        if (this.showCalendarOnly(true) && this.options.entities.packages.length === 0) {
+        if (('showAmeliaCalendarOnLoad' in window && window.showAmeliaCalendarOnLoad && this.appointment.serviceId) ||
+            (this.showCalendarOnly(true) && this.options.entities.packages.length === 0)
+        ) {
           document.getElementById(this.id + '-calendar').classList.remove('am-select-service-date-transition')
           this.getTimeSlots()
         } else {
@@ -1185,7 +1198,7 @@
             let weekRowNotInMonth = document.getElementById(this.id + '-calendar')
               .getElementsByClassName('c-weeks-rows')[0].children[dayInfo.weekdayOrdinal - 1]
             this.addSlotsElementToWeekRow(weekRowNotInMonth)
-          }, 500)
+          }, 1000)
         }
       },
 

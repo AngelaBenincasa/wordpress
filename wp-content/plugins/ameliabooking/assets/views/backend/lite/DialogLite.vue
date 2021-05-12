@@ -41,6 +41,12 @@
                 <i class="am-lite-check"></i><span>   Service extras</span>
               </li>
               <li>
+                <i class="am-lite-check"></i><span>   Package of Services</span>
+              </li>
+              <li>
+                <i class="am-lite-check"></i><span>   Recurring Appointments</span>
+              </li>
+              <li>
                 <i class="am-lite-check"></i><span>   Discount coupons</span>
               </li>
               <li>

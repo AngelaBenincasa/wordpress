@@ -58,7 +58,7 @@
                     {{ $root.labels.create_new }}
                   </div>
                   <el-option
-                      v-for="(item, key) in bookings"
+                      v-for="(item, key) in clonedBookings"
                       :key="key"
                       :label="(user = getCustomerInfo(item)) !== null ? user.firstName + ' ' + user.lastName : ''"
                       :value="item"
@@ -68,7 +68,7 @@
                     <span class="am-drop-item-meta" v-if="item.customer.email">{{ item.customer.email }}</span>
                   </el-option>
                   <el-option
-                      v-if="bookings.length === 0"
+                      v-if="clonedBookings.length === 0"
                       v-for="item in [{customer: {id: 0, firstName: '', lastName: '', email: '', info: JSON.stringify({firstName: '', lastName: '', email: '', phone: ''})}}]"
                       :key="item.customer.id"
                       :label="(user = getCustomerInfo(item)) !== null ? user.firstName + ' ' + user.lastName : ''"
@@ -468,7 +468,7 @@
                   <el-row class="am-strong" :gutter="10">
                     <el-col :span="14" class="align-right">{{ $root.labels.total }}:</el-col>
                     <el-col :span="10" class="align-right ">{{ getAppointmentPrice(savedAppointment ?
-                      savedAppointment.serviceId : appointment.serviceId, getAppointmentService(appointment), appointment.bookings)
+                      savedAppointment.serviceId : appointment.serviceId, getAppointmentService(appointment), appointment.bookings, false)
                       }}
                     </el-col>
                   </el-row>
@@ -731,6 +731,7 @@
       }
 
       return {
+        clonedBookings: null,
         serviceUpdated: false,
         calendarUpdated: false,
         recurringDatesChanged: false,
@@ -820,12 +821,18 @@
     },
 
     mounted () {
+      if (this.appointment && this.appointment.id === 0) {
+        this.instantiateDialog()
+      }
+
       this.rules = this.rulesInit
     },
 
     methods: {
       searchExistingCustomers (query) {
-        this.searchCustomers(query, this.setFilteredBookings)
+        if (query) {
+          this.searchCustomers(query, this.setFilteredBookings)
+        }
       },
 
       setFilteredBookings () {
@@ -863,7 +870,7 @@
           }
         })
 
-        this.bookings = bookings
+        this.clonedBookings = bookings
       },
 
       selectedTime () {
@@ -932,6 +939,8 @@
 
       instantiateDialog () {
         if (this.appointment !== null) {
+          this.clonedBookings = JSON.parse(JSON.stringify(this.bookings))
+
           if (this.$root.settings.role === 'provider') {
             this.appointment.providerId = this.options.entities.employees[0].id
           }
@@ -1045,6 +1054,14 @@
             coupon: bookItem.coupon
           })
         })
+
+        if (this.activeRecurring && 'dates' in this.recurringData && this.recurringData.dates.length) {
+          this.recurringData.dates.forEach((dateData, index) => {
+            if (index in this.selectedRecurringDates) {
+              this.selectedRecurringDates[index].bookingStart = moment(dateData.date).format('YYYY-MM-DD') + ' ' + dateData.slot
+            }
+          })
+        }
 
         return {
           'serviceId': this.appointment.serviceId,
@@ -1577,7 +1594,7 @@
         let $this = this
 
         setTimeout(function () {
-          if ('timeSlotUnavailable' in responseData.data && responseData.data.timeSlotUnavailable === true) {
+          if ('timeSlotUnavailable' in responseData && responseData.timeSlotUnavailable === true) {
             $this.notify($this.$root.labels.error, $this.$root.labels.time_slot_unavailable, 'error')
             $this.getTimeSlots($this.updateCalendar)
           }
@@ -1659,6 +1676,18 @@
 
     watch: {
       'customerCreatedCount' () {
+        let customersIds = this.clonedBookings.map(booking => booking.customer.id)
+
+        this.bookings.forEach((booking) => {
+          if (customersIds.indexOf(booking.customer.id) === -1) {
+            this.clonedBookings.push(booking)
+          }
+        })
+
+        this.clonedBookings.sort(function (a, b) {
+          return (a.customer.firstName + ' ' + a.customer.lastName).localeCompare((b.customer.firstName + ' ' + b.customer.lastName))
+        })
+
         this.addCustomFieldsValidationRules()
       },
       'appointment' () {

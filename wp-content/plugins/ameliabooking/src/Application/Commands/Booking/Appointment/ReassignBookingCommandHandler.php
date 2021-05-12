@@ -132,15 +132,15 @@ class ReassignBookingCommandHandler extends CommandHandler
             $oldAppointment->getProviderId()->getValue()
         );
 
-        $minimumCancelTimeInSeconds = $settingsDS
+        $minimumRescheduleTimeInSeconds = $settingsDS
             ->getEntitySettings($service->getSettings())
             ->getGeneralSettings()
-            ->getMinimumTimeRequirementPriorToCanceling();
+            ->getMinimumTimeRequirementPriorToRescheduling();
 
         try {
             $reservationService->inspectMinimumCancellationTime(
                 $oldAppointment->getBookingStart()->getValue(),
-                $minimumCancelTimeInSeconds
+                $minimumRescheduleTimeInSeconds
             );
         } catch (BookingCancellationException $e) {
             $result->setResult(CommandResult::RESULT_ERROR);

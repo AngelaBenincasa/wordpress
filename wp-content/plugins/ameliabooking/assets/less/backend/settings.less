@@ -173,12 +173,29 @@
     }
 
     .am-purchase-code {
-      .el-icon-circle-check {
-        color: @color-blue;
-        right: 12px;
-        font-size: 16px;
-        top: 12px;
-        position: absolute;
+      margin-bottom: @margin-medium;
+
+      .am-purchase-code-hidden {
+        p {
+          display: table-cell;
+          font-size: @small-fs;
+          word-break: break-word;
+          margin-right: 8px;
+        }
+
+        .el-icon-info {
+          color: @color-blue;
+          right: 12px;
+          font-size: 28px;
+          top: 12px;
+          display: inline-block;
+          margin-right: 8px;
+          margin-left: 8px;
+        }
+
+        background-color: @color-light-gray;
+        align-items: center;
+        display: flex;
       }
     }
 

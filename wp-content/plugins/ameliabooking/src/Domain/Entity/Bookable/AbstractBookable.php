@@ -7,12 +7,14 @@
 namespace AmeliaBooking\Domain\Entity\Bookable;
 
 use AmeliaBooking\Domain\Collection\Collection;
+use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Float\Price;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\PositiveInteger;
 use AmeliaBooking\Domain\ValueObjects\Picture;
 use AmeliaBooking\Domain\ValueObjects\String\Color;
+use AmeliaBooking\Domain\ValueObjects\String\DepositType;
 use AmeliaBooking\Domain\ValueObjects\String\Description;
 use AmeliaBooking\Domain\ValueObjects\String\Name;
 
@@ -34,6 +36,15 @@ class AbstractBookable
 
     /** @var  Color */
     protected $color;
+
+    /** @var DepositType */
+    private $depositPayment;
+
+    /** @var  Price */
+    protected $deposit;
+
+    /** @var  BooleanValueObject */
+    protected $depositPerPerson;
 
     /** @var  Price */
     protected $price;
@@ -148,6 +159,54 @@ class AbstractBookable
     }
 
     /**
+     * @return Price
+     */
+    public function getDeposit()
+    {
+        return $this->deposit;
+    }
+
+    /**
+     * @param Price $deposit
+     */
+    public function setDeposit(Price $deposit)
+    {
+        $this->deposit = $deposit;
+    }
+
+    /**
+     * @return DepositType
+     */
+    public function getDepositPayment()
+    {
+        return $this->depositPayment;
+    }
+
+    /**
+     * @param DepositType $depositPayment
+     */
+    public function setDepositPayment(DepositType $depositPayment)
+    {
+        $this->depositPayment = $depositPayment;
+    }
+
+    /**
+     * @return BooleanValueObject
+     */
+    public function getDepositPerPerson()
+    {
+        return $this->depositPerPerson;
+    }
+
+    /**
+     * @param BooleanValueObject $depositPerPerson
+     */
+    public function setDepositPerPerson(BooleanValueObject $depositPerPerson)
+    {
+        $this->depositPerPerson = $depositPerPerson;
+    }
+
+    /**
      * @return Picture
      */
     public function getPicture()
@@ -238,6 +297,10 @@ class AbstractBookable
             'description'      => null !== $this->getDescription() ? $this->getDescription()->getValue() : null,
             'color'            => null !== $this->getColor() ? $this->getColor()->getValue() : null,
             'price'            => $this->getPrice()->getValue(),
+            'deposit'          => null !== $this->getDeposit() ? $this->getDeposit()->getValue() : null,
+            'depositPayment'   => null !== $this->getDepositPayment() ? $this->getDepositPayment()->getValue() : null,
+            'depositPerPerson' => null !== $this->getDepositPerPerson() ?
+                $this->getDepositPerPerson()->getValue() : null,
             'pictureFullPath'  => null !== $this->getPicture() ? $this->getPicture()->getFullPath() : null,
             'pictureThumbPath' => null !== $this->getPicture() ? $this->getPicture()->getThumbPath() : null,
             'extras'           => $this->getExtras() ? $this->getExtras()->toArray() : [],

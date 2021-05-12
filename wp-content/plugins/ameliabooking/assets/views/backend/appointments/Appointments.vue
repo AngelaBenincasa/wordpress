@@ -41,11 +41,9 @@
 
                     <!-- Global Search -->
                     <el-input
-                        v-popover:filterSearchPop
                         class="calc-width"
                         :placeholder="$root.labels.appointments_search_placeholder"
                         v-model="params.search"
-                        :disabled="$root.isLite"
                     >
                     </el-input>
 
@@ -53,7 +51,6 @@
                     <el-button
                         class="button-filter-toggle am-button-icon"
                         title="Toggle Filters"
-                        :disabled="$root.isLite"
                         @click="filterFields = !filterFields">
                       <img
                           class="svg" alt="Toggle Filters"
@@ -107,10 +104,7 @@
                   <!-- Employees Filter -->
                   <el-col :sm="6" :md="6" :lg="5" v-if="!$root.isLite">
                     <el-form-item>
-                      <el-popover :disabled="!$root.isLite" ref="filterEmployeesPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                       <el-select
-                          v-popover:filterEmployeesPop
-                          :disabled="$root.isLite"
                           v-model="params.providers"
                           filterable
                           clearable
@@ -133,10 +127,7 @@
                   <!-- Customer Filter -->
                   <el-col :sm="6" :md="6" :lg="$root.isLite ? 7 : 5">
                     <el-form-item>
-                      <el-popover :disabled="!$root.isLite" ref="filterCustomersPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                       <el-select
-                          v-popover:filterCustomersPop
-                          :disabled="$root.isLite"
                           v-model="params.customerId"
                           filterable
                           clearable
@@ -160,10 +151,7 @@
                   <!-- Services Filter -->
                   <el-col :sm="6" :md="6" :lg="$root.isLite ? 7 : 5">
                     <el-form-item>
-                      <el-popover :disabled="!$root.isLite" ref="filterServicesPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                       <el-select
-                          v-popover:filterServicesPop
-                          :disabled="$root.isLite"
                           v-model="params.services"
                           multiple
                           filterable
@@ -196,10 +184,7 @@
                   <!-- Status Filter -->
                   <el-col :sm="6" :md="6" :lg="$root.isLite ? 5 : 4">
                     <el-form-item>
-                      <el-popover :disabled="!$root.isLite" ref="filterStatusPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                       <el-select
-                          v-popover:filterStatusPop
-                          :disabled="$root.isLite"
                           v-model="params.status"
                           filterable
                           clearable
@@ -463,7 +448,7 @@
                             <!-- Payment -->
                             <el-col class="am-appointment-payment" :lg="7" :sm="6" :xs="13">
                               <p class="am-col-title">{{ $root.labels.payment }}:</p>
-                              <div class="am-appointment-package-wrap">
+                              <div class="am-appointment-package-wrap" v-if="getAppointmentPaymentMethods(app.bookings).length">
                                 <img
                                     v-for="method in getAppointmentPaymentMethods(app.bookings)"
                                     v-if="getAppointmentPaymentMethods(app.bookings).length"
@@ -472,11 +457,11 @@
                                 <h4 v-if="bookingTypeCountInPackage(app.bookings).regular">
                                   <el-tooltip placement="top">
                                     <div slot="content">
-                                      {{ getAppointmentPrice(app.serviceId, getAppointmentService(app), app.bookings) }}
+                                      {{ getAppointmentPrice(app.serviceId, getAppointmentService(app), app.bookings, true) }}
                                       <span v-if="Object.keys(bookingTypeCountInPackage(app.bookings).package).length">+</span>
                                     </div>
                                     <div>
-                                      {{ getAppointmentPrice(app.serviceId, getAppointmentService(app), app.bookings) }}
+                                      {{ getAppointmentPrice(app.serviceId, getAppointmentService(app), app.bookings, true) }}
                                       <span v-if="Object.keys(bookingTypeCountInPackage(app.bookings).package).length">+</span>
                                     </div>
                                   </el-tooltip>
@@ -548,7 +533,7 @@
                               <span @click.stop>
                                 <el-tooltip :content="$root.labels.edit_appointment" placement="top">
                                   <el-button
-                                      v-if="!(app.past || app.bookings[0].status === 'canceled' || app.bookings[0].status === 'rejected') && app.cancelable"
+                                      v-if="!(app.past || app.bookings[0].status === 'canceled' || app.bookings[0].status === 'rejected') && app.reschedulable"
                                       size="mini"
                                       @click="showDialogEditAppointment(app.id)">
                                 {{ $root.labels.edit }}
@@ -958,23 +943,7 @@
       getAppointmentOptions (fetchAppointments) {
         this.options.fetched = false
 
-        this.searchCustomers(
-          '',
-          () => {
-            let customersIds = this.options.entities.customers.map(customer => parseInt(customer.id))
-
-            let customers = this.options.entities.customers
-
-            this.searchedCustomers.forEach((customer) => {
-              if (customersIds.indexOf(parseInt(customer.id)) === -1) {
-                customersIds.push(customer.id)
-                customers.push(customer)
-              }
-            })
-
-            this.options.entities.customers = Object.values(customers)
-          }
-        )
+        this.setInitialCustomers()
 
         this.fetchEntities((success) => {
           if (success) {
@@ -989,7 +958,8 @@
           this.options.fetched = true
         }, {
           types: ['categories', 'employees'],
-          isFrontEnd: false
+          isFrontEnd: false,
+          isPanel: false
         })
       },
 
@@ -1083,7 +1053,7 @@
                 $this.allDateAppointmentsChecked[dateKey] = false
               })
 
-              this.options.entities.customers = Object.values(customers)
+              this.options.entities.customers = Object.values(customers.sort((a, b) => (a.firstName.toLowerCase() > b.firstName.toLowerCase()) ? 1 : -1))
             }
 
             this.appointmentsDay = Object.keys(appointmentDays).length === 0 ? [] : appointmentDays

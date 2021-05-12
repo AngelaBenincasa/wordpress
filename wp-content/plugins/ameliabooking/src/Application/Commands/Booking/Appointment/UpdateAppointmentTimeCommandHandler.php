@@ -114,15 +114,15 @@ class UpdateAppointmentTimeCommandHandler extends CommandHandler
             }
         }
 
-        $minimumCancelTimeInSeconds = $settingsDS
+        $minimumRescheduleTimeInSeconds = $settingsDS
             ->getEntitySettings($service->getSettings())
             ->getGeneralSettings()
-            ->getMinimumTimeRequirementPriorToCanceling();
+            ->getMinimumTimeRequirementPriorToRescheduling();
 
         try {
             $reservationService->inspectMinimumCancellationTime(
                 $appointment->getBookingStart()->getValue(),
-                $minimumCancelTimeInSeconds
+                $minimumRescheduleTimeInSeconds
             );
         } catch (BookingCancellationException $e) {
             $result->setResult(CommandResult::RESULT_ERROR);

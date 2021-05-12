@@ -70,7 +70,14 @@
             </div>
 
             <!-- Name -->
-            <el-form-item :label="$root.labels.name + ':'" prop="name">
+            <el-form-item prop="name">
+              <label slot="label">
+                {{ $root.labels.name + ':' }}
+                <div class="am-service-translate" @click="showDialogTranslate('serviceName')">
+                  <img class="am-dialog-translate-svg" width="16px" :src="$root.getUrl+'public/img/translate.svg'">
+                  {{ $root.labels.translate }}
+                </div>
+              </label>
               <el-input v-model="service.name" auto-complete="off" @input="clearValidation()"></el-input>
             </el-form-item>
 
@@ -118,12 +125,90 @@
               <el-col :span="12">
                 <el-form-item :label="$root.labels.price + ':'" prop="price">
                   <div class="el-input">
-                    <money v-model="service.price" v-bind="moneyComponentData" class="el-input__inner"></money>
+                    <money v-model="service.price" v-bind="moneyComponentData" @input="priceChanged" class="el-input__inner"></money>
                   </div>
                 </el-form-item>
               </el-col>
 
             </el-row>
+
+            <el-popover :disabled="!$root.isLite" ref="depositPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
+            <div class="am-setting-box am-switch-box" v-if="parseFloat(service.price) > 0" v-popover:depositPop :class="{'am-lite-disabled': ($root.isLite)}">
+              <!-- Deposit Enabled -->
+              <el-row type="flex" align="middle" :gutter="24">
+                <el-col :span="19">
+                  {{ $root.labels.deposit_enabled }}
+                </el-col>
+                <el-col :span="5" class="align-right">
+                  <el-switch
+                      v-model="depositEnabled"
+                      active-text=""
+                      inactive-text=""
+                      @change="depositEnabledChanged"
+                      :disabled="$root.isLite"
+                  >
+                  </el-switch>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="24" v-if="depositEnabled" class="am-service-deposit">
+                <el-col :span="12">
+                  <el-form-item>
+                    <label slot="label">
+                      {{ $root.labels.deposit_payment }}:
+                      <el-tooltip placement="top">
+                        <div slot="content" v-html="$root.labels.deposit_payment_tooltip"></div>
+                        <i class="el-icon-question am-tooltip-icon"></i>
+                      </el-tooltip>
+                    </label>
+                    <el-select
+                        v-model="depositPayment"
+                        placeholder=""
+                        @change="depositChanged()"
+                    >
+                      <el-option
+                          v-for="(item, index) in depositOptions"
+                          :key="index"
+                          :label="item.label"
+                          :value="item.value"
+                      >
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                  <el-form-item :label="$root.labels.deposit_amount + (depositPayment === 'fixed' ? ' (' + getCurrencySymbol() + ')' : '') + (depositPayment === 'percentage' ? ' (%)' : '') +  ':'">
+                    <div v-if="depositPayment === 'fixed'" class="el-input">
+                      <money v-model="service.deposit" v-bind="moneyComponentData" @input="depositChanged" class="el-input__inner"></money>
+                    </div>
+
+                    <el-input-number
+                        v-if="depositPayment === 'percentage'"
+                        v-model="service.deposit"
+                        :min="0"
+                        :max="100"
+                        @input="depositChanged()"
+                    >
+                    </el-input-number>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row v-if="depositEnabled && service.aggregatedPrice && service.maxCapacity > 1 && depositPayment === 'fixed'">
+                <el-col>
+                  <el-checkbox v-model="service.depositPerPerson">{{$root.labels.deposit_per_person}}</el-checkbox>
+                  <hr>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="24" v-if="depositEnabled" class="am-service-deposit">
+                <el-col :span="24">
+                  <i class="el-icon-warning-outline"></i>
+                  <label>{{$root.labels.deposit_info}}</label>
+                </el-col>
+              </el-row>
+            </div>
 
             <!-- Pending Time -->
             <el-row :gutter="24">
@@ -400,7 +485,14 @@
             </el-form-item>
 
             <!-- Description -->
-            <el-form-item :label="$root.labels.description + ':'">
+            <el-form-item>
+              <label slot="label">
+                {{ $root.labels.description + ':' }}
+                <div class="am-service-translate" @click="showDialogTranslate('serviceDescription')">
+                  <img class="am-dialog-translate-svg" width="16px" :src="$root.getUrl+'public/img/translate.svg'">
+                  {{ $root.labels.translate }}
+                </div>
+              </label>
               <el-input
                   type="textarea"
                   :autosize="{minRows: 4, maxRows: 6}"
@@ -543,7 +635,14 @@
                         <el-form :model="extra" ref="extra" :rules="rulesExtra" label-position="top">
 
                           <!-- Extra Name -->
-                          <el-form-item :label="$root.labels.name + ':'" prop="name">
+                          <el-form-item prop="name">
+                            <label slot="label" class="am-service-name-label">
+                              {{ $root.labels.name + ':' }}
+                              <div class="am-service-translate" @click="showDialogTranslate('extraName', index)">
+                                <img class="am-dialog-translate-svg" width="16px" :src="$root.getUrl+'public/img/translate.svg'">
+                                {{ $root.labels.translate }}
+                              </div>
+                            </label>
                             <el-input v-model="extra.name" auto-complete="off"></el-input>
                           </el-form-item>
 
@@ -610,7 +709,14 @@
                           </div>
 
                           <!-- Description -->
-                          <el-form-item :label="$root.labels.description + ':'">
+                          <el-form-item>
+                            <label slot="label">
+                              {{ $root.labels.description + ':' }}
+                              <div class="am-service-translate" @click="showDialogTranslate('extraDescription', index)">
+                                <img class="am-dialog-translate-svg" width="16px" :src="$root.getUrl+'public/img/translate.svg'">
+                                {{ $root.labels.translate }}
+                              </div>
+                            </label>
                             <el-input
                                 type="textarea"
                                 :autosize="{ minRows: 4, maxRows: 6}"
@@ -726,6 +832,7 @@
   import notifyMixin from '../../../js/backend/mixins/notifyMixin'
   import DialogActions from '../parts/DialogActions.vue'
   import EntitySettings from '../parts/EntitySettings.vue'
+  import DialogTranslate from '../parts/DialogTranslate'
 
   export default {
     mixins: [imageMixin, dateMixin, durationMixin, priceMixin, notifyMixin, helperMixin, settingsMixin],
@@ -735,7 +842,8 @@
       passedService: null,
       employees: null,
       settings: null,
-      futureAppointments: null
+      futureAppointments: null,
+      newExtraTranslations: null
     },
 
     data () {
@@ -748,6 +856,18 @@
       }
 
       return {
+        depositEnabled: false,
+        depositPayment: 'fixed',
+        depositOptions: [
+          {
+            value: 'fixed',
+            label: this.$root.labels.fixed_amount
+          },
+          {
+            value: 'percentage',
+            label: this.$root.labels.percentage
+          }
+        ],
         executeUpdate: true,
         dialogLoading: true,
         appointmentsEmployees: [],
@@ -877,9 +997,37 @@
     },
 
     methods: {
+      depositEnabledChanged () {
+        if (this.depositEnabled) {
+          this.service.depositPayment = this.depositPayment
+        } else {
+          this.service.depositPayment = 'disabled'
+        }
+      },
+
+      depositChanged () {
+        if (this.service.deposit > this.service.price && this.depositPayment === 'fixed') {
+          this.service.deposit = this.service.price
+        }
+      },
+
+      priceChanged () {
+        if (this.service.deposit > this.service.price && this.depositPayment === 'fixed') {
+          this.service.deposit = this.service.price
+        }
+      },
+
       instantiateDialog () {
         if (this.passedService !== null && this.executeUpdate === true) {
           this.service = JSON.parse(JSON.stringify(this.passedService))
+
+          if (this.service.depositPayment === 'disabled') {
+            this.depositEnabled = false
+          } else {
+            this.depositEnabled = true
+
+            this.depositPayment = this.service.depositPayment
+          }
 
           // If service is duplicated use duplicated service employees
           if (this.service.duplicated !== true) {
@@ -927,6 +1075,7 @@
         this.service.settings.payments = null
         this.service.settings.general = null
         this.service.settings.zoom = null
+        this.service.depositPayment = 'disabled'
 
         return Object.assign(JSON.parse(JSON.stringify(this.service)), {settings: null})
       },
@@ -1010,6 +1159,23 @@
             return (a.firstName + ' ' + a.lastName).localeCompare((b.firstName + ' ' + b.lastName))
           })
         }
+      },
+
+      showDialogTranslate (dialogType, extraIndex = 0) {
+        switch (dialogType) {
+          case 'serviceName':
+            this.$emit('showDialogTranslate', 'name', 'service')
+            break
+          case 'serviceDescription':
+            this.$emit('showDialogTranslate', 'description', 'service')
+            break
+          case 'extraName':
+            this.$emit('showDialogTranslate', 'name', 'extra', extraIndex)
+            break
+          case 'extraDescription':
+            this.$emit('showDialogTranslate', 'description', 'extra', extraIndex)
+            break
+        }
       }
     },
 
@@ -1035,10 +1201,16 @@
     watch: {
       'service.price' () {
         this.clearValidation()
+      },
+      'passedService.translations' () {
+        if (this.service) {
+          this.service.translations = this.passedService.translations
+        }
       }
     },
 
     components: {
+      DialogTranslate,
       PictureUpload,
       Draggable,
       Money,

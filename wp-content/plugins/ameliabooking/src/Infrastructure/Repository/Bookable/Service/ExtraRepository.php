@@ -36,7 +36,8 @@ class ExtraRepository extends AbstractRepository implements ExtraRepositoryInter
             ':duration'        => $data['duration'],
             ':serviceId'       => $data['serviceId'],
             ':aggregatedPrice' => $data['aggregatedPrice'] ? 1 : 0,
-            ':position'        => $data['position']
+            ':position'        => $data['position'],
+            ':translations'    => $data['translations'],
         ];
 
         try {
@@ -51,7 +52,8 @@ class ExtraRepository extends AbstractRepository implements ExtraRepositoryInter
                 `duration`,
                 `serviceId`,
                 `aggregatedPrice`,
-                `position`
+                `position`,
+                `translations`
                 ) VALUES (
                 :name,
                 :description,
@@ -60,7 +62,8 @@ class ExtraRepository extends AbstractRepository implements ExtraRepositoryInter
                 :duration,
                 :serviceId,
                 :aggregatedPrice,
-                :position
+                :position,
+                :translations
                 )"
             );
 
@@ -97,6 +100,7 @@ class ExtraRepository extends AbstractRepository implements ExtraRepositoryInter
             ':aggregatedPrice' => $data['aggregatedPrice'] === null ?
                 $data['aggregatedPrice'] : ((int)$data['aggregatedPrice']),
             ':position'        => $data['position'],
+            ':translations'    => $data['translations'],
             ':id'              => $id
         ];
 
@@ -111,7 +115,8 @@ class ExtraRepository extends AbstractRepository implements ExtraRepositoryInter
                 `duration` = :duration,
                 `serviceId` = :serviceId,
                 `aggregatedPrice` = :aggregatedPrice,
-                `position` = :position
+                `position` = :position,
+                `translations` = :translations
                 WHERE id = :id"
             );
 

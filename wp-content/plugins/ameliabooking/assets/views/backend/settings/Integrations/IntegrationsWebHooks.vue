@@ -182,14 +182,6 @@
       }
     },
 
-    updated () {
-      this.inlineSVG()
-    },
-
-    mounted () {
-      this.inlineSVG()
-    },
-
     methods: {
       deleteSpecialDay: function () {},
 

@@ -25,7 +25,8 @@ class UpdateNotificationController extends Controller
         'timeBefore',
         'timeAfter',
         'subject',
-        'content'
+        'content',
+        'translations',
     ];
 
     /**

@@ -248,7 +248,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                 INNER JOIN {$this->bookingsTable} cb ON cb.appointmentId = a.id
                 LEFT JOIN {$this->packagesCustomersTable} pc ON pc.customerId = cb.customerId
                 LEFT JOIN {$this->packagesCustomersServicesTable} pcs ON pcs.id = cb.packageCustomerServiceId
-                LEFT JOIN {$this->paymentsTable} p ON ((p.customerBookingId = cb.id AND pc.id IS NULL) OR (p.packageCustomerId = pc.id AND pc.id IS NOT NULL))
+                LEFT JOIN {$this->paymentsTable} p ON ((p.customerBookingId = cb.id AND cb.packageCustomerServiceId IS NULL) OR (p.packageCustomerId = pc.id AND cb.packageCustomerServiceId IS NOT NULL AND cb.packageCustomerServiceId = pcs.id))
                 LEFT JOIN {$this->customerBookingsExtrasTable} cbe ON cbe.customerBookingId = cb.id
                 LEFT JOIN {$this->couponsTable} c ON c.id = cb.couponId
                 WHERE a.id = (
@@ -893,6 +893,60 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                 $customersJoin = '';
             }
 
+            $paymentsFields = '
+                p.id AS payment_id,
+                p.packageCustomerId AS payment_packageCustomerId,
+                p.amount AS payment_amount,
+                p.dateTime AS payment_dateTime,
+                p.status AS payment_status,
+                p.gateway AS payment_gateway,
+                p.gatewayTitle AS payment_gatewayTitle,
+                p.data AS payment_data,
+            ';
+
+            $paymentsJoin = "LEFT JOIN {$this->paymentsTable} p ON p.customerBookingId = cb.id";
+
+            if (!empty($criteria['skipPayments'])) {
+                $paymentsFields = '';
+
+                $paymentsJoin = '';
+            }
+
+            $bookingExtrasFields = '
+                cbe.id AS bookingExtra_id,
+                cbe.extraId AS bookingExtra_extraId,
+                cbe.customerBookingId AS bookingExtra_customerBookingId,
+                cbe.quantity AS bookingExtra_quantity,
+                cbe.price AS bookingExtra_price,
+                cbe.aggregatedPrice AS bookingExtra_aggregatedPrice,
+            ';
+
+            $bookingExtrasJoin = "LEFT JOIN {$this->customerBookingsExtrasTable} cbe ON cbe.customerBookingId = cb.id";
+
+            if (!empty($criteria['skipExtras'])) {
+                $bookingExtrasFields = '';
+
+                $bookingExtrasJoin = '';
+            }
+
+            $couponsFields = '
+                c.id AS coupon_id,
+                c.code AS coupon_code,
+                c.discount AS coupon_discount,
+                c.deduction AS coupon_deduction,
+                c.limit AS coupon_limit,
+                c.customerLimit AS coupon_customerLimit,
+                c.status AS coupon_status,
+            ';
+
+            $couponsJoin = "LEFT JOIN {$this->couponsTable} c ON c.id = cb.couponId";
+
+            if (!empty($criteria['skipCoupons'])) {
+                $couponsFields = '';
+
+                $couponsJoin = '';
+            }
+
             $where = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
             $statement = $this->connection->prepare(
@@ -910,6 +964,13 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                     a.outlookCalendarEventId AS appointment_outlook_calendar_event_id,
                     a.zoomMeeting AS appointment_zoom_meeting,
                     a.parentId AS appointment_parentId,
+       
+                    {$customersFields}
+                    {$bookingExtrasFields}
+                    {$providersFields}
+                    {$servicesFields}
+                    {$paymentsFields}
+                    {$couponsFields}
                     
                     cb.id AS booking_id,
                     cb.customerId AS booking_customerId,
@@ -919,43 +980,16 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                     cb.customFields AS booking_customFields,
                     cb.info AS booking_info,
                     cb.aggregatedPrice AS booking_aggregatedPrice,
-                    cb.packageCustomerServiceId AS booking_packageCustomerServiceId,
-                                        
-                    cbe.id AS bookingExtra_id,
-                    cbe.extraId AS bookingExtra_extraId,
-                    cbe.customerBookingId AS bookingExtra_customerBookingId,
-                    cbe.quantity AS bookingExtra_quantity,
-                    cbe.price AS bookingExtra_price,
-                    cbe.aggregatedPrice AS bookingExtra_aggregatedPrice,
+                    cb.packageCustomerServiceId AS booking_packageCustomerServiceId
                     
-                    {$customersFields}
-                    {$providersFields}
-                    {$servicesFields}
-                    
-                    p.id AS payment_id,
-                    p.packageCustomerId AS payment_packageCustomerId,
-                    p.amount AS payment_amount,
-                    p.dateTime AS payment_dateTime,
-                    p.status AS payment_status,
-                    p.gateway AS payment_gateway,
-                    p.gatewayTitle AS payment_gatewayTitle,
-                    p.data AS payment_data,
-                    
-                    c.id AS coupon_id,
-                    c.code AS coupon_code,
-                    c.discount AS coupon_discount,
-                    c.deduction AS coupon_deduction,
-                    c.limit AS coupon_limit,
-                    c.customerLimit AS coupon_customerLimit,
-                    c.status AS coupon_status
                 FROM {$this->table} a
                 INNER JOIN {$this->bookingsTable} cb ON cb.appointmentId = a.id
                 {$customersJoin}
                 {$providersJoin}
                 {$servicesJoin}
-                LEFT JOIN {$this->paymentsTable} p ON p.customerBookingId = cb.id
-                LEFT JOIN {$this->customerBookingsExtrasTable} cbe ON cbe.customerBookingId = cb.id
-                LEFT JOIN {$this->couponsTable} c ON c.id = cb.couponId
+                {$paymentsJoin}
+                {$bookingExtrasJoin}
+                {$couponsJoin}
                 {$where}
                 ORDER BY a.bookingStart"
             );
@@ -1035,6 +1069,8 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
             }
         }
 
+        $whereEntities = [];
+
         if (!empty($criteria['services'])) {
             $queryServices = [];
 
@@ -1046,7 +1082,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                 $params[$param] = $value;
             }
 
-            $where[] = 'a.serviceId IN (' . implode(', ', $queryServices) . ')';
+            $whereEntities[] = 'a.serviceId IN (' . implode(', ', $queryServices) . ')';
         }
 
         if (!empty($criteria['providers'])) {
@@ -1060,7 +1096,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                 $params[$param] = $value;
             }
 
-            $where[] = 'a.providerId IN (' . implode(', ', $queryProviders) . ')';
+            $whereEntities[] = 'a.providerId IN (' . implode(', ', $queryProviders) . ')';
         }
 
         if (!empty($criteria['customers'])) {
@@ -1074,7 +1110,13 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                 $params[$param] = $value;
             }
 
-            $where[] = 'cb.customerId IN (' . implode(', ', $queryCustomers) . ')';
+            $whereEntities[] = 'cb.customerId IN (' . implode(', ', $queryCustomers) . ')';
+        }
+
+        if (empty($criteria['anyEntity']) && $whereEntities) {
+            $where = array_merge($where, $whereEntities);
+        } elseif ($whereEntities) {
+            $where[] = '(' . implode(' OR ', $whereEntities) . ')';
         }
 
         if (isset($criteria['customerId'])) {
@@ -1167,6 +1209,8 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
             }
         }
 
+        $whereEntities = [];
+
         if (!empty($criteria['services'])) {
             $queryServices = [];
 
@@ -1178,7 +1222,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                 $params[$param] = $value;
             }
 
-            $where[] = 'a.serviceId IN (' . implode(', ', $queryServices) . ')';
+            $whereEntities[] = 'a.serviceId IN (' . implode(', ', $queryServices) . ')';
         }
 
         if (!empty($criteria['providers'])) {
@@ -1192,7 +1236,7 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                 $params[$param] = $value;
             }
 
-            $where[] = 'a.providerId IN (' . implode(', ', $queryProviders) . ')';
+            $whereEntities[] = 'a.providerId IN (' . implode(', ', $queryProviders) . ')';
         }
 
         if (!empty($criteria['customers'])) {
@@ -1206,7 +1250,13 @@ class AppointmentRepository extends AbstractRepository implements AppointmentRep
                 $params[$param] = $value;
             }
 
-            $where[] = 'cb.customerId IN (' . implode(', ', $queryCustomers) . ')';
+            $whereEntities[] = 'cb.customerId IN (' . implode(', ', $queryCustomers) . ')';
+        }
+
+        if (empty($criteria['anyEntity']) && $whereEntities) {
+            $where = array_merge($where, $whereEntities);
+        } elseif ($whereEntities) {
+            $where[] = '(' . implode(' OR ', $whereEntities) . ')';
         }
 
         if (isset($criteria['customerId'])) {

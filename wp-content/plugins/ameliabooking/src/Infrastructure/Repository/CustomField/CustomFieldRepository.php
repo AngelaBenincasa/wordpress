@@ -77,10 +77,11 @@ class CustomFieldRepository extends AbstractRepository implements CustomFieldRep
         $data = $entity->toArray();
 
         $params = [
-            ':label'    => $data['label'],
-            ':type'     => $data['type'],
-            ':required' => $data['required'] ? 1 : 0,
-            ':position' => $data['position'],
+            ':label'        => $data['label'],
+            ':type'         => $data['type'],
+            ':required'     => $data['required'] ? 1 : 0,
+            ':position'     => $data['position'],
+            ':translations' => $data['translations'],
         ];
 
         try {
@@ -88,9 +89,9 @@ class CustomFieldRepository extends AbstractRepository implements CustomFieldRep
                 "INSERT INTO
                 {$this->table}
                 (
-                `label`, `type`, `required`, `position`
+                `label`, `type`, `required`, `position`, `translations`
                 ) VALUES (
-                :label, :type, :required, :position
+                :label, :type, :required, :position, :translations
                 )"
             );
 
@@ -119,10 +120,11 @@ class CustomFieldRepository extends AbstractRepository implements CustomFieldRep
         $data = $entity->toArray();
 
         $params = [
-            ':label'    => $data['label'],
-            ':required' => $data['required'] ? 1 : 0,
-            ':position' => $data['position'],
-            ':id'       => $id,
+            ':label'        => $data['label'],
+            ':required'     => $data['required'] ? 1 : 0,
+            ':position'     => $data['position'],
+            ':translations' => $data['translations'],
+            ':id'           => $id,
         ];
 
         try {
@@ -131,7 +133,8 @@ class CustomFieldRepository extends AbstractRepository implements CustomFieldRep
                 SET
                 `label`    = :label,
                 `required` = :required,
-                `position` = :position
+                `position` = :position,
+                `translations` = :translations
                 WHERE
                 id = :id"
             );
@@ -162,10 +165,12 @@ class CustomFieldRepository extends AbstractRepository implements CustomFieldRep
                     cf.type AS cf_type,
                     cf.required AS cf_required,
                     cf.position AS cf_position,
+                    cf.translations AS cf_translations,
                     cfo.id AS cfo_id,
                     cfo.customFieldId AS cfo_custom_field_id,
                     cfo.label AS cfo_label,
                     cfo.position AS cfo_position,
+                    cfo.translations AS cfo_translations,
                     s.id AS s_id,
                     s.name AS s_name,
                     s.description AS s_description,

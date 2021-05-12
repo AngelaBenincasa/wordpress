@@ -45,6 +45,21 @@ class AmeliaEventsElementorWidget extends Widget_Base
             ]
         );
 
+        if (!AMELIA_LITE_VERSION) {
+            $this->add_control(
+                'selected_type',
+                [
+                    'label' => BackendStrings::getWordPressStrings()['show_event_view_type'],
+                    'type' => Controls_Manager::SELECT,
+                    'options' => [
+                        'list' => BackendStrings::getWordPressStrings()['show_event_view_list'],
+                        'calendar' => BackendStrings::getWordPressStrings()['show_event_view_calendar']
+                    ],
+                    'default' => 'list',
+                ]
+            );
+        }
+
         $this->add_control(
             'preselect',
             [
@@ -64,6 +79,17 @@ class AmeliaEventsElementorWidget extends Widget_Base
                 'options' => self::amelia_elementor_get_events(),
                 'condition' => ['preselect' => 'yes'],
                 'default' => '0',
+            ]
+        );
+
+        $this->add_control(
+            'select_tag',
+            [
+                'label' => BackendStrings::getWordPressStrings()['select_tag'],
+                'type' => Controls_Manager::SELECT,
+                'options' => self::amelia_elementor_get_tags(),
+                'condition' => ['preselect' => 'yes'],
+                'default' => '',
             ]
         );
 
@@ -97,13 +123,22 @@ class AmeliaEventsElementorWidget extends Widget_Base
     protected function render() {
 
         $settings = $this->get_settings_for_display();
+
+        $selected_type = '';
+
         if ($settings['preselect']) {
             $trigger = $settings['load_manually'] !== '' ? ' trigger=' . $settings['load_manually'] : '';
+
             $selected_event = $settings['select_event'] === '0' ? '' : ' event=' . $settings['select_event'];
+
             $show_recurring = $settings['show_recurring'] ? ' recurring=1' : '';
-            echo '[ameliaevents' . $trigger . $selected_event . $show_recurring . ']';
+
+            $selected_tag = $settings['select_tag'] ? ' tag=' . "'" . $settings['select_tag'] . "'" : '';
+
+            echo '[ameliaevents' . $selected_type . $trigger . $selected_event . $selected_tag . $show_recurring . ']';
         } else {
-            echo '[ameliaevents]';
+            $selected_type = '';
+            echo '[ameliaevents' . $selected_type . ']';
         }
     }
 
@@ -117,10 +152,28 @@ class AmeliaEventsElementorWidget extends Widget_Base
         $events = GutenbergBlock::getEntitiesData()['data']['events'];
 
         $returnEvents = [];
+
         $returnEvents['0'] = BackendStrings::getWordPressStrings()['show_all_events'];
+
         foreach ($events as $event) {
             $returnEvents[$event['id']] = $event['name'] . ' (id: ' . $event['id'] . ')';
         }
+
         return $returnEvents;
+    }
+
+    public static function amelia_elementor_get_tags()
+    {
+        $tags = GutenbergBlock::getEntitiesData()['data']['tags'];
+
+        $returnTags = [];
+
+        $returnTags[''] = BackendStrings::getWordPressStrings()['show_all_tags'];
+
+        foreach ($tags as $index => $tag) {
+            $returnTags[$tag['name']] = $tag['name'];
+        }
+
+        return $returnTags;
     }
 }

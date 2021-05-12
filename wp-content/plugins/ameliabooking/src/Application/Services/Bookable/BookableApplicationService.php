@@ -13,7 +13,6 @@ use AmeliaBooking\Domain\Entity\Bookable\Service\PackageCustomer;
 use AmeliaBooking\Domain\Entity\Bookable\Service\PackageService;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
-use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\Location\Location;
 use AmeliaBooking\Domain\Entity\Schedule\Period;
 use AmeliaBooking\Domain\Entity\Schedule\PeriodService;
@@ -644,8 +643,13 @@ class BookableApplicationService
         /** @var PackageCustomerServiceRepository $packageCustomerServiceRepository */
         $packageCustomerServiceRepository = $this->container->get('domain.bookable.packageCustomerService.repository');
 
+        /** @var Collection $packageCustomerServices */
+        $packageCustomerServices = $packageCustomerServiceRepository->getByCriteria(['packages' => $packagesIds]);
+
         /** @var Collection $appointments */
-        $appointments = $appointmentRepository->getFiltered(['packages' => $packagesIds]);
+        $appointments = $packageCustomerServices->keys() ? $appointmentRepository->getFiltered(
+            ['packageCustomerServices' => $packageCustomerServices->keys()]
+        ) : new Collection();
 
         $now = DateTimeService::getNowDateTimeObject();
 
@@ -661,9 +665,6 @@ class BookableApplicationService
                 $pastAppointments++;
             }
         }
-
-        /** @var Collection $packageCustomerServices */
-        $packageCustomerServices = $packageCustomerServiceRepository->getByCriteria(['packages' => $packagesIds]);
 
         /** @var PackageApplicationService $packageApplicationService */
         $packageApplicationService = $this->container->get('application.bookable.package');
@@ -832,9 +833,6 @@ class BookableApplicationService
         /** @var GalleryApplicationService $galleryService */
         $galleryService = $this->container->get('application.gallery.service');
 
-        /** @var AppointmentRepository $appointmentRepository */
-        $appointmentRepository = $this->container->get('domain.booking.appointment.repository');
-
         /** @var CustomerBookingRepository $customerBookingRepository */
         $customerBookingRepository = $this->container->get('domain.booking.customerBooking.repository');
 
@@ -859,32 +857,26 @@ class BookableApplicationService
         /** @var PackageCustomerServiceRepository $packageCustomerServiceRepository */
         $packageCustomerServiceRepository = $this->container->get('domain.bookable.packageCustomerService.repository');
 
-        /** @var Collection $appointments */
-        $appointments = $appointmentRepository->getFiltered(['packages' => [$package->getId()->getValue()]]);
+        /** @var Collection $packageCustomerServices */
+        $packageCustomerServices = $packageCustomerServiceRepository->getByCriteria(
+            ['packages' => [$package->getId()->getValue()]]
+        );
+
+        foreach ($packageCustomerServices->keys() as $packageCustomerServiceId) {
+            if (!$customerBookingRepository->unsetByEntityId($packageCustomerServiceId, 'packageCustomerServiceId')) {
+                return false;
+            }
+        }
 
         /** @var Collection $packageCustomers */
         $packageCustomers = $packageCustomerRepository->getByEntityId($package->getId()->getValue(), 'packageId');
 
-        /** @var Appointment $appointment */
-        foreach ($appointments->getItems() as $appointment) {
-            /** @var CustomerBooking $booking */
-            foreach ($appointment->getBookings()->getItems() as $booking) {
-                if (!$customerBookingRepository->unsetByEntityId(
-                    $booking->getPackageCustomerService()->getId()->getValue(),
-                    'packageCustomerServiceId'
-                )
-                ) {
-                    return false;
-                }
-            }
-        }
-
         /** @var PackageCustomer $packageCustomer */
         foreach ($packageCustomers->getItems() as $packageCustomer) {
             if (!$paymentRepository->deleteByEntityId(
-                $packageCustomer->getId()->getValue(),
-                'packageCustomerId'
-            ) ||
+                    $packageCustomer->getId()->getValue(),
+                    'packageCustomerId'
+                ) ||
                 !$packageCustomerServiceRepository->deleteByEntityId(
                     $packageCustomer->getId()->getValue(),
                     'packageCustomerId'

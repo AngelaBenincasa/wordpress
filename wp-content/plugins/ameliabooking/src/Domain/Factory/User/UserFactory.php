@@ -53,8 +53,8 @@ class UserFactory
         switch ($data['type']) {
             case 'admin':
                 $user = new Admin(
-                    new Name($data['firstName']),
-                    new Name($data['lastName']),
+                    new Name(trim($data['firstName'])),
+                    new Name(trim($data['lastName'])),
                     new Email($data['email'])
                 );
                 break;
@@ -140,8 +140,8 @@ class UserFactory
                 }
 
                 $user = new Provider(
-                    new Name($data['firstName']),
-                    new Name($data['lastName']),
+                    new Name(trim($data['firstName'])),
+                    new Name(trim($data['lastName'])),
                     new Email($data['email']),
                     new Phone(isset($data['phone']) ? $data['phone'] : null),
                     new Collection($weekDayList),
@@ -178,16 +178,16 @@ class UserFactory
                 break;
             case 'manager':
                 $user = new Manager(
-                    new Name($data['firstName']),
-                    new Name($data['lastName']),
+                    new Name(trim($data['firstName'])),
+                    new Name(trim($data['lastName'])),
                     new Email($data['email'])
                 );
                 break;
             case 'customer':
             default:
                 $user = new Customer(
-                    new Name($data['firstName']),
-                    new Name($data['lastName']),
+                    new Name(trim($data['firstName'])),
+                    new Name(trim($data['lastName'])),
                     new Email($data['email'] ?: null),
                     new Phone(!empty($data['phone']) ? $data['phone'] : null),
                     new Gender(!empty($data['gender']) ? strtolower($data['gender']) : null)

@@ -11,6 +11,7 @@ use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\DateTime\DateTimeValue;
 use AmeliaBooking\Domain\ValueObjects\DiscountPercentageValue;
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Float\Price;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\PositiveInteger;
 use AmeliaBooking\Domain\ValueObjects\String\BookingType;
@@ -49,6 +50,9 @@ class Package extends AbstractBookable
 
     /** @var Label */
     private $durationType;
+
+    /** @var Json */
+    private $translations;
 
     /**
      * Package constructor.
@@ -199,6 +203,23 @@ class Package extends AbstractBookable
         return new Bookingtype(Entities::PACKAGE);
     }
 
+
+    /**
+     * @return Json
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * @param Json $translations
+     */
+    public function setTranslations(Json $translations)
+    {
+        $this->translations = $translations;
+    }
+
     /**
      * @return array
      */
@@ -218,6 +239,7 @@ class Package extends AbstractBookable
                 'durationCount'    => $this->getDurationCount() ? $this->getDurationCount()->getValue() : null,
                 'durationType'     => $this->getDurationType() ? $this->getDurationType()->getValue() : null,
                 'position'         => $this->getPosition() ? $this->getPosition()->getValue() : null,
+                'translations'     => $this->getTranslations() ? $this->getTranslations()->getValue() : null,
             ]
         );
     }

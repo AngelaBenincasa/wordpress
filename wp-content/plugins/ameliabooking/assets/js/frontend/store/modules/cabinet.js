@@ -6,6 +6,7 @@ const getDefaultState = () => {
     dialogButtonSpinner: false,
     submitButtonSpinner: false,
     fetchedAppointments: false,
+    fetchedPackageAppointments: false,
     fetchedEvents: false,
     activeTab: 'appointments',
     clonedProfile: null,
@@ -65,6 +66,10 @@ const mutations = {
 
   setFetchedAppointments (state, value) {
     state.fetchedAppointments = value
+  },
+
+  setFetchedPackageAppointments (state, value) {
+    state.fetchedPackageAppointments = value
   },
 
   setFetchedEvents (state, value) {

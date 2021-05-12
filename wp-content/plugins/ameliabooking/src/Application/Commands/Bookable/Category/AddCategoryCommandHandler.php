@@ -7,6 +7,7 @@ use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Category;
+use AmeliaBooking\Domain\Entity\Bookable\Service\Extra;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Factory\Bookable\Service\CategoryFactory;
@@ -14,6 +15,7 @@ use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\CategoryRepository;
+use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ExtraRepository;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\ServiceRepository;
 
 /**
@@ -47,9 +49,10 @@ class AddCategoryCommandHandler extends CommandHandler
 
         $this->checkMandatoryFields($command);
 
+        /** @var Category $category */
         $category = CategoryFactory::create($command->getFields());
 
-        if (!$category instanceof Category) {
+        if (!($category instanceof Category)) {
             $result->setResult(CommandResult::RESULT_ERROR);
             $result->setMessage('Could not create category.');
 
@@ -60,36 +63,32 @@ class AddCategoryCommandHandler extends CommandHandler
         $categoryRepository = $this->container->get('domain.bookable.category.repository');
         /** @var ServiceRepository $serviceRepository */
         $serviceRepository = $this->container->get('domain.bookable.service.repository');
+        /** @var ExtraRepository $extraRepository */
+        $extraRepository = $this->container->get('domain.bookable.extra.repository');
 
         $categoryRepository->beginTransaction();
 
-        if (!($categoryId = $categoryRepository->add($category))) {
-            $categoryRepository->rollback();
-
-            $result->setResult(CommandResult::RESULT_ERROR);
-            $result->setMessage('Could not create category.');
-
-            return $result;
-        }
+        $categoryId = $categoryRepository->add($category);
 
         $category->setId(new Id($categoryId));
 
-        if ($category->getServiceList() !== null) {
-            /** @var Collection $serviceList */
-            $serviceList = $category->getServiceList();
-
-            foreach ($serviceList->getItems() as $service) {
+        if ($category->getServiceList() && $category->getServiceList()->length()) {
+            foreach ($category->getServiceList()->getItems() as $service) {
                 /** @var Service $service */
                 $service->setCategoryId(new Id($categoryId));
 
-                if (!$serviceRepository->add($service)) {
-                    $categoryRepository->rollback();
+                $serviceId = $serviceRepository->add($service);
 
-                    $result->setResult(CommandResult::RESULT_ERROR);
-                    $result->setMessage('Could not create category.');
+                /** @var Extra $extra */
+                foreach ($service->getExtras()->getItems() as $extra) {
+                    $extra->setServiceId(new Id($serviceId));
 
-                    return $result;
+                    $extraId = $extraRepository->add($extra);
+
+                    $extra->setId(new Id($extraId));
                 }
+
+                $service->setId(new Id($serviceId));
             }
         }
 
@@ -97,9 +96,11 @@ class AddCategoryCommandHandler extends CommandHandler
 
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Successfully added new category.');
-        $result->setData([
-            Entities::CATEGORY => $category->toArray()
-        ]);
+        $result->setData(
+            [
+                Entities::CATEGORY => $category->toArray()
+            ]
+        );
 
         return $result;
     }

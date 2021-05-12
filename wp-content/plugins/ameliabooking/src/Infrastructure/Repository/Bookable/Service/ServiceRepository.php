@@ -92,6 +92,10 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 s.recurringCycle AS service_recurringCycle,
                 s.recurringSub AS service_recurringSub,
                 s.recurringPayment AS service_recurringPayment,
+                s.translations AS service_translations,
+                s.deposit AS service_deposit,
+                s.depositPayment AS service_depositPayment,
+                s.depositPerPerson AS service_depositPerPerson,
                 
                 e.id AS extra_id,
                 e.name AS extra_name,
@@ -101,6 +105,7 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 e.position AS extra_position,
                 e.aggregatedPrice AS extra_aggregatedPrice,
                 e.description AS extra_description,
+                e.translations AS extra_translations,
                 
                 g.id AS gallery_id,
                 g.pictureFullPath AS gallery_picture_full,
@@ -150,6 +155,10 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
             ':recurringCycle'   => $data['recurringCycle'],
             ':recurringSub'     => $data['recurringSub'],
             ':recurringPayment' => $data['recurringPayment'],
+            ':translations'     => $data['translations'],
+            ':deposit'          => $data['deposit'],
+            ':depositPayment'   => $data['depositPayment'],
+            ':depositPerPerson' => $data['depositPerPerson'] ? 1 : 0,
         ];
 
         try {
@@ -177,7 +186,11 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 `settings`,
                 `recurringCycle`,
                 `recurringSub`,
-                `recurringPayment`
+                `recurringPayment`,
+                `translations`,
+                `deposit`,
+                `depositPayment`,
+                `depositPerPerson`
                 ) VALUES (
                 :name,
                 :description,
@@ -199,7 +212,11 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 :settings,
                 :recurringCycle,
                 :recurringSub,
-                :recurringPayment
+                :recurringPayment,
+                :translations,
+                :deposit,
+                :depositPayment,
+                :depositPerPerson  
                 )"
             );
 
@@ -248,6 +265,10 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
             ':recurringCycle'   => $data['recurringCycle'],
             ':recurringSub'     => $data['recurringSub'],
             ':recurringPayment' => $data['recurringPayment'],
+            ':translations'     => $data['translations'],
+            ':deposit'          => $data['deposit'],
+            ':depositPayment'   => $data['depositPayment'],
+            ':depositPerPerson' => $data['depositPerPerson'] ? 1 : 0,
             ':id'               => $serviceId
         ];
 
@@ -276,7 +297,11 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 `settings`          = :settings,
                 `recurringCycle`    = :recurringCycle,
                 `recurringSub`      = :recurringSub,
-                `recurringPayment`  = :recurringPayment
+                `recurringPayment`  = :recurringPayment,
+                `translations`      = :translations,
+                `deposit`           = :deposit,
+                `depositPayment`    = :depositPayment,
+                `depositPerPerson`  = :depositPerPerson
                 WHERE
                 id = :id"
             );
@@ -322,7 +347,11 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 s.aggregatedPrice AS service_aggregatedPrice,
                 s.settings AS service_settings,
                 s.recurringPayment AS service_recurringPayment,
+                s.translations AS service_translations,
                 s.show AS service_show,
+                s.deposit AS service_deposit,
+                s.depositPayment AS service_depositPayment,
+                s.depositPerPerson AS service_depositPerPerson,
                 
                 e.id AS extra_id,
                 e.name AS extra_name,
@@ -330,7 +359,8 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 e.maxQuantity AS extra_maxQuantity,
                 e.duration AS extra_duration,
                 e.aggregatedPrice AS extra_aggregatedPrice,
-                e.position AS extra_position
+                e.position AS extra_position,
+                e.translations AS extra_translations
               FROM {$this->table} s
               INNER JOIN {$this->providerServicesTable} ps ON s.id = ps.serviceId
               LEFT JOIN {$this->extrasTable} e ON e.serviceId = s.id
@@ -443,9 +473,13 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 s.position AS service_position,
                 s.aggregatedPrice AS service_aggregatedPrice,
                 s.settings AS service_settings,
+                s.translations AS service_translations,
                 s.recurringCycle AS service_recurringCycle,
                 s.recurringSub AS service_recurringSub,
                 s.recurringPayment AS service_recurringPayment,
+                s.deposit AS service_deposit,
+                s.depositPayment AS service_depositPayment,
+                s.depositPerPerson AS service_depositPerPerson,
                 
                 e.id AS extra_id,
                 e.name AS extra_name,
@@ -455,6 +489,7 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 e.position AS extra_position,
                 e.aggregatedPrice AS extra_aggregatedPrice,
                 e.description AS extra_description,
+                e.translations AS extra_translations,
                                 
                 g.id AS gallery_id,
                 g.pictureFullPath AS gallery_picture_full,
@@ -508,6 +543,10 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 s.pictureThumbPath AS service_picture_thumb,
                 s.aggregatedPrice AS service_aggregatedPrice,
                 s.settings AS service_settings,
+                s.translations AS service_translations,
+                s.deposit AS service_deposit,
+                s.depositPayment AS service_depositPayment,
+                s.depositPerPerson AS service_depositPerPerson,
                 
                 e.id AS extra_id,
                 e.name AS extra_name,
@@ -516,7 +555,9 @@ class ServiceRepository extends AbstractRepository implements ServiceRepositoryI
                 e.maxQuantity AS extra_maxQuantity,
                 e.duration AS extra_duration,
                 e.aggregatedPrice AS extra_aggregatedPrice,
-                e.position AS extra_position
+                e.position AS extra_position,
+                e.translations AS extra_translations
+                
                 FROM {$this->table} s
                 LEFT JOIN {$this->extrasTable} e ON e.serviceId = s.id
                 WHERE s.id = :serviceId

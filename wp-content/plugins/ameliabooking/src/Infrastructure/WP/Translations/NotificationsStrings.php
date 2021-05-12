@@ -1000,7 +1000,7 @@ Thank you,
             'sendTo'     => 'customer',
             'subject'    => 'Customer Panel Access',
             'content'    =>
-                'Dear <strong>%customer_full_name%</strong>,<br><br>You can access your profile on this <b><a href="%customer_panel_url%">link</a></b>.<br>We wish you all the best.
+                'Dear <strong>%customer_full_name%</strong>,<br><br>You can access your profile on this <b><a href="%customer_panel_url%">link</a></b>.
                     <br><br>Thank you for choosing our company,<br><strong>%company_name%</strong>'
         ];
     }

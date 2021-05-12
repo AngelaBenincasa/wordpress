@@ -117,20 +117,25 @@ class UpdateAppointmentCommandHandler extends CommandHandler
             /** @var CustomerBooking $oldBooking */
             foreach ($oldAppointment->getBookings()->getItems() as $oldBooking) {
                 if ($newBooking->getId() &&
-                    $newBooking->getId()->getValue() === $oldBooking->getId()->getValue() &&
-                    $oldBooking->getUtcOffset()
+                    $newBooking->getId()->getValue() === $oldBooking->getId()->getValue()
                 ) {
-                    $newBooking->setUtcOffset($oldBooking->getUtcOffset());
+                    if ($oldBooking->getUtcOffset()) {
+                        $newBooking->setUtcOffset($oldBooking->getUtcOffset());
+                    }
+
+                    if ($oldBooking->getInfo()) {
+                        $newBooking->setInfo($oldBooking->getInfo());
+                    }
                 }
             }
         }
 
-        $appointmentEmployeeChanged = false;
+        $appointmentEmployeeChanged = null;
         $appointmentZoomUserChanged = false;
         $appointmentZoomUsersLicenced = false;
 
         if ($appointment->getProviderId()->getValue() !== $oldAppointment->getProviderId()->getValue()) {
-            $appointmentEmployeeChanged = true;
+            $appointmentEmployeeChanged = $oldAppointment->getProviderId()->getValue();
             $provider = $providerRepository->getById($appointment->getProviderId()->getValue());
             $oldProvider = $providerRepository->getById($oldAppointment->getProviderId()->getValue());
 

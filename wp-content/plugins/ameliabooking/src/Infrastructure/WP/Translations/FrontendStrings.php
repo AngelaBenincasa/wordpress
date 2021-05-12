@@ -48,12 +48,34 @@ class FrontendStrings
         return array_merge(
             self::getCommonStrings(),
             self::getBookingStrings(),
+            self::getBookableStrings(),
             self::getCatalogStrings(),
             self::getSearchStrings(),
             self::getLabelsFromSettings(),
             self::getEventStrings(),
             self::getCabinetStrings()
         );
+    }
+
+    /**
+     * Returns the array for the bookable strings
+     *
+     * @return array
+     */
+    public static function getBookableStrings() {
+        return [
+            'deposit'                    => __('Deposit', 'wpamelia'),
+            'pay_now'                    => __('Paying now', 'wpamelia'),
+            'pay_later'                  => __('Left to pay', 'wpamelia'),
+            'deposit_amount'             => __('Deposit amount', 'wpamelia'),
+            'deposit_enabled'            => __('Enable deposit payment', 'wpamelia'),
+            'deposit_payment'            => __('Deposit type', 'wpamelia'),
+            'deposit_payment_tooltip'    => __('Percentage deposit will be calculated on the total booking price<br>and fixed amount can be multiplied by the number of persons or stay fixed on the total booking price.', 'wpamelia'),
+            'deposit_info'               => __('Remaining of total amount will be paid on site.', 'wpamelia'),
+            'deposit_per_person'         => __('Multiply deposit amount by the number of people in one booking', 'wpamelia'),
+            'fixed_amount'               => __('Fixed amount', 'wpamelia'),
+            'percentage'                 => __('Percentage', 'wpamelia'),
+        ];
     }
 
     /**
@@ -93,7 +115,8 @@ class FrontendStrings
             'credit_or_debit_card_colon'   => __('Credit or debit card:', 'wpamelia'),
             'custom_fields'                => __('Custom Fields', 'wpamelia'),
             'customer'                     => __('Customer', 'wpamelia'),
-            'customer_already_booked'      => __('You have already booked this appointment', 'wpamelia'),
+            'customer_already_booked_app'  => __('You have already booked this appointment', 'wpamelia'),
+            'customer_already_booked_ev'   => __('You have already booked this event', 'wpamelia'),
             'date'                         => __('Date', 'wpamelia'),
             'date_colon'                   => __('Date:', 'wpamelia'),
             'discount_amount_colon'        => __('Discount:', 'wpamelia'),
@@ -286,16 +309,32 @@ class FrontendStrings
     public static function getEventStrings()
     {
         return [
-            'event'               => __('Event', 'wpamelia'),
-            'events'              => __('Events', 'wpamelia'),
-            'event_about'         => __('About this Event', 'wpamelia'),
-            'event_free'          => __('Free', 'wpamelia'),
-            'event_book'          => __('Book this event', 'wpamelia'),
-            'event_book_persons'  => __('Number of persons', 'wpamelia'),
-            'event_pick_min_date' => __('Show from date', 'wpamelia'),
-            'event_type'          => __('Event Type', 'wpamelia'),
-            'event_capacity'      => __('Capacity:', 'wpamelia'),
-            'no_events'           => __('No results found...', 'wpamelia'),
+            'event'                 => __('Event', 'wpamelia'),
+            'events'                => __('Events', 'wpamelia'),
+            'event_about'           => __('About this Event', 'wpamelia'),
+            'event_free'            => __('Free', 'wpamelia'),
+            'event_book_now'        => __('Book now', 'wpamelia'),
+            'event_book_event'      => __('Book event', 'wpamelia'),
+            'event_book'            => __('Book this event', 'wpamelia'),
+            'event_book_persons'    => __('Number of persons', 'wpamelia'),
+            'event_pick_min_date'   => __('Show from date', 'wpamelia'),
+            'event_type'            => __('Event Type', 'wpamelia'),
+            'event_location'        => __('Event Location', 'wpamelia'),
+            'event_status'          => __('Event Status', 'wpamelia'),
+            'event_employee'        => __('Event Employee', 'wpamelia'),
+            'event_capacity'        => __('Capacity:', 'wpamelia'),
+            'event_today'           => __('Today', 'wpamelia'),
+            'event_filters'         => __('Filters', 'wpamelia'),
+            'event_upcoming_events' => __('Upcoming events', 'wpamelia'),
+            'event_spot'            => __('spot left', 'wpamelia'),
+            'event_spots'           => __('spots left', 'wpamelia'),
+            'event_no_spots'        => __('No spots left', 'wpamelia'),
+            'event_schedule'        => __('Schedule:', 'wpamelia'),
+            'event_hosted_by'       => __('Hosted by:', 'wpamelia'),
+            'event_show_less'       => __('Show less', 'wpamelia'),
+            'event_many_people'     => __('How many people are coming?', 'wpamelia'),
+            'event_upcoming_empty'  => __('There are no upcoming events for this period', 'wpamelia'),
+            'no_events'             => __('No results found...', 'wpamelia'),
         ];
     }
 
@@ -431,6 +470,7 @@ class FrontendStrings
             'event_attendees'                        => __('Attendees', 'wpamelia'),
             'event_attendees_deleted'                => __('Attendees have been deleted', 'wpamelia'),
             'event_attendees_not_deleted'            => __('Attendees have not been deleted', 'wpamelia'),
+            'event_book_more_than_once'              => __('Allow the same customer to book more than once', 'wpamelia'),
             'event_attendees_search'                 => __('Find Attendees', 'wpamelia'),
             'event_booking_closes_after'             => __('Booking closes when event starts', 'wpamelia'),
             'event_booking_closes_on'                => __('Closes on:', 'wpamelia'),
@@ -617,6 +657,8 @@ class FrontendStrings
             'weeks2'                                 => __('2 weeks', 'wpamelia'),
             'weeks3'                                 => __('3 weeks', 'wpamelia'),
             'weeks4'                                 => __('4 weeks', 'wpamelia'),
+            'wc_product'                             => __('Select WooCommerce product', 'wpamelia'),
+            'wc_product_tooltip'                     => __('Here you can choose the product that will be used for WooCommerce integration.', 'wpamelia'),
             'work_hours'                             => __('Work Hours', 'wpamelia'),
             'working_hours'                          => __('Working Hours', 'wpamelia'),
             'yes'                                    => __('Yes', 'wpamelia'),

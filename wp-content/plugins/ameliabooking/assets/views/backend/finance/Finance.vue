@@ -57,10 +57,7 @@
                       <!-- Customers Filter -->
                       <el-col :md="6" :lg="4">
                         <el-form-item>
-                          <el-popover :disabled="!$root.isLite" ref="filterCustomersPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                           <el-select
-                              v-popover:filterCustomersPop
-                              :disabled="$root.isLite"
                               v-model="paymentsParams.customerId"
                               filterable
                               clearable
@@ -72,7 +69,7 @@
                           >
                             <el-option
                                 v-for="(item, key) in searchedCustomers.length ? searchedCustomers : options.entities.customers"
-                                :key="item.id"
+                                :key="key"
                                 :label="item.firstName + ' ' + item.lastName"
                                 :value="item.id"
                             >
@@ -84,10 +81,7 @@
                       <!-- Employees Filter -->
                       <el-col :md="6" :lg="4">
                         <el-form-item>
-                          <el-popover :disabled="!$root.isLite" ref="filterEmployeesPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                           <el-select
-                              v-popover:filterEmployeesPop
-                              :disabled="$root.isLite"
                               v-model="paymentsParams.providerId"
                               filterable
                               clearable
@@ -108,10 +102,7 @@
                       <!-- Services Filter -->
                       <el-col :md="6" :lg="4">
                         <el-form-item>
-                          <el-popover :disabled="!$root.isLite" ref="filterServicesPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                           <el-select
-                              v-popover:filterServicesPop
-                              :disabled="$root.isLite"
                               v-model="paymentsParams.services"
                               multiple
                               filterable
@@ -142,10 +133,7 @@
                       <!-- Events Filter -->
                       <el-col :md="6" :lg="4">
                         <el-form-item>
-                          <el-popover :disabled="!$root.isLite" ref="filterEventsPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                           <el-select
-                              v-popover:filterEventsPop
-                              :disabled="$root.isLite"
                               v-model="paymentsParams.events"
                               multiple
                               clearable
@@ -166,10 +154,7 @@
                       <!-- Status Filter -->
                       <el-col :md="6" :lg="3">
                         <el-form-item>
-                          <el-popover :disabled="!$root.isLite" ref="filterStatusPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                           <el-select
-                              v-popover:filterStatusPop
-                              :disabled="$root.isLite"
                               v-model="paymentsParams.status"
                               clearable
                               :placeholder="$root.labels.status"
@@ -417,7 +402,7 @@
                               <p class="am-col-title">{{ $root.labels.status }}:</p>
 
                               <h4>
-                                <i :class="{'el-icon-circle-check':payment.status === 'paid','el-icon-refresh':payment.status !== 'paid'}"></i>
+                                <i :class="{'el-icon-circle-check': payment.status === 'paid' || payment.status === 'partiallyPaid', 'partially-paid': payment.status === 'partiallyPaid', 'el-icon-refresh': payment.status === 'pending'}"></i></i>
                                 {{ getPaymentStatusNiceName(payment.status) }}
                               </h4>
                             </el-col>
@@ -1025,6 +1010,11 @@
             value: 'pending',
             label: this.$root.labels.pending
 
+          },
+          {
+            value: 'partiallyPaid',
+            label: this.$root.labels.partially_paid
+
           }
         ],
 
@@ -1314,7 +1304,16 @@
       getInitCouponObject: function () {},
 
       getPaymentStatusNiceName (status) {
-        return status === 'paid' ? this.$root.labels.paid : this.$root.labels.pending
+        switch (status) {
+          case ('paid'):
+            return this.$root.labels.paid
+
+          case ('pending'):
+            return this.$root.labels.pending
+
+          case ('partiallyPaid'):
+            return this.$root.labels.partially_paid
+        }
       },
 
       getPaymentGatewayNiceName (payment) {

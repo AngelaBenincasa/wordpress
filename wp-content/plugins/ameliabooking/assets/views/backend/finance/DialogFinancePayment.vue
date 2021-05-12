@@ -47,7 +47,7 @@
               {{ getPaymentGatewayNiceName() }}
             </p>
             <p class="am-semi-strong">
-              <i :class="{'el-icon-circle-check':payment.status === 'paid','el-icon-refresh':payment.status !== 'paid'}"></i>
+              <i :class="{'el-icon-circle-check': payment.status === 'paid' || payment.status === 'partiallyPaid', 'partially-paid': payment.status === 'partiallyPaid', 'el-icon-refresh': payment.status === 'pending'}"></i>
               <span>{{ getPaymentStatus(payment.status) }}</span>
             </p>
           </el-col>
@@ -143,9 +143,7 @@
                           :value="item.value"
                           class="am-appointment-status-option"
                       >
-                  <span class="am-appointment-status-symbol"
-                        :class="item.value">
-                          </span>
+                        <span class="am-appointment-status-symbol" :class="item.value"></span>
                         <span>{{ item.label }}</span>
                       </el-option>
                     </el-select>
@@ -251,6 +249,11 @@
           {
             value: 'paid',
             label: this.$root.labels.paid
+          },
+          {
+            value: 'partiallyPaid',
+            label: this.$root.labels.partially_paid
+
           }
         ],
         showDeleteConfirmation: false,

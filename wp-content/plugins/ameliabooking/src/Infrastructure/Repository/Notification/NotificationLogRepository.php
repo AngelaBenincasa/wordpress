@@ -199,9 +199,14 @@ class NotificationLogRepository extends AbstractRepository
     public function getCustomersNextDayEvents($notificationType)
     {
         $couponsTable = CouponsTable::getTableName();
+
         $eventsTable = EventsTable::getTableName();
+
         $eventsPeriodsTable = EventsPeriodsTable::getTableName();
+
         $customerBookingsEventsPeriods = CustomerBookingsToEventsPeriodsTable::getTableName();
+
+        $eventsProvidersTable = EventsProvidersTable::getTableName();
 
         $startCurrentDate = "STR_TO_DATE('" .
             DateTimeService::getCustomDateTimeObjectInUtc(
@@ -250,6 +255,16 @@ class NotificationLogRepository extends AbstractRepository
                     cb.utcOffset AS booking_utcOffset,
                     cb.aggregatedPrice AS booking_aggregatedPrice,
                     cb.persons AS booking_persons,
+       
+                    pu.id AS provider_id,
+                    pu.firstName AS provider_firstName,
+                    pu.lastName AS provider_lastName,
+                    pu.email AS provider_email,
+                    pu.note AS provider_note,
+                    pu.phone AS provider_phone,
+                    pu.gender AS provider_gender,
+                    pu.pictureFullPath AS provider_pictureFullPath,
+                    pu.pictureThumbPath AS provider_pictureThumbPath,
                     
                     c.id AS coupon_id,
                     c.code AS coupon_code,
@@ -262,6 +277,8 @@ class NotificationLogRepository extends AbstractRepository
                 INNER JOIN {$eventsPeriodsTable} ep ON ep.eventId = e.id
                 INNER JOIN {$customerBookingsEventsPeriods} cbe ON cbe.eventPeriodId = ep.id
                 INNER JOIN {$this->bookingsTable} cb ON cb.id = cbe.customerBookingId
+                LEFT JOIN {$eventsProvidersTable} epr ON epr.eventId = e.id
+                LEFT JOIN {$this->usersTable} pu ON pu.id = epr.userId
                 LEFT JOIN {$couponsTable} c ON c.id = cb.couponId
                 WHERE ep.periodStart BETWEEN {$startCurrentDate} AND {$endCurrentDate}
                 AND cb.status = 'approved'

@@ -159,9 +159,12 @@ class SettingsStorage implements SettingsStorageInterface
                     $this->getSetting('general', 'minimumTimeRequirementPriorToBooking'),
                 'minimumTimeRequirementPriorToCanceling' =>
                     $this->getSetting('general', 'minimumTimeRequirementPriorToCanceling'),
+                'minimumTimeRequirementPriorToRescheduling' =>
+                    $this->getSetting('general', 'minimumTimeRequirementPriorToRescheduling'),
                 'showClientTimeZone'                     => $this->getSetting('general', 'showClientTimeZone'),
                 'redirectUrlAfterAppointment'            => $this->getSetting('general', 'redirectUrlAfterAppointment'),
                 'customFieldsUploadsPath'                => $this->getSetting('general', 'customFieldsUploadsPath'),
+                'runInstantPostBookingActions'           => $this->getSetting('general', 'runInstantPostBookingActions'),
                 'sortingPackages'                        => $this->getSetting('general', 'sortingPackages'),
                 'backLink'                               => $this->getSetting('general', 'backLink'),
                 'sortingServices'                        => $this->getSetting('general', 'sortingServices'),
@@ -170,7 +173,8 @@ class SettingsStorage implements SettingsStorageInterface
                     'enabled'   => $this->getSetting('general', 'googleRecaptcha')['enabled'],
                     'invisible' => $this->getSetting('general', 'googleRecaptcha')['invisible'],
                     'siteKey'   => $this->getSetting('general', 'googleRecaptcha')['siteKey'],
-                ]
+                ],
+                'usedLanguages' => $this->getSetting('general', 'usedLanguages'),
             ],
             'googleCalendar'         =>
                 !AMELIA_LITE_VERSION && $this->getSetting('googleCalendar', 'clientID') && $this->getSetting('googleCalendar', 'clientSecret'),

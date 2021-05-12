@@ -22,6 +22,7 @@ class ReauthorizeController extends Controller
      */
     protected $allowedFields = [
         'email',
+        'locale',
     ];
 
     /**

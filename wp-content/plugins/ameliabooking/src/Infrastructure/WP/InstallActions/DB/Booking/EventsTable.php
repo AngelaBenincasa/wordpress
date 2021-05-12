@@ -53,6 +53,10 @@ class EventsTable extends AbstractDatabaseTable
                    `zoomUserId` varchar({$name}) DEFAULT NULL,
                    `bringingAnyone` TINYINT(1) NULL DEFAULT 1,
                    `bookMultipleTimes` TINYINT(1) NULL DEFAULT 1,
+                   `translations` TEXT NULL DEFAULT NULL,
+                   `depositPayment` ENUM('disabled' , 'fixed', 'percentage') DEFAULT 'disabled',
+                   `depositPerPerson` TINYINT(1) DEFAULT 1,
+                   `deposit` double DEFAULT 0,
                    PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
     }

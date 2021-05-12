@@ -6,7 +6,9 @@ use AmeliaBooking\Application\Commands\CommandHandler;
 use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\User\ProviderApplicationService;
+use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Collection\Collection;
+use AmeliaBooking\Domain\Common\Exceptions\AuthorizationException;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
@@ -37,16 +39,34 @@ class GetCustomersCommandHandler extends CommandHandler
      */
     public function handle(GetCustomersCommand $command)
     {
+        $result = new CommandResult();
+
         /** @var AbstractUser $currentUser */
         $currentUser = $this->container->get('logged.in.user');
 
         if (!$this->getContainer()->getPermissionsService()->currentUserCanRead(Entities::CUSTOMERS) &&
             !($currentUser && $currentUser->getType() === AbstractUser::USER_ROLE_PROVIDER)
         ) {
-            throw new AccessDeniedException('You are not allowed to read customers.');
-        }
+            if ($command->getToken()) {
+                /** @var UserApplicationService $userAS */
+                $userAS = $this->container->get('application.user.service');
 
-        $result = new CommandResult();
+                try {
+                    $currentUser = $userAS->authorization($command->getToken(), 'provider');
+                } catch (AuthorizationException $e) {
+                    $result->setResult(CommandResult::RESULT_ERROR);
+                    $result->setData(
+                        [
+                            'reauthorize' => true
+                        ]
+                    );
+
+                    return $result;
+                }
+            } else {
+                throw new AccessDeniedException('You are not allowed to read customers.');
+            }
+        }
 
         /** @var CustomerRepository $customerRepository */
         $customerRepository = $this->getContainer()->get('domain.users.customers.repository');
@@ -62,9 +82,6 @@ class GetCustomersCommandHandler extends CommandHandler
         $countParams = [];
 
         if (!$this->getContainer()->getPermissionsService()->currentUserCanReadOthers(Entities::CUSTOMERS)) {
-            /** @var AbstractUser $currentUser */
-            $currentUser = $this->container->get('logged.in.user');
-
             /** @var Collection $providerCustomers */
             $providerCustomers = $providerAS->getAllowedCustomers($currentUser);
 
@@ -88,7 +105,7 @@ class GetCustomersCommandHandler extends CommandHandler
             );
 
             foreach ($users as $key => $user) {
-                $user[$key] = $usersWithBookingsStats[$key];
+                $users[$key] = $usersWithBookingsStats[$key];
             }
         }
 

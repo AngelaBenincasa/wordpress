@@ -289,10 +289,10 @@ export default {
 
     getCustomersFromGroup (appointment) {
       let customers = ''
-      let $this = this
-      appointment.bookings.forEach(function (book) {
-        if ($this.options.entities.customers.length) {
-          let cus = $this.getCustomerById(book.customerId)
+
+      appointment.bookings.forEach((book) => {
+        if (this.options.entities.customers.length) {
+          let cus = this.getCustomerInfo(book)
 
           customers += '<span class="am-appointment-status-symbol ' + book.status + '"></span><span>' + cus.firstName + ' ' + cus.lastName + '</span><br>'
         }
@@ -302,11 +302,14 @@ export default {
     },
 
     saveCustomerCallback (response) {
+      delete response.user['birthday']
+
       this.options.entities.customers.push(response.user)
 
       let booking = {
         id: 0,
         customer: response.user,
+        customerId: response.user.id,
         status: this.$root.settings.general.defaultAppointmentStatus,
         persons: 1,
         total: 0,

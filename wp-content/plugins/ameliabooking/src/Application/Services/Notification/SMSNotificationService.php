@@ -6,6 +6,7 @@
 
 namespace AmeliaBooking\Application\Services\Notification;
 
+use AmeliaBooking\Application\Services\Helper\HelperService;
 use AmeliaBooking\Application\Services\Placeholder\PlaceholderService;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\Notification\Notification;
@@ -58,6 +59,8 @@ class SMSNotificationService extends AbstractNotificationService
         $smsApiService = $this->container->get('application.smsApi.service');
         /** @var PlaceholderService $placeholderService */
         $placeholderService = $this->container->get("application.placeholder.{$appointmentArray['type']}.service");
+        /** @var HelperService $helperService */
+        $helperService = $this->container->get('application.helper.service');
 
         $data = $placeholderService->getPlaceholdersData(
             $appointmentArray,
@@ -65,7 +68,21 @@ class SMSNotificationService extends AbstractNotificationService
             'sms'
         );
 
-        $text = $placeholderService->applyPlaceholders($notification->getContent()->getValue(), $data);
+        $isCustomerPackage = isset($appointmentArray['isForCustomer']) && $appointmentArray['isForCustomer'];
+
+        if ($appointmentArray['type'] === Entities::PACKAGE) {
+            $info = $isCustomerPackage ? json_encode($appointmentArray['customer']) : null;
+        } else {
+            $info = $bookingKey !== null ? $appointmentArray['bookings'][$bookingKey]['info'] : null;
+        }
+
+        $notificationContent = $helperService->getBookingTranslation(
+            $info,
+            $notification->getTranslations() ? $notification->getTranslations()->getValue() : null,
+            'content'
+        ) ?: $notification->getContent()->getValue();
+
+        $text = $placeholderService->applyPlaceholders($notificationContent, $data);
 
         $users = $this->getUsersInfo(
             $notification->getSendTo()->getValue(),

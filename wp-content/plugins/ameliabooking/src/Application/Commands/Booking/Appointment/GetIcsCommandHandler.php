@@ -44,7 +44,7 @@ class GetIcsCommandHandler extends CommandHandler
                 !empty($command->getField('params')['recurring']) ?
                     $command->getField('params')['recurring'] : [],
                 false
-            )[0]
+            )['translated'][0]
         );
 
         return $result;

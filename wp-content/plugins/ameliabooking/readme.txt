@@ -4,9 +4,9 @@ Author URI: https://tms-outsource.com/
 Tags: booking, calendar, scheduling, appointments, reservations, booking plugin, booking system, appointment booking, event booking, appointment plugin, event plugin, booking calendar, booking calendar plugin, event booking system, booking with payment
 Donate link: https://wpamelia.com/
 Requires at least: 4.5
-Tested up to: 5.6
+Tested up to: 5.7.1
 Requires PHP: 5.6
-Stable tag: 1.0.27
+Stable tag: 1.0.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,9 +37,10 @@ Configuring Amelia Lite to book your first appointment through WordPress is lite
 
 Please note some limitations of the Lite version:
 
-* Booking search view and catalog view are not included.
+* Booking search view, catalog view and event calendar are not included.
+* Booking packages of services is not included
+* Booking recurring appointments is not included
 * Export option is not supported.
-* Filters on the pages are not supported.
 * Coupons are not included.
 * Group services are not supported.
 * Adding the Locations is not included.
@@ -48,6 +49,7 @@ Please note some limitations of the Lite version:
 * Only basic plugin settings are supported.
 * Google Calendar and Outlook Calendar synchronizations are not supported.
 * Zoom integration is not supported.
+* WooCommerce integration is not supported.
 * PayPal and Stripe payment types are not supported but you can use On-site payment type.
 * Access to our premium support system is not included.
 To use these and other options, please upgrade to the Full version!
@@ -69,6 +71,25 @@ Installing Amelia Lite is as easy as 1-2-3!
 
 
 == Changelog ==
+
+v1.0.30
+* Added %time_zone% placeholder that you can add to customers and employees notifications
+* Added changes in German translation
+* BugFix: Fixed issue with disabled phone input for WP users on the Event shortcode
+* BugFix: Fixed issue with ordering Customers on the Customers list in Add/Edit Appointments modal
+
+v1.0.29
+* Added option to search and filter appointments, calendar, customers, employees and payments on admin WordPress back-end
+* Added new German translation
+* Added new Spanish translation
+* BugFix: Fixed issue with Copy/Duplicate Appointments
+* BugFix: Fixed issue with Last Appointment and Total Appointments options on the Customers page
+* BugFix: Fixed issue with searching customers during the Appointment creation
+
+v1.0.28
+* Improvement: Implemented redesigned options for adding placeholders on the notification page - now all placeholders are sorted under the several categories in dropdowns
+* Added new German translation
+* Other small bug fixes and stability improvements
 
 v1.0.27
 * Implemented redesign for the placeholders on the notification page

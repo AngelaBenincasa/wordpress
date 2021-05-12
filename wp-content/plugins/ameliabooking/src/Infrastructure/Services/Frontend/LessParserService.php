@@ -42,7 +42,7 @@ class LessParserService
     /**
      * @param array $data
      *
-     * @return void
+     * @return string
      * @throws Exception
      * @throws Less_Exception_Parser
      */
@@ -56,13 +56,11 @@ class LessParserService
 
         !is_dir($this->outputPath) && !mkdir($this->outputPath, 0755, true) && !is_dir($this->outputPath);
 
-        $hash = !isset($data['hash']) ? $this->generateRandomString() : $data['hash'];
-
-        if (!isset($data['hash'])) {
-            $this->settingsService->setSetting('customization', 'hash', $hash);
-        }
+        $hash = $this->generateRandomString();
 
         file_put_contents($this->outputPath . '/amelia-booking.' . $hash . '.css', $parser->getCss());
+
+        return $hash;
     }
 
     /**

@@ -92,6 +92,22 @@ class Payment
     /**
      * @return Id
      */
+    public function getCustomerBookingId()
+    {
+        return $this->customerBookingId;
+    }
+
+    /**
+     * @param Id $customerBookingId
+     */
+    public function setCustomerBookingId($customerBookingId)
+    {
+        $this->customerBookingId = $customerBookingId;
+    }
+
+    /**
+     * @return Id
+     */
     public function getPackageCustomerId()
     {
         return $this->packageCustomerId;

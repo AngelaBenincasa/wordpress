@@ -153,8 +153,7 @@
             <el-form-item :label="$root.labels.first_name_colon" prop="customer.firstName">
               <el-input
                 v-model="appointment.bookings[0].customer.firstName"
-                @keyup.native="validateFieldsForPayPal"
-                @input="clearValidation()"
+                @input="validateFieldsForPayPal"
                 :disabled="!!appointment.bookings[0].customer.firstName && !!appointment.bookings[0].customer.id"
                 autocomplete="new-password"
               >
@@ -168,8 +167,7 @@
             <el-form-item :label="$root.labels.last_name_colon" prop="customer.lastName">
               <el-input
                 v-model="appointment.bookings[0].customer.lastName"
-                @keyup.native="validateFieldsForPayPal"
-                @input="clearValidation()"
+                @input="validateFieldsForPayPal"
                 :disabled="!!appointment.bookings[0].customer.lastName && !!appointment.bookings[0].customer.id"
                 autocomplete="new-password"
               >
@@ -183,8 +181,7 @@
             <el-form-item :label="$root.labels.email_colon" prop="customer.email" :error="errors.email">
               <el-input
                 v-model="appointment.bookings[0].customer.email"
-                @keyup.native="validateFieldsForPayPal"
-                @input="clearValidation()"
+                @input="validateFieldsForPayPal"
                 :disabled="!!appointment.bookings[0].customer.email && !!appointment.bookings[0].customer.id"
                 :placeholder="$root.labels.email_placeholder"
                 autocomplete="new-password"
@@ -231,7 +228,7 @@
                     v-if="customField.type === 'text'"
                     placeholder=""
                     v-model="appointment.bookings[0].customFields[customField.id].value"
-                    @input="clearValidation()"
+                    @input="validateFieldsForPayPal()"
                   >
                   </el-input>
                   <!-- /Text Field -->
@@ -244,7 +241,7 @@
                     v-model="appointment.bookings[0].customFields[customField.id].value"
                     type="textarea"
                     :rows="3"
-                    @input="clearValidation()"
+                    @input="validateFieldsForPayPal()"
                   >
                   </el-input>
                   <!-- /Text Area -->
@@ -262,7 +259,7 @@
                     placeholder=""
                     v-model="appointment.bookings[0].customFields[customField.id].value"
                     clearable
-                    @change="clearValidation()"
+                    @change="validateFieldsForPayPal()"
                   >
                     <el-option
                       v-for="(option, index) in getCustomFieldOptions(customField.options)"
@@ -327,7 +324,7 @@
                     <v-date-picker
                       v-model="appointment.bookings[0].customFields[customField.id].value"
                       class='am-calendar-picker'
-                      @input="clearValidation()"
+                      @input="validateFieldsForPayPal()"
                       mode='single'
                       popover-visibility="focus"
                       popover-direction="top"
@@ -388,7 +385,7 @@
                     v-model="appointment.payment.gateway"
                     placeholder=""
                     :disabled="paymentOptions.length === 1"
-                    @change="clearValidation()"
+                    @change="validateFieldsForPayPal()"
                 >
                   <el-option
                       v-for="item in paymentOptions"
@@ -552,18 +549,22 @@
                     ref="coupon"
                     :rules="rules"
                     label-position="top"
-                    @submit.prevent="onSubmit"
+                    @keyup.enter.native="onSubmitCoupon"
                     status-icon
                   >
-                    <el-form-item prop="couponCode" :error="errors.coupon"
-                                  :style="bookableType === 'event' && !useGlobalCustomization ? getBookableColor(false) : {}">
+                    <el-form-item
+                      prop="couponCode"
+                      :error="errors.coupon"
+                      :style="bookableType === 'event' && !useGlobalCustomization ? getBookableColor(false) : {}"
+                    >
                       <el-input
                         v-model="coupon.code"
-                        @input="clearValidation()"
+                        @input="validateFieldsForPayPal()"
                         type="text"
                         size="small"
                         class="am-add-coupon-field"
                         :style="bookableType === 'event' && !useGlobalCustomization ? getBookableColor(false) : {}"
+                        native-type="submit"
                       >
 
                         <!-- Coupon Button -->
@@ -574,6 +575,7 @@
                           icon="el-icon-check" @click="checkCoupon"
                           :disabled="coupon.code === ''"
                           :style="bookableType === 'event' && !useGlobalCustomization ? getBookableColor(true) : {}"
+                          native-type="submit"
                         >
                         </el-button>
                         <!-- /Coupon Button -->
@@ -604,9 +606,13 @@
               </el-row>
               <!-- /Coupons Used Message -->
 
+              <div
+                  class="am-confirmation-total"
+                  :style="{'color': bookable.color, 'background-color': bookableType === 'event' && !useGlobalCustomization ? '#E8E8E8' : ''}"
+                  v-if="bookable.price > 0"
+              >
               <!-- Total Price -->
-              <el-row class="am-confirmation-total" :gutter="24" v-if="bookable.price > 0"
-                      :style="{'color': bookable.color, 'background-color': bookableType === 'event' && !useGlobalCustomization ? '#E8E8E8' : ''}">
+              <el-row :gutter="24">
                 <el-col :span="12">
                   <p>
                     {{ $root.labels.total_cost_colon }}
@@ -619,6 +625,33 @@
                 </el-col>
               </el-row>
               <!-- /Total Price -->
+
+              <!-- Deposit -->
+              <el-row class="am-confirmation-deposit" :gutter="24" v-if="depositAmount > 0 && getPaymentGateway() !== 'onSite'"
+                      :style="{'color': bookable.color, 'background-color': bookableType === 'event' && !useGlobalCustomization ? '#E8E8E8' : ''}">
+                <el-col :span="12">
+                  <p>{{ $root.labels.deposit }} <label class="am-confirmation-deposit-info">{{ $root.labels.pay_now }}</label></p>
+                </el-col>
+                <el-col :span="12">
+                  <p class="am-semi-strong am-align-right" :style="{'color': bookable.color}">
+                    {{ getFormattedPrice(depositAmount, !$root.settings.payments.hideCurrencySymbolFrontend) }}
+                  </p>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="24" v-if="depositAmount > 0 && getPaymentGateway() !== 'onSite'"
+                      :style="{'color': bookable.color, 'background-color': bookableType === 'event' && !useGlobalCustomization ? '#E8E8E8' : ''}">
+                <el-col :span="12">
+                  <p>{{ $root.labels.pay_later }}</p>
+                </el-col>
+                <el-col :span="12">
+                  <p class="am-semi-strong am-align-right" :style="{'color': bookable.color}">
+                    {{ getFormattedPrice(getTotalPrice() - depositAmount, !$root.settings.payments.hideCurrencySymbolFrontend) }}
+                  </p>
+                </el-col>
+              </el-row>
+              <!-- /Deposit -->
+              </div>
 
               <!-- Recurring Price -->
               <el-row
@@ -656,19 +689,47 @@
               <!-- /Recurring Price -->
 
             </div>
-            <div class="am-confirmation-booking-cost" v-else>
-              <el-row class="am-confirmation-total" :gutter="24" v-if="bookable.price > 0">
+            <div
+                class="am-confirmation-total am-confirmation-booking-cost"
+                :style="{'background-color': bookableType === 'event' && !useGlobalCustomization ? '#E8E8E8' : ''}"
+                v-else
+            >
+              <el-row :gutter="24" v-if="bookable.price > 0">
                 <el-col :span="12">
                   <p>
                     {{ $root.labels.total_cost_colon }}
                   </p>
                 </el-col>
                 <el-col :span="12">
-                  <p class="am-semi-strong am-align-right">
+                  <p class="am-semi-strong am-align-right" :style="{'color': bookable.color}">
                     {{ getFormattedPrice(bookable.price, !$root.settings.payments.hideCurrencySymbolFrontend) }}
                   </p>
                 </el-col>
               </el-row>
+
+              <!-- Deposit -->
+              <el-row class="am-confirmation-deposit" :gutter="24" v-if="depositAmount > 0 && getPaymentGateway() !== 'onSite'">
+                <el-col :span="12">
+                  <p>{{ $root.labels.deposit }} <label class="am-confirmation-deposit-info">{{ $root.labels.pay_now }}</label></p>
+                </el-col>
+                <el-col :span="12">
+                  <p class="am-semi-strong am-align-right" :style="{'color': bookable.color}">
+                    {{ getFormattedPrice(depositAmount, !$root.settings.payments.hideCurrencySymbolFrontend) }}
+                  </p>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="24" v-if="depositAmount > 0 && getPaymentGateway() !== 'onSite'">
+                <el-col :span="12">
+                  <p>{{ $root.labels.pay_later }}</p>
+                </el-col>
+                <el-col :span="12">
+                  <p class="am-semi-strong am-align-right" :style="{'color': bookable.color}">
+                    {{ getFormattedPrice(getTotalPrice() - depositAmount, !$root.settings.payments.hideCurrencySymbolFrontend) }}
+                  </p>
+                </el-col>
+              </el-row>
+              <!-- /Deposit -->
             </div>
             <!-- /Payment Data -->
 
@@ -784,6 +845,7 @@
     mixins: [imageMixin, dateMixin, priceMixin, helperMixin, customFieldMixin, windowMixin],
 
     props: {
+      phonePopulated: null,
       containerId: null,
       recurringString: '',
       useGlobalCustomization: false,
@@ -902,7 +964,6 @@
         headerErrorMessage: '',
         headerErrorShow: false,
         payPalActions: null,
-        phonePopulated: false,
         rules: {
           'customer.firstName': [
             {required: true, message: this.$root.labels.enter_first_name_warning, trigger: 'submit'}
@@ -935,7 +996,6 @@
 
     created () {
       this.inlineSVG()
-      this.phonePopulated = this.appointment.bookings[0].customer.phone !== ''
       window.addEventListener('resize', this.handleResize)
     },
 
@@ -990,13 +1050,18 @@
 
     updated () {
       if (this.clearValidate === true) {
-        this.clearValidation()
+        this.validateFieldsForPayPal()
         this.clearValidate = false
       }
       this.handleResize()
     },
 
     methods: {
+      onSubmitCoupon (ev) {
+        ev.preventDefault()
+        return false
+      },
+
       getPackagePrice (pack) {
         return pack.calculatedPrice ? pack.price : pack.price - pack.price / 100 * pack.discount
       },
@@ -1124,6 +1189,10 @@
           )
       },
 
+      getPaymentGateway () {
+        return this.isDefaultOnSitePayment() ? 'onSite' : this.appointment.payment.gateway
+      },
+
       confirmBooking () {
         if (!this.fetched) {
           return
@@ -1134,9 +1203,9 @@
         this.headerErrorShow = false
         this.errors.email = ''
         this.errors.coupon = ''
-        this.clearValidation()
+        this.validateFieldsForPayPal()
 
-        let paymentGateway = this.isDefaultOnSitePayment() ? 'onSite' : this.appointment.payment.gateway
+        let paymentGateway = this.getPaymentGateway()
 
         // Validate Form
         this.$refs.booking.validate((valid, validOptions) => {
@@ -1453,6 +1522,8 @@
 
         bookings[0].utcOffset = null
 
+        bookings[0].deposit = this.bookable.depositData !== null
+
         if (this.$root.settings.general.showClientTimeZone) {
           bookingDateTime = moment(bookingDateTime, 'YYYY-MM-DD HH:mm').utc().format('YYYY-MM-DD HH:mm')
 
@@ -1478,6 +1549,8 @@
           'bookings': bookings,
           'payment': Object.assign(this.appointment.payment, {data: paymentData}),
           'recaptcha': this.recaptchaResponse,
+          'locale': window.localeLanguage[0],
+          'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone,
           'couponCode': this.coupon.code
         }
 
@@ -1500,7 +1573,8 @@
               'package': packageData.data,
               'packageId': packageData.id,
               'packageRules': packageData.rules,
-              'utcOffset': this.getClientUtcOffset(null)
+              'utcOffset': this.getClientUtcOffset(null),
+              'deposit': this.bookable.depositData !== null
             })
 
             break
@@ -1576,7 +1650,16 @@
 
           if ('customerAlreadyBooked' in response.data && response.data.customerAlreadyBooked === true) {
             this.headerErrorShow = true
-            this.headerErrorMessage = this.$root.labels.customer_already_booked
+            switch (this.bookableType) {
+              case 'appointment':
+              case 'package':
+                this.headerErrorMessage = this.$root.labels.customer_already_booked_app
+
+                break
+              case 'event':
+                this.headerErrorMessage = this.$root.labels.customer_already_booked_ev
+                break
+            }
           }
           if ('timeSlotUnavailable' in response.data && response.data.timeSlotUnavailable === true) {
             this.headerErrorShow = true
@@ -1641,8 +1724,6 @@
       getStripePublishableKey: function () {},
 
       clearValidation () {
-        this.validateFieldsForPayPal()
-
         if (typeof this.$refs.booking !== 'undefined') {
           this.$refs.booking.clearValidate()
         }
@@ -1669,7 +1750,6 @@
       phoneFormatted (phone, countryPhoneIso) {
         this.appointment.bookings[0].customer.phone = phone
         this.appointment.bookings[0].customer.countryPhoneIso = countryPhoneIso
-        this.clearValidation()
       },
 
       handleResize () {
@@ -1704,6 +1784,44 @@
         }
 
         return (this.recurringData.length < this.service.recurringPayment ? this.recurringData.length : this.service.recurringPayment) + 1
+      },
+
+      depositAmount () {
+        let depositAmount = 0
+
+        let totalPrice = this.getTotalPrice()
+
+        if (this.bookable.depositData) {
+          switch (this.bookable.depositData.depositPayment) {
+            case ('fixed'):
+              if (this.bookable.depositData.depositPerPerson && this.bookable.aggregatedPrice) {
+                depositAmount = this.appointment.bookings[0].persons * this.bookable.depositData.deposit
+              } else {
+                depositAmount = this.bookable.depositData.deposit
+              }
+
+              if (this.bookableType === 'appointment') {
+                this.recurringData.forEach((value, index) => {
+                  if (this.instantPaymentBookingsCount - 1 > index) {
+                    depositAmount +=
+                      this.bookable.depositData.depositPerPerson
+                        ? this.appointment.bookings[0].persons * value.depositData.deposit : value.depositData.deposit
+                  } else if (value.depositData) {
+                    value.depositData = null
+                  }
+                })
+              }
+
+              break
+
+            case 'percentage':
+              depositAmount = totalPrice / 100 * this.bookable.depositData.deposit
+
+              break
+          }
+        }
+
+        return totalPrice > depositAmount ? depositAmount : 0
       },
 
       paymentPeriodData () {

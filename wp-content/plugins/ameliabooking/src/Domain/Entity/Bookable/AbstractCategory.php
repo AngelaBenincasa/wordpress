@@ -7,6 +7,7 @@
 namespace AmeliaBooking\Domain\Entity\Bookable;
 
 use AmeliaBooking\Domain\Collection\Collection;
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\String\Status;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\PositiveInteger;
@@ -33,6 +34,9 @@ abstract class AbstractCategory
 
     /** @var PositiveInteger */
     protected $position;
+
+    /** @var Json */
+    protected $translations;
 
     /**
      * AbstractCategory constructor.
@@ -132,16 +136,33 @@ abstract class AbstractCategory
     }
 
     /**
+     * @return Json
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * @param Json $translations
+     */
+    public function setTranslations(Json $translations)
+    {
+        $this->translations = $translations;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
     {
         return [
-            'id'          => null !== $this->getId() ? $this->getId()->getValue() : null,
-            'status'      => $this->getStatus()->getValue(),
-            'name'        => $this->getName()->getValue(),
-            'serviceList' => $this->getServiceList() ? $this->getServiceList()->toArray() : [],
-            'position'    => $this->getPosition()->getValue()
+            'id'            => null !== $this->getId() ? $this->getId()->getValue() : null,
+            'status'        => $this->getStatus()->getValue(),
+            'name'          => $this->getName()->getValue(),
+            'serviceList'   => $this->getServiceList() ? $this->getServiceList()->toArray() : [],
+            'position'      => $this->getPosition()->getValue(),
+            'translations'  => $this->getTranslations() ? $this->getTranslations()->getValue() : null,
         ];
     }
 }

@@ -75,6 +75,29 @@
           </el-select>
         </el-form-item>
 
+        <!-- Minimum Time Prior to Rescheduling -->
+        <el-form-item label="placeholder" v-if="generalSettings !== null && 'minimumTimeRequirementPriorToRescheduling' in generalSettings">
+          <label slot="label">
+            {{ $root.labels.minimum_time_before_rescheduling }}:
+            <el-tooltip placement="top">
+              <div slot="content" v-html="$root.labels.minimum_time_before_rescheduling_tooltip"></div>
+              <i class="el-icon-question am-tooltip-icon"></i>
+            </el-tooltip>
+          </label>
+          <el-select
+            v-model="generalSettings.minimumTimeRequirementPriorToRescheduling"
+            clearable
+            :placeholder="options.minimumTime.find(item => item.value === $root.settings.general.minimumTimeRequirementPriorToRescheduling).label"
+          >
+            <el-option
+              v-for="item in options.minimumTime"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
         <!-- Number of days available for booking -->
         <el-form-item label="placeholder" v-if="generalSettings !== null && 'numberOfDaysAvailableForBooking' in generalSettings">
           <label slot="label">

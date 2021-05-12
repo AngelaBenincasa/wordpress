@@ -88,6 +88,10 @@ class CustomerBookingFactory
             $customerBooking->setChangedStatus(new BooleanValueObject($data['isChangedStatus']));
         }
 
+        if (isset($data['deposit'])) {
+            $customerBooking->setDeposit(new BooleanValueObject($data['deposit']));
+        }
+
         if (isset($data['packageCustomerService'])) {
             /** @var PackageCustomerService $packageCustomerService */
             $packageCustomerService = PackageCustomerServiceFactory::create($data['packageCustomerService']);

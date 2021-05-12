@@ -280,9 +280,12 @@
               customFields: this.eventBooking.customFields,
               persons: this.eventBooking.persons,
               customerId: this.eventBooking.customerId,
-              customer: this.getCustomerById(this.eventBooking.customerId)
+              customer: this.getCustomerById(this.eventBooking.customerId),
+              deposit: 0
             }
           ],
+          locale: '',
+          timeZone: '',
           payment: {
             gateway: 'onSite'
           }

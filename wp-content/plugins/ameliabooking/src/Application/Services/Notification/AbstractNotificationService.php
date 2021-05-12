@@ -22,6 +22,7 @@ use AmeliaBooking\Infrastructure\Repository\Notification\NotificationLogReposito
 use AmeliaBooking\Infrastructure\Repository\Notification\NotificationRepository;
 use Exception;
 use Interop\Container\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class AbstractNotificationService
@@ -45,6 +46,7 @@ abstract class AbstractNotificationService
     public function __construct(Container $container, $type)
     {
         $this->container = $container;
+
         $this->type = $type;
     }
 
@@ -69,7 +71,6 @@ abstract class AbstractNotificationService
      * @throws QueryExecutionException
      * @throws InvalidArgumentException
      * @throws ContainerException
-     * @throws \PHPMailer\PHPMailer\Exception
      * @throws Exception
      */
     abstract public function sendBirthdayGreetingNotifications();
@@ -82,7 +83,6 @@ abstract class AbstractNotificationService
      * @return mixed
      *
      * @throws QueryExecutionException
-     * @throws ContainerException
      */
     public function getByNameAndType($name, $type)
     {
@@ -98,9 +98,8 @@ abstract class AbstractNotificationService
      * condition is not satisfied
      * @param bool  $logNotification
      *
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws QueryExecutionException
-     * @throws ContainerException
      */
     public function sendAppointmentStatusNotifications($appointmentArray, $forcedStatusChange, $logNotification)
     {
@@ -109,8 +108,10 @@ abstract class AbstractNotificationService
 
         // Notify provider
         /** @var Notification $providerNotification */
-        $providerNotification =
-            $this->getByNameAndType("provider_{$appointmentArray['type']}_{$appointmentArray['status']}", $this->type);
+        $providerNotification = $this->getByNameAndType(
+            "provider_{$appointmentArray['type']}_{$appointmentArray['status']}",
+            $this->type
+        );
 
         if ($providerNotification && $providerNotification->getStatus()->getValue() === NotificationStatus::ENABLED) {
             $this->sendNotification(
@@ -156,8 +157,6 @@ abstract class AbstractNotificationService
                 }
             }
         }
-
-
     }
 
     /**
@@ -166,7 +165,6 @@ abstract class AbstractNotificationService
      * @param bool  $forcedStatusChange
      *
      * @throws QueryExecutionException
-     * @throws ContainerException
      */
     public function sendAppointmentEditedNotifications($appointmentArray, $bookingsArray, $forcedStatusChange)
     {
@@ -200,7 +198,9 @@ abstract class AbstractNotificationService
                     );
 
                 if ($customerNotification->getStatus()->getValue() === NotificationStatus::ENABLED) {
-                    if (!$appointmentArray['bookings'][$bookingKey]['isChangedStatus'] && !$appointmentArray['employee_changed']){
+                    if (!$appointmentArray['bookings'][$bookingKey]['isChangedStatus'] &&
+                        !$appointmentArray['employee_changed']
+                    ) {
                         continue;
                     }
 
@@ -214,7 +214,10 @@ abstract class AbstractNotificationService
                     if ($appointmentArray['employee_changed']) {
                         // Notify provider
                         /** @var Notification $providerNotification */
-                        $providerNotification = $this->getByNameAndType("provider_{$appointmentArray['type']}_rescheduled", $this->type);
+                        $providerNotification = $this->getByNameAndType(
+                            "provider_{$appointmentArray['type']}_rescheduled",
+                            $this->type
+                        );
 
                         if ($providerNotification->getStatus()->getValue() === NotificationStatus::ENABLED) {
                             $this->sendNotification(
@@ -226,7 +229,6 @@ abstract class AbstractNotificationService
                     }
                 }
             }
-
         }
     }
 
@@ -234,7 +236,6 @@ abstract class AbstractNotificationService
      * @param $appointmentArray
      *
      * @throws QueryExecutionException
-     * @throws ContainerException
      */
     public function sendAppointmentRescheduleNotifications($appointmentArray)
     {
@@ -242,7 +243,10 @@ abstract class AbstractNotificationService
         if ($appointmentArray['notifyParticipants']) {
 
             /** @var Notification $customerNotification */
-            $customerNotification = $this->getByNameAndType("customer_{$appointmentArray['type']}_rescheduled", $this->type);
+            $customerNotification = $this->getByNameAndType(
+                "customer_{$appointmentArray['type']}_rescheduled",
+                $this->type
+            );
 
             if ($customerNotification->getStatus()->getValue() === NotificationStatus::ENABLED) {
                 // Notify each customer from customer bookings
@@ -259,7 +263,10 @@ abstract class AbstractNotificationService
 
         // Notify provider
         /** @var Notification $providerNotification */
-        $providerNotification = $this->getByNameAndType("provider_{$appointmentArray['type']}_rescheduled", $this->type);
+        $providerNotification = $this->getByNameAndType(
+            "provider_{$appointmentArray['type']}_rescheduled",
+            $this->type
+        );
 
         if ($providerNotification->getStatus()->getValue() === NotificationStatus::ENABLED) {
             $this->sendNotification(
@@ -276,13 +283,13 @@ abstract class AbstractNotificationService
      * @param bool  $logNotification
      *
      * @throws QueryExecutionException
-     * @throws ContainerException
      */
     public function sendBookingAddedNotifications($appointmentArray, $bookingArray, $logNotification)
     {
         /** @var Notification $customerNotification */
         $customerNotification = $this->getByNameAndType(
-            "customer_{$appointmentArray['type']}_{$appointmentArray['status']}", $this->type
+            "customer_{$appointmentArray['type']}_{$appointmentArray['status']}",
+            $this->type
         );
 
         if ($customerNotification->getStatus()->getValue() === NotificationStatus::ENABLED) {
@@ -316,7 +323,6 @@ abstract class AbstractNotificationService
      * @param $bookingArray
      *
      * @throws QueryExecutionException
-     * @throws ContainerException
      */
     public function sendCustomerBookingNotification($appointmentArray, $bookingArray)
     {
@@ -346,6 +352,34 @@ abstract class AbstractNotificationService
     }
 
     /**
+     * Notify the provider when he customer cancel event booking.
+     *
+     * @param $eventArray
+     * @param $bookingArray
+     *
+     * @throws QueryExecutionException
+     */
+    public function sendProviderEventCancelledNotification($eventArray, $bookingArray)
+    {
+        /** @var Notification $providerNotification */
+        $providerNotification = $this->getByNameAndType(
+            "provider_event_canceled",
+            $this->type
+        );
+
+        $eventArray['bookings'] = [$bookingArray];
+
+        if ($providerNotification && $providerNotification->getStatus()->getValue() === NotificationStatus::ENABLED) {
+            $this->sendNotification(
+                $eventArray,
+                $providerNotification,
+                false,
+                null
+            );
+        }
+    }
+
+    /**
      * Returns an array of next day reminder notifications that have to be sent to customers with cron
      *
      * @param string $entityType
@@ -353,7 +387,6 @@ abstract class AbstractNotificationService
      * @return void
      * @throws QueryExecutionException
      * @throws InvalidArgumentException
-     * @throws ContainerException
      * @throws Exception
      */
     public function sendNextDayReminderNotifications($entityType)
@@ -419,7 +452,6 @@ abstract class AbstractNotificationService
      *
      * @throws QueryExecutionException
      * @throws InvalidArgumentException
-     * @throws ContainerException
      */
     public function sendFollowUpNotifications($entityType)
     {
@@ -462,7 +494,9 @@ abstract class AbstractNotificationService
                             }
                         }
 
-                        if ($currentDateTime > $lastPossibleNotificationMoment || $event->getPeriods()->length() !== $periodsPassedCount) {
+                        if ($currentDateTime > $lastPossibleNotificationMoment ||
+                            $event->getPeriods()->length() !== $periodsPassedCount
+                        ) {
                             $reservations->deleteItem($eventKey);
                         }
                     }
@@ -483,7 +517,7 @@ abstract class AbstractNotificationService
     private function sendBookingsNotifications($notification, $appointments)
     {
         /** @var array $appointmentArray */
-        foreach ((array)$appointments->toArray() as $appointmentArray) {
+        foreach ($appointments->toArray() as $appointmentArray) {
             // Notify each customer from customer bookings
             foreach (array_keys($appointmentArray['bookings']) as $bookingKey) {
                 $this->sendNotification(
@@ -501,7 +535,6 @@ abstract class AbstractNotificationService
      * @param bool   $logNotification
      *
      * @throws QueryExecutionException
-     * @throws ContainerException
      */
     public function sendPackagePurchasedNotifications($data, $logNotification)
     {

@@ -77,6 +77,10 @@
         type: 'string',
         default: ''
       },
+      type: {
+        type: 'string',
+        default: 'list'
+      },
       recurring: {
         type: 'boolean',
         default: false
@@ -104,7 +108,8 @@
         eventOptions: [
           {value: 'events', label: wpAmeliaLabels.show_event},
           {value: 'tags', label: wpAmeliaLabels.show_tag}
-        ]
+        ],
+        type: [{value: 'list', label: wpAmeliaLabels.show_event_view_list}]
       }
 
       function getOptions (data) {
@@ -166,6 +171,10 @@
             shortCode += ' trigger=' + attributes.trigger + ''
           }
 
+          if (attributes.type) {
+            shortCode += ' type=' + attributes.type + ''
+          }
+
           shortCode += ']'
         } else {
           shortCode = 'Notice: Please create event first.'
@@ -188,6 +197,16 @@
             }
           })
         ))
+
+        inspectorElements.push(el(components.SelectControl, {
+          id: 'am-js-events-type',
+          label: wpAmeliaLabels.show_event_view_type,
+          value: attributes.type,
+          options: options.type,
+          onChange: function (selectControl) {
+            return props.setAttributes({type: selectControl})
+          }
+        }))
 
         inspectorElements.push(el('div', {style: {'margin-bottom': '1em'}}, ''))
 

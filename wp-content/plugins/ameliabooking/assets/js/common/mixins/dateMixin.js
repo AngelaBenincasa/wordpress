@@ -32,6 +32,7 @@ export default {
       c: 'YYYY-MM-DD[T]HH:mm:ssZ',
       r: 'ddd, DD MMM YYYY HH:mm:ss ZZ',
       U: 'X',
+      T: '',
       S: 'o'
     },
 
@@ -52,7 +53,7 @@ export default {
       s: 'ss'
     },
 
-    formatEx: /[dDjlNwWFmMntoYyaAgGhHisOPcrUS]/g
+    formatEx: /[dDjlNwWFmMntoYyaAgGhHisOPcrUTS]/g
   }),
 
   methods: {

@@ -40,6 +40,7 @@
 
     .el-dialog__body {
       padding: 0;
+      word-break: break-word;
     }
 
     .am-dialog-scrollable {
@@ -196,6 +197,10 @@
             color: @color-blue;
             right: 40px;
             position: absolute;
+
+            &.partially-paid {
+              color: @color-blue;
+            }
           }
         }
 
@@ -332,6 +337,10 @@
 
           .el-icon-circle-check {
             color: @color-green;
+
+            &.partially-paid {
+              color: @color-blue;
+            }
           }
 
           .el-icon-refresh {
@@ -611,6 +620,35 @@
         }
       }
     }
+
+    .am-service-translate {
+      display: inline-block;
+      float: right;
+      padding-right: 10px;
+      color: #1A84EE;
+    }
+
+    .am-dialog-translate-svg {
+      vertical-align: text-top;
+    }
+
+    .am-dialog-translate-svg-back {
+      vertical-align: text-top;
+      padding-right: @padding-small;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .am-dialog-translate-svg-plus {
+      vertical-align: middle;
+    }
+
+    .el-form-item {
+      &__label {
+        display: block;
+      }
+    }
   }
 
   &.am-dialog-custom-fields {
@@ -649,6 +687,82 @@
       margin: 0 !important;
       display: block;
       border: none;
+    }
+  }
+
+  &.am-dialog-translate {
+    font-size: @from-small-to-medium;
+    .am-dialog-header {
+      margin-bottom: 20px;
+      .am-dialog-translate-svg-back {
+        vertical-align: text-bottom;
+        padding-right: @padding-small;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .am-dialog-translate-delete {
+      padding: @padding-small + 1px;
+      border: 1px solid #E2E6EC;
+      border-radius: 4px;
+      display: block;
+      text-align: center;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .am-dialog-translate-flag {
+      width: 20px;
+      height: 14px;
+      vertical-align: text-bottom;
+      padding-right: 5px;
+    }
+    .am-dialog-translate-flag-selected {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 14px;
+      vertical-align: text-bottom;
+      padding: 0 5px 0 0;
+    }
+    .am-dialog-translate-svg {
+      vertical-align: text-bottom;
+    }
+    .am-dialog-translate-svg-plus {
+      vertical-align: middle;
+    }
+    .add-language {
+      display: inline-block;
+      color: #1A84EE;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .used-language {
+      border: 1px solid #E2E6EC;
+      border-radius: 5px;
+      padding: @padding-small + 2px;
+      margin-bottom: @margin-small;
+    }
+    .am-dialog-translate-description {
+
+    }
+    .am-dialog-translate-cf {
+      padding: 10px 0 10px 5px;
+    }
+    .am-dialog-translate-cf-label {
+      padding: 10px 0;
+      color: #364053;
+      opacity: 0.6;
+      word-break: unset;
+    }
+    .am-dialog-translate-input {
+      padding-right: 0;
     }
   }
 
@@ -730,6 +844,24 @@
           }
         }
       }
+    }
+
+    .am-event-label {
+      display: block;
+    }
+
+    .am-event-translate {
+      display: inline-block;
+      float: right;
+      padding-right: 10px;
+      color: #1A84EE;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .am-dialog-translate-svg {
+      vertical-align: text-top;
     }
   }
 
@@ -897,4 +1029,21 @@
     }
   }
 
+}
+
+.el-select-dropdown .el-select-dropdown__item {
+  .am-dialog-translate-flag {
+    width: 20px;
+    height: 14px;
+    vertical-align: text-bottom;
+    padding-right: 5px;
+  }
+}
+
+.el-input__prefix {
+  width: 32px;
+}
+
+.el-input--prefix .el-input__inner {
+  padding-left: 35px;
 }

@@ -48,6 +48,9 @@ class PackagesTable extends AbstractDatabaseTable
                    `durationType` ENUM('day', 'week', 'month') DEFAULT NULL,
                    `durationCount` INT(4) DEFAULT NULL,
                    `settings` TEXT({$description}) NULL DEFAULT NULL,
+                   `translations` TEXT NULL DEFAULT NULL,
+                   `depositPayment` ENUM('disabled' , 'fixed', 'percentage') DEFAULT 'disabled',
+                   `deposit` DOUBLE DEFAULT 0,
                     PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
     }

@@ -20,9 +20,7 @@
       'location': '<?php echo $atts['location']; ?>'
     }
   );
-
   var lazyBookingEntitiesIds = (typeof lazyBookingEntitiesIds === 'undefined') ? [] : lazyBookingEntitiesIds;
-
   if (bookingEntitiesIds[bookingEntitiesIds.length - 1].trigger !== '') {
     lazyBookingEntitiesIds.push(bookingEntitiesIds.pop());
   }

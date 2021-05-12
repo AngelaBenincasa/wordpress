@@ -21,6 +21,7 @@ use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\String\BookingType;
 use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
+use Interop\Container\Exception\ContainerException;
 
 /**
  * Interface ReservationServiceInterface
@@ -76,6 +77,17 @@ interface ReservationServiceInterface
      * @throws \Exception
      */
     public function process($data, $validator, $save);
+
+    /**
+     * @param CommandResult $result
+     *
+     * @return void
+     * @throws ContainerException
+     * @throws InvalidArgumentException
+     * @throws QueryExecutionException
+     * @throws NotFoundException
+     */
+    public function runPostBookingActions($result);
 
     /**
      * @param array $appointmentData

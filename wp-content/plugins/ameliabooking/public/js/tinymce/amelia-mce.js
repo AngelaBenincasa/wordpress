@@ -339,6 +339,19 @@
               visible: false,
             })
 
+            if (!wpAmeliaLiteVersion) {
+              viewBody.push({
+                type: 'listbox',
+                name: 'am_booking_event_view_type',
+                label: wpAmeliaLabels.show_event_view_type,
+                values: [
+                  {value: 'list', text: wpAmeliaLabels.show_event_view_list},
+                  {value: 'calendar', text: wpAmeliaLabels.show_event_view_calendar}
+                ],
+                classes: 'am-booking-events-view',
+              })
+            }
+
             break
 
           case ('customer_panel'):
@@ -464,6 +477,10 @@
                   if (e.data.am_booking_event_recurring) {
                     shortCodeString += ' recurring=1'
                   }
+                }
+
+                if (e.data.am_booking_event_view_type) {
+                  shortCodeString += ' type=' + "'" + e.data.am_booking_event_view_type + "'"
                 }
 
                 if (e.data.am_booking_tag) {

@@ -41,9 +41,12 @@ export default {
     },
 
     isBookingCancelable (reservation, booking_index = 0) {
-      return reservation.cancelable === false || reservation.bookings[booking_index].status === 'canceled' || reservation.bookings[booking_index].status === 'rejected'
+      return reservation.cancelable && !(reservation.bookings[booking_index].status === 'canceled' || reservation.bookings[booking_index].status === 'rejected')
     },
 
+    isBookingReschedulable (reservation, booking_index = 0) {
+      return reservation.reschedulable && !(reservation.bookings[booking_index].status === 'canceled' || reservation.bookings[booking_index].status === 'rejected')
+    },
     disableAuthorizationHeader () {
       return 'ameliaBooking' in window && 'cabinet' in window['ameliaBooking'] && 'disableAuthorizationHeader' in window['ameliaBooking']['cabinet'] && window['ameliaBooking']['cabinet']['disableAuthorizationHeader']
     },

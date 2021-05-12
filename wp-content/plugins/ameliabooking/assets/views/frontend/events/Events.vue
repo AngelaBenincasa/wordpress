@@ -178,6 +178,7 @@
                   @confirmedBooking="confirmedBooking"
                   @cancelBooking="evt.showEventBooking = false"
                   :useGlobalCustomization="useGlobalCustomization()"
+                  :phonePopulated="phonePopulated"
               >
               </confirm-booking>
             </div>
@@ -237,9 +238,10 @@
   import helperMixin from '../../../js/backend/mixins/helperMixin'
   import AddToCalendar from '../parts/AddToCalendar.vue'
   import customFieldMixin from '../../../js/common/mixins/customFieldMixin'
+  import translationMixin from '../../../js/common/mixins/translationMixin'
 
   export default {
-    mixins: [imageMixin, dateMixin, priceMixin, bookingMixin, commonEventMixin, helperMixin, customFieldMixin, settingsMixin],
+    mixins: [translationMixin, imageMixin, dateMixin, priceMixin, bookingMixin, commonEventMixin, helperMixin, customFieldMixin, settingsMixin],
 
     data () {
       return {
@@ -345,18 +347,6 @@
         return resultPeriods.join(', ')
       },
 
-      getPreselectedTag () {
-        return 'eventTag' in this.$root.shortcodeData.booking ? this.$root.shortcodeData.booking.eventTag : null
-      },
-
-      getPreselectedEventId () {
-        return 'eventId' in this.$root.shortcodeData.booking ? this.$root.shortcodeData.booking.eventId : null
-      },
-
-      getPreselectedEventRecurring () {
-        return 'eventRecurring' in this.$root.shortcodeData.booking ? this.$root.shortcodeData.booking.eventRecurring : null
-      },
-
       showTags () {
         return this.options.entities.tags.length > 1 && this.showDatePicker()
       },
@@ -396,6 +386,11 @@
           this.options.entities.tags = this.getPreselectedTag() ? [] : response.data.data.tags
 
           this.options.entities.customFields = response.data.data.customFields
+
+          if (this.$root.useTranslations) {
+            this.translateEntities(this.options.entities)
+          }
+
           this.setBookingCustomFields()
         }).catch(() => {
         })
@@ -470,10 +465,10 @@
         })
 
         event.addToCalendarData = {
-          title: responseData.event.name,
+          title: this.$root.useTranslations ? this.getNameTranslated(responseData.event) : responseData.event.name,
           dates: dates,
           address: location,
-          description: responseData.event.description,
+          description: this.$root.useTranslations ? this.getDescriptionTranslated(responseData.event) : responseData.event.description,
           id: responseData.booking.id,
           status: responseData.booking.status,
           active: this.$root.settings.general.addToCalendar,
@@ -498,6 +493,11 @@
           id: evt.id,
           name: evt.name,
           price: evt.price,
+          depositData: evt.depositPayment !== 'disabled' ? {
+            deposit: evt.deposit,
+            depositPayment: evt.depositPayment,
+            depositPerPerson: evt.depositPerPerson
+          } : null,
           maxCapacity: evt.maxCapacity,
           color: evt.color,
           aggregatedPrice: true,
@@ -548,6 +548,11 @@
               event.showEventBooking = false
               event.showAddToCalendar = false
               event.bookingCompleted = false
+
+              if ($this.$root.useTranslations) {
+                event.name = $this.getNameTranslated(event)
+                event.description = $this.getDescriptionTranslated(event)
+              }
 
               $this.events.push(event)
 
@@ -631,7 +636,11 @@
 
     mounted () {
       this.getEntities(['locations', 'tags'])
-      this.inlineBookingSVG()
+
+      if (!this.$root.shortcodeData.hasEventShortcode) {
+        this.inlineBookingSVG()
+      }
+
       this.getEvents()
       this.getCurrentUser()
     },

@@ -7,6 +7,7 @@
 namespace AmeliaBooking\Infrastructure\WP\EventListeners\Booking\Event;
 
 use AmeliaBooking\Application\Commands\CommandResult;
+use AmeliaBooking\Application\Services\Booking\IcsApplicationService;
 use AmeliaBooking\Application\Services\Notification\EmailNotificationService;
 use AmeliaBooking\Application\Services\Notification\SMSNotificationService;
 use AmeliaBooking\Application\Services\WebHook\WebHookApplicationService;
@@ -165,6 +166,21 @@ class EventEditedEventHandler
         }
 
         foreach ($eventsData['rescheduled'] as $eventArray) {
+
+            /** @var IcsApplicationService $icsService */
+            $icsService = $container->get('application.ics.service');
+
+            foreach ($eventArray['bookings'] as $index => $booking) {
+                if ($booking['status'] === BookingStatus::APPROVED || $booking['status'] === BookingStatus::PENDING) {
+                    $eventArray['bookings'][$index]['icsFiles'] = $icsService->getIcsData(
+                        Entities::EVENT,
+                        $booking['id'],
+                        [],
+                        true
+                    );
+                }
+            }
+
             $emailNotificationService->sendAppointmentRescheduleNotifications($eventArray);
 
             if ($settingsService->getSetting('notifications', 'smsSignedIn') === true) {

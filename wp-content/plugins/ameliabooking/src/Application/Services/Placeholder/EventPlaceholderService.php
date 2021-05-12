@@ -271,13 +271,26 @@ class EventPlaceholderService extends PlaceholderService
 
         $attendeeCode = $bookingKey !== null && $token ? $token : '';
 
+        $eventName = $helperService->getBookingTranslation(
+            $bookingKey !== null ? $event['bookings'][$bookingKey]['info'] : null,
+            $event['translations'],
+            'name'
+        ) ?: $event['name'];
+
+        $eventDescription = $helperService->getBookingTranslation(
+            $bookingKey !== null ? $event['bookings'][$bookingKey]['info'] : null,
+            $event['translations'],
+            'description'
+        ) ?: $event['description'];
+
         return array_merge([
             'attendee_code'            => substr($attendeeCode, 0, 5),
-            'reservation_name'         => $event['name'],
-            'event_name'               => $event['name'],
+            'reservation_name'         => $eventName,
+            'event_name'               => $eventName,
+            'event_name_url'           => sanitize_title($event['name']),
             'event_price'              => $helperService->getFormattedPrice($event['price']),
-            'event_description'        => $event['description'],
-            'reservation_description'  => $event['description'],
+            'event_description'        => $eventDescription,
+            'reservation_description'  => $eventDescription,
             'event_location'           => $locationName,
             'location_name'            => $locationName,
             'location_address'         => $locationAddress,

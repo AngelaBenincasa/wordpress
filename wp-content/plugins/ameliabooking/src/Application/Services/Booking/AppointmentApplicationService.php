@@ -11,12 +11,13 @@ use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBookingExtra;
 use AmeliaBooking\Domain\Entity\Entities;
-use AmeliaBooking\Domain\Factory\User\UserFactory;
+use AmeliaBooking\Domain\Entity\User\Provider;
 use AmeliaBooking\Domain\Services\Booking\AppointmentDomainService;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
 use AmeliaBooking\Domain\Services\Reservation\ReservationServiceInterface;
 use AmeliaBooking\Domain\ValueObjects\BooleanValueObject;
 use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
+use AmeliaBooking\Domain\ValueObjects\String\PaymentType;
 use AmeliaBooking\Domain\ValueObjects\String\Token;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
@@ -181,13 +182,30 @@ class AppointmentApplicationService
             $customerBooking->setId(new Id($customerBookingId));
 
             if ($paymentData) {
+                $paymentAmount = $reservationService->getPaymentAmount($customerBooking, $service);
+
+                if ($customerBooking->getDeposit() &&
+                    $customerBooking->getDeposit()->getValue() &&
+                    $paymentData['gateway'] !== PaymentType::ON_SITE
+                ) {
+                    $paymentDeposit = $reservationService->calculateDepositAmount(
+                        $paymentAmount,
+                        $service,
+                        $customerBooking->getPersons()->getValue()
+                    );
+
+                    $paymentData['deposit'] = $paymentAmount !== $paymentDeposit;
+
+                    $paymentAmount = $paymentDeposit;
+                }
+
                 $reservationService->addPayment(
                     !$customerBooking->getPackageCustomerService() ?
                         $customerBooking->getId()->getValue() : null,
                     $customerBooking->getPackageCustomerService() ?
                         $customerBooking->getPackageCustomerService()->getPackageCustomer()->getId()->getValue() : null,
                     $paymentData,
-                    $reservationService->getPaymentAmount($customerBooking, $service),
+                    $paymentAmount,
                     $appointment->getBookingStart()->getValue()
                 );
             }
@@ -227,13 +245,11 @@ class AppointmentApplicationService
         $appointmentRepo->update($oldAppointment->getId()->getValue(), $newAppointment);
 
         $existingBookingIds = [];
+
         $existingExtraIds = [];
 
-        foreach ((array)$newAppointment->getBookings()->keys() as $appointmentKey) {
-            if (!($newBooking = $newAppointment->getBookings()->getItem($appointmentKey)) instanceof CustomerBooking) {
-                throw new InvalidArgumentException('Unknown type');
-            }
-
+        /** @var CustomerBooking $newBooking */
+        foreach ($newAppointment->getBookings()->getItems() as $newBooking) {
             // Update Booking if ID exist
             if ($newBooking->getId() && $newBooking->getId()->getValue()) {
                 $bookingRepository->update($newBooking->getId()->getValue(), $newBooking);
@@ -253,13 +269,30 @@ class AppointmentApplicationService
                 $newBooking->setId(new Id($newBookingId));
 
                 if ($paymentData) {
+                    $paymentAmount = $reservationService->getPaymentAmount($newBooking, $service);
+
+                    if ($newBooking->getDeposit() &&
+                        $newBooking->getDeposit()->getValue() &&
+                        $paymentData['gateway'] !== PaymentType::ON_SITE
+                    ) {
+                        $paymentDeposit = $reservationService->calculateDepositAmount(
+                            $paymentAmount,
+                            $service,
+                            $newBooking->getPersons()->getValue()
+                        );
+
+                        $paymentData['deposit'] = $paymentAmount !== $paymentDeposit;
+
+                        $paymentAmount = $paymentDeposit;
+                    }
+
                     $reservationService->addPayment(
                         !$newBooking->getPackageCustomerService() ?
                             $newBooking->getId()->getValue() : null,
                         $newBooking->getPackageCustomerService() ?
                             $newBooking->getPackageCustomerService()->getPackageCustomer()->getId()->getValue() : null,
                         $paymentData,
-                        $reservationService->getPaymentAmount($newBooking, $service),
+                        $paymentAmount,
                         $newAppointment->getBookingStart()->getValue()
                     );
                 }
@@ -536,15 +569,14 @@ class AppointmentApplicationService
     }
 
     /**
-     * @param Collection $appointments
      * @param string     $searchString
      *
-     * @return void
+     * @return array
      * @throws ContainerValueNotFoundException
      * @throws QueryExecutionException
      * @throws Exception
      */
-    public function filterAppointmentsBySearchString($appointments, $searchString)
+    public function getAppointmentEntitiesIdsBySearchString($searchString)
     {
         /** @var CustomerRepository $customerRepository */
         $customerRepository = $this->container->get('domain.users.customers.repository');
@@ -555,77 +587,36 @@ class AppointmentApplicationService
         /** @var ServiceRepository $serviceRepository */
         $serviceRepository = $this->container->get('domain.bookable.service.repository');
 
-        $customersIds = [];
-
-        /** @var Appointment $appointment */
-        foreach ($appointments->getItems() as $appointment) {
-            /** @var CustomerBooking $booking */
-            foreach ($appointment->getBookings()->getItems() as $booking) {
-                $customersIds[$booking->getCustomerId()->getValue()] = true;
-            }
-        }
-
         $customersArray = $customerRepository->getFiltered(
             [
                 'ignoredBookings' => true,
                 'search'          => $searchString,
-                'customers'       => array_keys($customersIds),
             ],
             null
         );
 
-        /** @var Collection $textFilteredCustomers */
-        $textFilteredCustomers = new Collection();
+        $result = [
+            'customers' => array_column($customersArray, 'id'),
+            'providers' => [],
+            'services'  => [],
+        ];
 
-        foreach ($customersArray as $customerData) {
-            $textFilteredCustomers->addItem(UserFactory::create($customerData), $customerData['id']);
+        /** @var Collection $providers */
+        $providers = $providerRepository->getFiltered(['search' => $searchString], 0);
+
+        /** @var Collection $services */
+        $services = $serviceRepository->getByCriteria(['search' => $searchString]);
+
+        /** @var Provider $provider */
+        foreach ($providers->getItems() as $provider) {
+            $result['providers'][] = $provider->getId()->getValue();
         }
 
-        /** @var Collection $textFilteredProviders */
-        $textFilteredProviders = $providerRepository->getFiltered(['search' => $searchString], null);
-
-        /** @var Collection $textFilteredServices */
-        $textFilteredServices = $serviceRepository->getByCriteria(['search' => $searchString]);
-
-        /** @var Appointment $appointment */
-        foreach ($appointments->getItems() as $appointmentKey => $appointment) {
-            if (!$textFilteredCustomers->length() &&
-                !$textFilteredServices->length() &&
-                $textFilteredProviders->length() &&
-                !$textFilteredProviders->keyExists($appointment->getProviderId()->getValue())
-            ) {
-                $appointments->deleteItem($appointmentKey);
-
-                continue;
-            }
-
-            if (!$textFilteredCustomers->length() &&
-                !$textFilteredProviders->length() &&
-                $textFilteredServices->length() &&
-                !$textFilteredServices->keyExists($appointment->getServiceId()->getValue())
-            ) {
-                $appointments->deleteItem($appointmentKey);
-
-                continue;
-            }
-
-            if ($textFilteredCustomers->length() &&
-                !$textFilteredProviders->length() &&
-                !$textFilteredServices->length()
-            ) {
-                /** @var CustomerBooking $booking */
-                foreach ($appointment->getBookings()->getItems() as $bookingKey => $booking) {
-                    if (!$textFilteredCustomers->keyExists($booking->getCustomerId()->getValue())) {
-                        $appointment->getBookings()->deleteItem($bookingKey);
-                    }
-                }
-
-                if (!$appointment->getBookings()->length()) {
-                    $appointments->deleteItem($appointmentKey);
-
-                    continue;
-                }
-            }
+        /** @var Service $service */
+        foreach ($services->getItems() as $service) {
+            $result['services'][] = $service->getId()->getValue();
         }
+
+        return $result;
     }
 }

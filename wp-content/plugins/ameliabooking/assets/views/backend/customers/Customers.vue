@@ -29,13 +29,10 @@
               <!-- Global Search -->
               <el-col :md="18">
                 <div class="am-search">
-                  <el-popover :disabled="!$root.isLite" ref="searchPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                   <el-input
-                      v-popover:searchPop
                       :placeholder="searchPlaceholder"
                       v-model="params.search"
                       name="search"
-                      :disabled="$root.isLite"
                   >
                   </el-input>
                 </div>
@@ -46,15 +43,13 @@
                 <div>
                   <el-col :md="6">
                     <el-form-item>
-                      <el-popover :disabled="!$root.isLite" ref="filterPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                       <el-select
-                          v-popover:filterPop
                           v-model="params.sort"
                           :placeholder="$root.labels.sort"
                           class="calc-width sort"
                           @change="filterData"
                           name="sort"
-                          :disabled="$root.isLite"
+                          clearable
                       >
                         <el-option
                             v-for="option in options.sort"
@@ -401,7 +396,7 @@
         fetched: false,
         params: {
           page: 1,
-          sort: 'customer',
+          sort: '',
           search: ''
         },
 

@@ -6,6 +6,7 @@ use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Notification\Notification;
 use AmeliaBooking\Domain\ValueObjects\DateTime\TimeOfDay;
 use AmeliaBooking\Domain\ValueObjects\Duration;
+use AmeliaBooking\Domain\ValueObjects\Json;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\ValueObjects\String\BookingType;
 use AmeliaBooking\Domain\ValueObjects\String\Html;
@@ -49,6 +50,10 @@ class NotificationFactory
 
         if (isset($data['timeBefore'])) {
             $notification->setTimeBefore(new Duration($data['timeBefore']));
+        }
+
+        if (isset($data['translations'])) {
+            $notification->setTranslations(new Json($data['translations']));
         }
 
         if (isset($data['timeAfter'])) {

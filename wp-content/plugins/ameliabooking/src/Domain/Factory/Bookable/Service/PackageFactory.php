@@ -20,6 +20,7 @@ use AmeliaBooking\Domain\ValueObjects\Number\Integer\PositiveInteger;
 use AmeliaBooking\Domain\ValueObjects\Picture;
 use AmeliaBooking\Domain\ValueObjects\Number\Float\Price;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
+use AmeliaBooking\Domain\ValueObjects\String\DepositType;
 use AmeliaBooking\Domain\ValueObjects\String\EntityType;
 use AmeliaBooking\Domain\ValueObjects\String\Color;
 use AmeliaBooking\Domain\ValueObjects\String\Description;
@@ -98,6 +99,14 @@ class PackageFactory
             $package->setDurationType(new Label($data['durationType']));
         }
 
+        if (isset($data['deposit'])) {
+            $package->setDeposit(new Price($data['deposit']));
+        }
+
+        if (isset($data['depositPayment'])) {
+            $package->setDepositPayment(new DepositType($data['depositPayment']));
+        }
+
         /** @var Collection $gallery */
         $gallery = new Collection();
 
@@ -122,6 +131,10 @@ class PackageFactory
         }
 
         $package->setGallery($gallery);
+
+        if (!empty($data['translations'])) {
+            $package->setTranslations(new Json($data['translations']));
+        }
 
         /** @var Collection $bookable */
         $bookable = new Collection();
@@ -169,6 +182,10 @@ class PackageFactory
             $packages[$packageId]['endDate'] = $row['package_endDate'];
             $packages[$packageId]['durationCount'] = $row['package_durationCount'];
             $packages[$packageId]['durationType'] = $row['package_durationType'];
+            $packages[$packageId]['translations'] = $row['package_translations'];
+            $packages[$packageId]['deposit'] = isset($row['package_deposit']) ? $row['package_deposit'] : null;
+            $packages[$packageId]['depositPayment'] = isset($row['package_depositPayment']) ?
+                $row['package_depositPayment'] : null;
 
             if ($bookableId) {
                 $packages[$packageId]['bookable'][$bookableId]['id'] = $bookableId;
@@ -184,6 +201,7 @@ class PackageFactory
                 $packages[$packageId]['bookable'][$bookableId]['service']['maxCapacity'] = $row['service_maxCapacity'];
                 $packages[$packageId]['bookable'][$bookableId]['service']['pictureFullPath'] = $row['service_picture_full'];
                 $packages[$packageId]['bookable'][$bookableId]['service']['pictureThumbPath'] = $row['service_picture_thumb'];
+                $packages[$packageId]['bookable'][$bookableId]['service']['translations'] = !empty($row['service_translations']) ? $row['service_translations'] : null;
                 $packages[$packageId]['bookable'][$bookableId]['quantity'] = $row['package_service_quantity'];
                 $packages[$packageId]['bookable'][$bookableId]['minimumScheduled'] = $row['package_service_minimumScheduled'];
                 $packages[$packageId]['bookable'][$bookableId]['maximumScheduled'] = $row['package_service_maximumScheduled'];

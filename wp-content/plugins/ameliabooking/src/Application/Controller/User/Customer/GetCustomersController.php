@@ -28,6 +28,7 @@ class GetCustomersController extends Controller
         $command->setField('params', (array)$request->getQueryParams());
         $requestBody = $request->getParsedBody();
         $this->setCommandFields($command, $requestBody);
+        $command->setToken($request);
 
         return $command;
     }

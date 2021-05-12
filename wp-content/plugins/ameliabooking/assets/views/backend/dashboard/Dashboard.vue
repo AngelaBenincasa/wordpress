@@ -6,12 +6,12 @@
       <page-header @changeFilter="changeFilter" :params="params"></page-header>
 
       <!-- Spinner -->
-      <div class="am-spinner am-section" v-show="!fetched">
+      <div class="am-spinner am-section" v-show="!fetched || !fetchedStats">
         <img :src="$root.getUrl + 'public/img/spinner.svg'"/>
       </div>
 
       <!-- Statistics -->
-      <div v-if="fetched === true">
+      <div v-if="fetched === true && fetchedStats === true">
         <div class="am-hello am-section">
           <div class="am-user-name">
             <h1 v-if="currentUser !== null">{{$root.labels.hello_message_part0}} {{currentUser.firstName}} {{currentUser.lastName}} <img :src="$root.getUrl + 'public/img/wave.png'"></h1>
@@ -517,15 +517,23 @@
                             <!-- Appointment Payment -->
                             <el-col class="am-appointment-payment" :lg="6" :sm="6" :xs="12">
                               <p class="am-col-title">{{ $root.labels.payment }}:</p>
-                              <div class="am-appointment-payment-wrap">
+                              <div class="am-appointment-payment-wrap" v-if="getAppointmentPaymentMethods(app.bookings).length">
                                 <img
                                     v-for="method in getAppointmentPaymentMethods(app.bookings)"
                                     v-if="getAppointmentPaymentMethods(app.bookings).length"
                                     :src="$root.getUrl + 'public/img/payments/' + method + '.svg'"
                                 >
-                                <h4 v-if="Object.keys(bookingTypeCountInPackage(app.bookings).regular).length">
-                                  {{ getAppointmentPrice(app.serviceId, getAppointmentService(app), app.bookings) }}
-                                  <span v-if="Object.keys(bookingTypeCountInPackage(app.bookings).package).length">+</span>
+                                <h4 v-if="bookingTypeCountInPackage(app.bookings).regular">
+                                  <el-tooltip placement="top">
+                                    <div slot="content">
+                                      {{ getAppointmentPrice(app.serviceId, getAppointmentService(app), app.bookings, true) }}
+                                      <span v-if="Object.keys(bookingTypeCountInPackage(app.bookings).package).length">+</span>
+                                    </div>
+                                    <div>
+                                      {{ getAppointmentPrice(app.serviceId, getAppointmentService(app), app.bookings, true) }}
+                                      <span v-if="Object.keys(bookingTypeCountInPackage(app.bookings).package).length">+</span>
+                                    </div>
+                                  </el-tooltip>
                                 </h4>
                                 <el-tooltip v-if="Object.keys(bookingTypeCountInPackage(app.bookings).package).length"
                                             placement="top"
@@ -1246,6 +1254,7 @@
 
         employeesStats: [],
         fetched: false,
+        fetchedStats: false,
         form: new Form(),
         locations: [],
         locationsChartData: {
@@ -1413,21 +1422,19 @@
       },
 
       getDashboardOptions () {
-        let $this = this
-
-        this.fetchEntities(function (success) {
+        this.fetchEntities((success) => {
           if (success) {
-            $this.filterResponseData()
-
-            $this.setBookings(0)
-            $this.getDashboard()
+            this.filterResponseData()
+            this.setBookings(0)
+            this.getDashboard()
           }
 
-          $this.fetched = true
-          $this.options.fetched = true
+          this.fetched = true
+          this.options.fetched = true
         }, {
           types: ['categories', 'employees', 'customers'],
-          isFrontEnd: false
+          isFrontEnd: false,
+          isPanel: false
         })
       },
 
@@ -1452,6 +1459,8 @@
           params.dates = dates
         }
 
+        this.fetchedStats = false
+
         this.$http.get(`${this.$root.getAjaxUrl}/stats`, {
           params: params
         })
@@ -1467,6 +1476,21 @@
 
             this.todayAppointmentsCount.approved = response.data.data.count.approved
             this.todayAppointmentsCount.pending = response.data.data.count.pending
+
+            let customersIds = this.options.entities.customers.map(customer => parseInt(customer.id))
+
+            let customers = this.options.entities.customers
+
+            response.data.data.appointments.forEach((app) => {
+              app.bookings.forEach((booking) => {
+                if (customersIds.indexOf(parseInt(booking.customer.id)) === -1) {
+                  customersIds.push(booking.customer.id)
+                  customers.push(booking.customer)
+                }
+              })
+            })
+
+            this.options.entities.customers = Object.values(customers)
 
             this.appointments = response.data.data.appointments
             this.appointmentsCount = response.data.data.appointmentsCount
@@ -1484,6 +1508,7 @@
             this.filterServicesChart()
             this.filterLocationsChart()
             this.fetched = true
+            this.fetchedStats = true
           })
       },
 

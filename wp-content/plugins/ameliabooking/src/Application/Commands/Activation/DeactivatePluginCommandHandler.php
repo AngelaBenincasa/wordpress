@@ -32,8 +32,9 @@ class DeactivatePluginCommandHandler extends CommandHandler
         /** @var SettingsService $settingsService */
         $settingsService = $this->container->get('domain.settings.service');
 
-        // Get the purchase code from query string
-        $purchaseCode = trim($command->getField('params')['purchaseCodeStore']);
+        $purchaseCode = trim(
+            $settingsService->getSetting('activation', 'purchaseCodeStore')
+        );
 
         // Get the base domain from query string
         $domain = $command->getField('params')['domain'];

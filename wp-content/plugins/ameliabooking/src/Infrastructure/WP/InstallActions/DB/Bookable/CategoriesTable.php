@@ -31,6 +31,7 @@ class CategoriesTable extends AbstractDatabaseTable
                    `status` enum('hidden', 'visible', 'disabled') NOT NULL default 'visible',
                    `name` varchar ({$name}) NOT NULL default '',
                    `position` int(11) NOT NULL,
+                   `translations` TEXT NULL DEFAULT NULL,
                     PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
     }

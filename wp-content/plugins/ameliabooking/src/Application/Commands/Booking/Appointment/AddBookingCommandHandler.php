@@ -12,6 +12,7 @@ use AmeliaBooking\Domain\Entity\Booking\Validator;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Domain\Entity\User\AbstractUser;
 use AmeliaBooking\Domain\Services\Reservation\ReservationServiceInterface;
+use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use Exception;
 use Interop\Container\Exception\ContainerException;
@@ -97,6 +98,15 @@ class AddBookingCommandHandler extends CommandHandler
             unset($appointmentData['bookings'][0]['packageCustomerService']['id']);
         }
 
-        return $reservationService->process($appointmentData, $validator, true);
+        $result = $reservationService->process($appointmentData, $validator, true);
+
+        /** @var SettingsService $settingsService */
+        $settingsService = $this->container->get('domain.settings.service');
+
+        if ($settingsService->getSetting('general', 'runInstantPostBookingActions')) {
+            $reservationService->runPostBookingActions($result);
+        }
+
+        return $result;
     }
 }

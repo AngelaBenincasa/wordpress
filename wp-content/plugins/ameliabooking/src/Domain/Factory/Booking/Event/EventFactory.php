@@ -25,6 +25,7 @@ use AmeliaBooking\Domain\ValueObjects\String\BookingStatus;
 use AmeliaBooking\Domain\ValueObjects\Number\Integer\Id;
 use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\ValueObjects\String\Color;
+use AmeliaBooking\Domain\ValueObjects\String\DepositType;
 use AmeliaBooking\Domain\ValueObjects\String\Description;
 use AmeliaBooking\Domain\ValueObjects\String\EntityType;
 use AmeliaBooking\Domain\ValueObjects\String\Name;
@@ -118,6 +119,18 @@ class EventFactory
             $event->setSettings(new Json($data['settings']));
         }
 
+        if (isset($data['deposit'])) {
+            $event->setDeposit(new Price($data['deposit']));
+        }
+
+        if (isset($data['depositPayment'])) {
+            $event->setDepositPayment(new DepositType($data['depositPayment']));
+        }
+
+        if (isset($data['depositPerPerson'])) {
+            $event->setDepositPerPerson(new BooleanValueObject($data['depositPerPerson']));
+        }
+
         $tags = new Collection();
 
         if (isset($data['tags'])) {
@@ -208,6 +221,10 @@ class EventFactory
             $event->setZoomUserId(new Name($data['zoomUserId']));
         }
 
+        if (!empty($data['translations'])) {
+            $event->setTranslations(new Json($data['translations']));
+        }
+
         return $event;
     }
 
@@ -259,7 +276,13 @@ class EventFactory
                     'parentId'              => $row['event_parentId'],
                     'created'               => $row['event_created'],
                     'settings'              => isset($row['event_settings']) ? $row['event_settings'] : null,
-                    'zoomUserId'            => isset($row['event_zoomUserId']) ? $row['event_zoomUserId'] : null
+                    'zoomUserId'            => isset($row['event_zoomUserId']) ? $row['event_zoomUserId'] : null,
+                    'translations'          => isset($row['event_translations']) ? $row['event_translations'] : null,
+                    'deposit'               => isset($row['event_deposit']) ? $row['event_deposit'] : null,
+                    'depositPayment'        => isset($row['event_depositPayment']) ?
+                        $row['event_depositPayment'] : null,
+                    'depositPerPerson'      => isset($row['event_depositPerPerson']) ?
+                        $row['event_depositPerPerson'] : null,
                 ];
             }
 

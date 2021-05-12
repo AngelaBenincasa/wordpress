@@ -11,7 +11,7 @@ export default {
       return providerService ? providerService : this.getServiceById(appointment.serviceId)
     },
 
-    getAppointmentPrice (savedServiceId, service, bookings) {
+    getAppointmentPrice (savedServiceId, service, bookings, isList) {
       let totalBookings = 0
       let $this = this
 
@@ -26,7 +26,7 @@ export default {
         })
 
         // for new bookings use price from service
-        if (booking.payments.length === 0) {
+        if (booking.payments.length === 0 && !isList) {
           totalBookings += $this.getBookingPrice(booking, true, service.price, service.aggregatedPrice)
         }
       })

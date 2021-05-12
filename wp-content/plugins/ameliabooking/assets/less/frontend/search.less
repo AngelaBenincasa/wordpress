@@ -1860,8 +1860,24 @@
   .am-confirmation-total {
     background-color: fade(@color-accent, 10%);
     padding: @padding-small;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+
+    .el-row {
+      margin-top: @margin-small;
+      margin-bottom: @margin-small;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+
+    .am-confirmation-deposit {
+      border-top: 1px solid @color-dark-gray;
+      padding-top: 8px;
+
+      .am-confirmation-deposit-info {
+        font-style: italic;
+        color: @color-dark-gray;
+        display: inline-block;
+      }
+    }
 
     p {
       font-weight: @medium;
@@ -1986,6 +2002,10 @@
 
       path {
         fill: @color-accent;
+      }
+
+      &#shape-star {
+        fill: #ffffff;
       }
     }
 

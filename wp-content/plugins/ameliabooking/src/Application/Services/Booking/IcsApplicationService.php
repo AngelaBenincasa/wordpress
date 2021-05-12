@@ -2,6 +2,7 @@
 
 namespace AmeliaBooking\Application\Services\Booking;
 
+use AmeliaBooking\Application\Services\Helper\HelperService;
 use AmeliaBooking\Domain\Entity\Bookable\Service\Service;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\Appointment;
 use AmeliaBooking\Domain\Entity\Booking\Appointment\CustomerBooking;
@@ -50,6 +51,9 @@ class IcsApplicationService
     {
         $type = $type ?: Entities::APPOINTMENT;
 
+        /** @var HelperService $helperService */
+        $helperService = $this->container->get('application.helper.service');
+
         /** @var ReservationServiceInterface $reservationService */
         $reservationService = $this->container->get('application.reservation.service')->get($type);
 
@@ -88,6 +92,11 @@ class IcsApplicationService
         $periodsData = [
             [
                 'name'    => $bookable->getName()->getValue(),
+                'nameTr'  => $helperService->getBookingTranslation(
+                    $booking->getInfo() ? $booking->getInfo()->getValue() : null,
+                    $bookable->getTranslations() ? $bookable->getTranslations()->getValue() : null,
+                    'name'
+                ) ?: $bookable->getName()->getValue(),
                 'periods' => $reservationService->getBookingPeriods($reservation, $booking, $bookable)
             ]
         ];
@@ -113,6 +122,11 @@ class IcsApplicationService
 
             $periodsData[] = [
                 'name'    => $bookableRecurring->getName()->getValue(),
+                'nameTr'  => $helperService->getBookingTranslation(
+                    $recurringBooking->getInfo() ? $recurringBooking->getInfo()->getValue() : null,
+                    $bookableRecurring->getTranslations() ? $bookableRecurring->getTranslations()->getValue() : null,
+                    'name'
+                ) ?: $bookableRecurring->getName()->getValue(),
                 'periods' => $reservationService->getBookingPeriods(
                     $recurringReservation,
                     $recurringBooking,
@@ -121,6 +135,22 @@ class IcsApplicationService
             ];
         }
 
+        return [
+            'original'   => $this->getCalendar($periodsData, $separateCalendars, 'name'),
+            'translated' => $this->getCalendar($periodsData, $separateCalendars, 'nameTr'),
+        ];
+    }
+
+    /**
+     * @param array  $periodsData
+     * @param bool   $separateCalendars
+     * @param string $nameKey
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getCalendar($periodsData, $separateCalendars, $nameKey)
+    {
         $vCalendars = $separateCalendars ? [] : [new Calendar(AMELIA_URL)];
 
         foreach ($periodsData as $periodData) {
@@ -130,7 +160,7 @@ class IcsApplicationService
                 $vEvent
                     ->setDtStart(new \DateTime($period['start'], new \DateTimeZone('UTC')))
                     ->setDtEnd(new \DateTime($period['end'], new \DateTimeZone('UTC')))
-                    ->setSummary($periodData['name']);
+                    ->setSummary($periodData[$nameKey]);
 
                 if ($separateCalendars) {
                     $vCalendar = new Calendar(AMELIA_URL);

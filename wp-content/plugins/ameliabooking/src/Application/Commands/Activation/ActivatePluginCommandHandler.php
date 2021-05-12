@@ -58,6 +58,10 @@ class ActivatePluginCommandHandler extends CommandHandler
         // Update Amelia Settings
         $settingsService->setSetting('activation', 'active', $response->valid && $response->domainRegistered);
 
+        if ($response->valid && $response->domainRegistered) {
+            $settingsService->setSetting('activation', 'purchaseCodeStore', $purchaseCode);
+        }
+
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Successfully checked purchase code');
         $result->setData([

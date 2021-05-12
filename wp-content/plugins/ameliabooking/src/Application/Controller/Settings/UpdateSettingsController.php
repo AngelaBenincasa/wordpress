@@ -35,7 +35,8 @@ class UpdateSettingsController extends Controller
         'zoom',
         'appointments',
         'useWindowVueInAmelia',
-        'sendAllCF'
+        'sendAllCF',
+        'usedLanguages',
     ];
 
     /**

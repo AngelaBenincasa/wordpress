@@ -141,6 +141,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
         $break = $type === 'email' ? '<br>' : PHP_EOL;
 
         $numberOfPersons = null;
+        $icsFiles = [];
 
         $couponsUsed = [];
 
@@ -224,6 +225,8 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
             }
 
             $numberOfPersons = implode($break, $numberOfPersons);
+
+            $icsFiles = !empty($appointment['bookings'][0]['icsFiles']) ? $appointment['bookings'][0]['icsFiles'] : [];
         } else {
             $isAggregatedPrice = isset($appointment['bookings'][$bookingKey]['aggregatedPrice']) &&
                 $appointment['bookings'][$bookingKey]['aggregatedPrice'];
@@ -251,7 +254,12 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
             }
 
             $numberOfPersons = $appointment['bookings'][$bookingKey]['persons'];
+
+            $icsFiles = !empty($appointment['bookings'][$bookingKey]['icsFiles']) ? $appointment['bookings'][$bookingKey]['icsFiles'] : [];
         }
+
+        $payment = !empty($appointment['bookings'][$bookingKey]['payments'][0]) ?
+            $appointment['bookings'][$bookingKey]['payments'][0] : null;
 
         return [
             "{$appointment['type']}_cancel_url" =>
@@ -259,18 +267,20 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
                     AMELIA_ACTION_URL . '/bookings/cancel/' . $appointment['bookings'][$bookingKey]['id'] .
                     ($token ? '&token=' . $token : '') . "&type={$appointment['type']}" : '',
             "{$appointment['type']}_price"      => $helperService->getFormattedPrice($appointmentPrice),
+            'payment_status'                    => $payment ? $payment['status'] : '',
+            'payment_gateway'                   => $payment ? $payment['gateway'] : '',
+            'payment_gateway_title'             => $payment ? $payment['gatewayTitle'] : '',
             'number_of_persons'                 => $numberOfPersons,
             'coupon_used'                       => $couponsUsed ? implode($break, $couponsUsed) : '',
-            'icsFiles'                          => !empty($appointment['bookings'][$bookingKey]['icsFiles']) ?
-                $appointment['bookings'][$bookingKey]['icsFiles'] : []
+            'icsFiles'                          => $icsFiles
         ];
     }
 
     /** @noinspection MoreThanThreeArgumentsInspection */
     /**
-     * @param array  $appointment
+     * @param array $appointment
      * @param string $type
-     * @param null   $bookingKey
+     * @param null $bookingKey
      * @param Customer $customerEntity
      *
      * @return array
@@ -281,6 +291,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
      * @throws NotFoundException
      * @throws QueryExecutionException
      * @throws ContainerException
+     * @throws \Exception
      */
     public function getCustomersData($appointment, $type, $bookingKey = null, $customerEntity = null)
     {
@@ -292,6 +303,8 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
 
         /** @var string $paragraphEnd */
         $paragraphEnd = $type === 'email' ? '</p>' : PHP_EOL;
+
+        $timezone = get_option('timezone_string');
 
         // If the data is for employee
         if ($bookingKey === null) {
@@ -371,6 +384,7 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
                     return $info['firstName'] . ' ' . $info['lastName'];
                 }, $customerInformationData)),
                 'customer_phone'      => substr($phones, 0, -2),
+                'time_zone'           => $timezone,
                 'customer_note'       => implode(', ', array_map(function ($customer) {
                     /** @var Customer $customer */
                     return $customer->getNote() ? $customer->getNote()->getValue() : '';
@@ -391,6 +405,21 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
             $phone = $customer->getPhone() ? $customer->getPhone()->getValue() : '';
         }
 
+        /** @var SettingsService $settingsService */
+        $settingsService = $this->container->get('domain.settings.service');
+
+        if ($settingsService->getSetting('general', 'showClientTimeZone')) {
+            switch ($appointment['type']) {
+                case (Entities::PACKAGE):
+                    if (!empty($appointment['isForCustomer'])) {
+                        $timezone = !empty($appointment['customer']['timeZone']) ? $appointment['customer']['timeZone'] : '';
+                    }
+                    break;
+                default:
+                    $timezone = ($info && property_exists($info, 'timeZone')) ? $info->timeZone : '';
+            }
+        }
+
         /** @var HelperService $helperService */
         $helperService = $this->container->get('application.helper.service');
 
@@ -400,23 +429,26 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
             'customer_last_name'  => $info ? $info->lastName : $customer->getLastName()->getValue(),
             'customer_full_name'  => $info ? $info->firstName . ' ' . $info->lastName : $customer->getFullName(),
             'customer_phone'      => $phone,
+            'time_zone'           => $timezone,
             'customer_note'       => $customer->getNote() ? $customer->getNote()->getValue() : '',
             'customer_panel_url'  => $helperService->getCustomerCabinetUrl(
                 $customer->getEmail()->getValue(),
                 $type,
                 !empty($appointment['bookingStart']) ? explode(' ', $appointment['bookingStart'])[0] : null,
-                !empty($appointment['bookingEnd']) ? explode(' ', $appointment['bookingEnd'])[0] : null
+                !empty($appointment['bookingEnd']) ? explode(' ', $appointment['bookingEnd'])[0] : null,
+                $info && property_exists($info, 'locale') ? $info->locale : ''
             )
         ];
     }
 
     /**
      * @param array $appointment
-     * @param null  $bookingKey
+     * @param null $bookingKey
      *
      * @return array
      * @throws \Slim\Exception\ContainerValueNotFoundException
      * @throws QueryExecutionException
+     * @throws \Exception
      */
     public function getCustomFieldsData($appointment, $bookingKey = null)
     {
@@ -441,21 +473,23 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
 
                 if ($bookingCustomFields) {
                     foreach ($bookingCustomFields as $bookingCustomFieldKey => $bookingCustomField) {
-                        if (isset($bookingCustomField['value'], $bookingCustomField['type'])) {
+                        if (!empty($bookingCustomField['value']) && !empty($bookingCustomField['type'])) {
                             if ($bookingCustomField['type'] === 'datepicker' && $bookingCustomField['value']) {
                                 $date = DateTime::createFromFormat('Y-m-d', $bookingCustomField['value']);
                                 $bookingCustomField['value'] = date_i18n($dateFormat, $date->getTimestamp());
                             }
 
-                            if ($bookingCustomField['type'] === 'file') {
-
+                            if ($bookingCustomField['type'] === 'file' &&
+                                (!empty($appointment['provider']) || !empty($appointment['providers']))
+                            ) {
                                 /** @var HelperService $helperService */
                                 $helperService = $this->container->get('application.helper.service');
 
                                 /** @var array $jwtSettings */
                                 $jwtSettings = $settingsService->getSetting('roles', 'urlAttachment');
 
-                                $provider_email = $appointment['provider'] ? $appointment['provider']['email'] : $appointment['providers'][0]['email'];
+                                $provider_email = !empty($appointment['provider']) ?
+                                    $appointment['provider']['email'] : $appointment['providers'][0]['email'];
 
                                 $token = $helperService->getGeneratedJWT(
                                     $provider_email,
@@ -465,12 +499,22 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
                                 );
 
                                 $files = '';
-                                foreach ($bookingCustomField['value'] as $index => $file) {
-                                    $files .= '<a href="'
-                                        . AMELIA_ACTION_URL . '/fields/' . $bookingCustomFieldKey . '/' . $booking['id'] . '/' . $index . '&token=' . $token
-                                        . '">' . $file['name'] . '</a>' . '<br/>';
+
+                                if ($bookingCustomField['value']) {
+                                    foreach ($bookingCustomField['value'] as $index => $file) {
+                                        $files .= '<a href="'
+                                            . AMELIA_ACTION_URL . '/fields/' . $bookingCustomFieldKey . '/' . $booking['id'] . '/' . $index . '&token=' . $token
+                                            . '">' . $file['name'] . '</a>' . '<br/>';
+                                    }
+
+                                    $bookingCustomField['value'] = $files;
                                 }
-                                $bookingCustomField['value'] = $files;
+                            }
+
+                            if ($bookingCustomField['type'] === 'file' &&
+                                (empty($appointment['provider']) && empty($appointment['providers']))
+                            ) {
+                                continue;
                             }
 
                             if (array_key_exists('custom_field_' . $bookingCustomFieldKey, $customFieldsData)) {
@@ -696,5 +740,25 @@ abstract class PlaceholderService implements PlaceholderServiceInterface
         }
 
         return $couponsData;
+    }
+
+    /**
+     * @param array $entity
+     *
+     * @param string $subject
+     * @param string $body
+     * @param int    $userId
+     * @return array
+     */
+    public function reParseContentForProvider($entity, $subject, $body, $userId)
+    {
+        $employeeSubject = $subject;
+
+        $employeeBody = $body;
+
+        return [
+            'body'    => $employeeBody,
+            'subject' => $employeeSubject,
+        ];
     }
 }

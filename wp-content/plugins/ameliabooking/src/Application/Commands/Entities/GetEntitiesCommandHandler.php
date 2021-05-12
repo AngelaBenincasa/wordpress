@@ -7,6 +7,7 @@ use AmeliaBooking\Application\Commands\CommandResult;
 use AmeliaBooking\Application\Common\Exceptions\AccessDeniedException;
 use AmeliaBooking\Application\Services\Bookable\BookableApplicationService;
 use AmeliaBooking\Application\Services\Bookable\PackageApplicationService;
+use AmeliaBooking\Application\Services\Helper\HelperService;
 use AmeliaBooking\Application\Services\User\ProviderApplicationService;
 use AmeliaBooking\Application\Services\User\UserApplicationService;
 use AmeliaBooking\Domain\Collection\Collection;
@@ -19,6 +20,7 @@ use AmeliaBooking\Domain\Entity\User\Customer;
 use AmeliaBooking\Domain\Entity\User\Provider;
 use AmeliaBooking\Domain\Factory\Bookable\Service\ServiceFactory;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
+use AmeliaBooking\Domain\Services\Settings\SettingsService;
 use AmeliaBooking\Infrastructure\Common\Exceptions\NotFoundException;
 use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Repository\Bookable\Service\CategoryRepository;
@@ -334,10 +336,35 @@ class GetEntitiesCommandHandler extends CommandHandler
                 [AbstractUser::USER_ROLE_PROVIDER, AbstractUser::USER_ROLE_MANAGER, AbstractUser::USER_ROLE_ADMIN]
             )
         ) {
+            /** @var HelperService $helperService */
+            $helperService = $this->container->get('application.helper.service');
+
+            /** @var SettingsService $settingsDS */
+            $settingsDS = $this->container->get('domain.settings.service');
+
+            $languages = $helperService->getLanguages();
+
+            usort(
+                $languages,
+                function ($x, $y) {
+                    return strcasecmp($x['name'], $y['name']);
+                }
+            );
+
+            $languagesSorted = [];
+
+            foreach ($languages as $language) {
+                $languagesSorted[$language['wp_locale']] = $language;
+            }
+
             $resultData['settings'] = [
-                'payments' => [
+                'payments'  => [
                     'wc' => !AMELIA_LITE_VERSION ? WooCommerceService::getAllProducts() : []
-                ]
+                ],
+                'general'   => [
+                    'usedLanguages' => $settingsDS->getSetting('general', 'usedLanguages'),
+                ],
+                'languages' => $languagesSorted,
             ];
         }
 
@@ -355,4 +382,5 @@ class GetEntitiesCommandHandler extends CommandHandler
 
         return $result;
     }
+
 }

@@ -73,10 +73,10 @@
                 <!-- Email -->
                 <el-form-item :label="$root.labels.email + ':'" prop="email" :error="errors.email">
                   <el-input
-                      v-model="employee.email"
-                      auto-complete="off"
-                      :placeholder="$root.labels.email_placeholder"
-                      @input="clearValidation()"
+                    v-model="employee.email"
+                    auto-complete="off"
+                    :placeholder="$root.labels.email_placeholder"
+                    @input="clearValidation()"
                   >
                   </el-input>
                 </el-form-item>
@@ -114,27 +114,28 @@
                       <i class="el-icon-question am-tooltip-icon"></i>
                     </el-tooltip>
                   </label>
-                    <el-popover :disabled="!$root.isLite" ref="externalIdPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
-                    <el-select
-                            v-model="employee.externalId"
-                            ref="wpUser"
-                            filterable
-                            :placeholder="$root.labels.select_wp_user"
-                            clearable
-                            @change="clearValidation()"
-                            :disabled="$root.isLite"
-                            v-popover:externalIdPop
-                    >
+                  <el-popover :disabled="!$root.isLite" ref="externalIdPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
+                  <el-select
+                          v-model="employee.externalId"
+                          ref="wpUser"
+                          filterable
+                          :placeholder="$root.labels.select_wp_user"
+                          clearable
+                          @change="clearValidation()"
+                          :disabled="$root.isLite"
+                          v-popover:externalIdPop
+                  >
                     <div class="am-drop">
                       <div class="am-drop-create-item" @click="selectCreateNewWPUser">
                         {{ $root.labels.create_new }}
                       </div>
                       <el-option
-                          :class="{'hidden' : item.value === 0}"
-                          v-for="item in formOptions.wpUsers"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
+                        :class="{'hidden' : item.value === 0}"
+                        v-for="item in formOptions.wpUsers"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      >
                       </el-option>
                     </div>
                   </el-select>
@@ -145,9 +146,9 @@
                 <!-- Phone -->
                 <el-form-item :label="$root.labels.phone + ':'">
                   <phone-input
-                      :countryPhoneIso="employee.countryPhoneIso"
-                      :savedPhone="employee.phone"
-                      @phoneFormatted="phoneFormatted"
+                    :countryPhoneIso="employee.countryPhoneIso"
+                    :savedPhone="employee.phone"
+                    @phoneFormatted="phoneFormatted"
                   >
                   </phone-input>
                 </el-form-item>
@@ -174,16 +175,16 @@
                   <el-col :span="15" style="padding: 0">
 
                     <el-select
-                        v-model="employee.googleCalendar"
-                        placeholder=""
-                        :disabled="!employee.googleCalendar || !employee.googleCalendar.token || googleLoading"
-                        @change="clearValidation()"
+                      v-model="employee.googleCalendar"
+                      placeholder=""
+                      :disabled="!employee.googleCalendar || !employee.googleCalendar.token || googleLoading"
+                      @change="clearValidation()"
                     >
                       <el-option
-                          v-for="calendar in employee.googleCalendar.calendarList"
-                          :key="calendar.id"
-                          :label="calendar.summary"
-                          :value="calendar.id"
+                        v-for="calendar in employee.googleCalendar.calendarList"
+                        :key="calendar.id"
+                        :label="calendar.summary"
+                        :value="calendar.id"
                       >
                       </el-option>
                     </el-select>
@@ -194,10 +195,10 @@
                   <el-col :span="9" v-if="employee.googleCalendar">
 
                     <el-button
-                        class="am-google-calendar-button"
-                        :class="{ 'connected': employee.googleCalendar && employee.googleCalendar.token }"
-                        type="primary"
-                        @click="!employee.googleCalendar || !employee.googleCalendar.token ? redirectToGoogleAuthPage() : disconnectFromGoogleAccount()"
+                      class="am-google-calendar-button"
+                      :class="{ 'connected': employee.googleCalendar && employee.googleCalendar.token }"
+                      type="primary"
+                      @click="!employee.googleCalendar || !employee.googleCalendar.token ? redirectToGoogleAuthPage() : disconnectFromGoogleAccount()"
                     >
                       <div class="am-google-calendar-button-image">
                         <img class="" :src="$root.getUrl + 'public/img/google-button.png'"/>
@@ -216,8 +217,8 @@
 
             <!-- Outlook Calendar -->
             <el-row
-                :gutter="24"
-                v-if="$root.settings.outlookCalendar && employee.id !== 0"
+              :gutter="24"
+              v-if="$root.settings.outlookCalendar && employee.id !== 0"
             >
 
               <!-- Outlook Calendar List -->
@@ -237,16 +238,16 @@
                   <!-- Outlook Calendar List Selectbox -->
                   <el-col :span="15" style="padding: 0">
                     <el-select
-                        v-model="employee.outlookCalendar"
-                        placeholder=""
-                        :disabled="!employee.outlookCalendar || !employee.outlookCalendar.token || outlookLoading"
-                        @change="clearValidation()"
+                      v-model="employee.outlookCalendar"
+                      placeholder=""
+                      :disabled="!employee.outlookCalendar || !employee.outlookCalendar.token || outlookLoading"
+                      @change="clearValidation()"
                     >
                       <el-option
-                          v-for="calendar in employee.outlookCalendar.calendarList"
-                          :key="calendar.id"
-                          :label="calendar.name"
-                          :value="calendar.id"
+                        v-for="calendar in employee.outlookCalendar.calendarList"
+                        :key="calendar.id"
+                        :label="calendar.name"
+                        :value="calendar.id"
                       >
                       </el-option>
                     </el-select>
@@ -256,10 +257,10 @@
                   <!-- Outlook Calendar Connect Button -->
                   <el-col :span="9">
                     <el-button
-                        class="am-google-calendar-button"
-                        :class="{ 'connected': employee.outlookCalendar && employee.outlookCalendar.token }"
-                        type="primary"
-                        @click="!employee.outlookCalendar || !employee.outlookCalendar.token ? redirectToOutlookAuthPage() : disconnectFromOutlookAccount()"
+                      class="am-google-calendar-button"
+                      :class="{ 'connected': employee.outlookCalendar && employee.outlookCalendar.token }"
+                      type="primary"
+                      @click="!employee.outlookCalendar || !employee.outlookCalendar.token ? redirectToOutlookAuthPage() : disconnectFromOutlookAccount()"
                     >
                       <div class="am-google-calendar-button-image">
                         <img class="" :src="$root.getUrl + 'public/img/outlook-calendar.png'"/>
@@ -291,17 +292,17 @@
 
                 <!-- Zoom Users List -->
                 <el-select
-                    clearable
-                    filterable
-                    v-model="employee.zoomUserId"
-                    :placeholder="$root.labels.zoom_user_placeholder"
-                    @change="clearValidation()"
+                  clearable
+                  filterable
+                  v-model="employee.zoomUserId"
+                  :placeholder="$root.labels.zoom_user_placeholder"
+                  @change="clearValidation()"
                 >
                   <el-option
-                      v-for="(zoomUser, index) in zoomUsers"
-                      :key="index"
-                      :label="zoomUser.first_name + ' ' + zoomUser.last_name + ' (' + zoomUser.email + ')'"
-                      :value="zoomUser.id"
+                    v-for="(zoomUser, index) in zoomUsers"
+                    :key="index"
+                    :label="zoomUser.first_name + ' ' + zoomUser.last_name + ' (' + zoomUser.email + ')'"
+                    :value="zoomUser.id"
                   >
                   </el-option>
                 </el-select>
@@ -316,17 +317,17 @@
                 <!-- Password -->
                 <el-popover :disabled="!$root.isLite" ref="passwordPop" v-bind="$root.popLiteProps"><PopLite/></el-popover>
                 <el-form-item
-                    v-if="this.$root.settings.role === 'admin' || this.$root.settings.role === 'manager'"
-                    :label="$root.labels.employee_panel_password + ':'" prop="password"
+                  v-if="this.$root.settings.role === 'admin' || this.$root.settings.role === 'manager'"
+                  :label="$root.labels.employee_panel_password + ':'" prop="password"
                 >
                   <el-input
-                      v-model="employee.password"
-                      auto-complete="off"
-                      :placeholder="$root.labels.enter_employee_panel_password"
-                      show-password
-                      @input="clearValidation()"
-                      :disabled="$root.isLite"
-                      v-popover:passwordPop
+                    v-model="employee.password"
+                    auto-complete="off"
+                    :placeholder="$root.labels.enter_employee_panel_password"
+                    show-password
+                    @input="clearValidation()"
+                    :disabled="$root.isLite"
+                    v-popover:passwordPop
                   >
                   </el-input>
                 </el-form-item>
@@ -334,12 +335,12 @@
 
                 <!-- Send Email With New Password -->
                 <el-form-item
-                    v-if="this.$root.settings.role === 'admin' || this.$root.settings.role === 'manager'"
-                    v-show="employee.password && employee.password.length > 0"
+                  v-if="this.$root.settings.role === 'admin' || this.$root.settings.role === 'manager'"
+                  v-show="employee.password && employee.password.length > 0"
                 >
                   <el-checkbox
-                      v-model="employee.sendEmployeePanelAccessEmail"
-                      @change="clearValidation()"
+                    v-model="employee.sendEmployeePanelAccessEmail"
+                    @change="clearValidation()"
                   >
                     {{ $root.labels.send_employee_panel_access_email }}
                   </el-checkbox>
@@ -353,11 +354,11 @@
             <div class="am-divider"></div>
             <el-form-item :label="$root.labels.note_internal + ':'">
               <el-input
-                  type="textarea"
-                  :autosize="{minRows: 4, maxRows: 6}"
-                  placeholder=""
-                  v-model="employee.note"
-                  @input="clearValidation()"
+                type="textarea"
+                :autosize="{minRows: 4, maxRows: 6}"
+                placeholder=""
+                v-model="employee.note"
+                @input="clearValidation()"
               >
               </el-input>
             </el-form-item>
@@ -366,44 +367,45 @@
 
           <!-- Assigned Services -->
           <el-tab-pane
-              v-if="$root.settings.capabilities.canWriteOthers === true || $root.settings.roles.allowConfigureServices === true"
-              :label="$root.labels.assigned_services" name="services"
+            v-if="$root.settings.capabilities.canWriteOthers === true || $root.settings.roles.allowConfigureServices === true"
+            :label="$root.labels.assigned_services" name="services"
           >
             <assigned-services
-                :week-schedule="editWeekDayList"
-                :categorized-service-list="editCategorizedServiceList"
-                :future-appointments="futureAppointments"
-                :employee-id="employee.id"
+              :week-schedule="editWeekDayList"
+              :categorized-service-list="editCategorizedServiceList"
+              :future-appointments="futureAppointments"
+              :employee-id="employee.id"
             />
           </el-tab-pane>
 
           <!-- Work Hours -->
           <el-tab-pane
-              :label="$root.labels.work_hours" name="hours"
-              v-if="$root.settings.capabilities.canWriteOthers === true || $root.settings.roles.allowConfigureSchedule === true"
+            :label="$root.labels.work_hours" name="hours"
+            v-if="$root.settings.capabilities.canWriteOthers === true || $root.settings.roles.allowConfigureSchedule === true"
           >
             <working-hours
-                :week-schedule="editWeekDayList"
-                :categorized-service-list="editCategorizedServiceList"
-                :locations="locations"
+              :active-tab="employeeTabs"
+              :week-schedule="editWeekDayList"
+              :categorized-service-list="editCategorizedServiceList"
+              :locations="locations"
             >
             </working-hours>
           </el-tab-pane>
 
           <!-- Days Off -->
           <el-tab-pane
-              :label="$root.labels.days_off" name="off"
-              v-if="$root.settings.capabilities.canWriteOthers === true || $root.settings.roles.allowConfigureDaysOff === true"
+            :label="$root.labels.days_off" name="off"
+            v-if="$root.settings.capabilities.canWriteOthers === true || $root.settings.roles.allowConfigureDaysOff === true"
           >
             <BlockLite/>
 
             <div class="am-days-off">
               <div class="am-employee-days-off">
                 <days-off
-                    @changeDaysOff="changeDaysOff"
-                    @showCompanyDaysOffSettingsDialog="showCompanyDaysOffSettingsDialog"
-                    :daysOff="employee.id !== 0 ? employee.dayOffList : []"
-                    :listedDaysOff="companyDaysOff"
+                  @changeDaysOff="changeDaysOff"
+                  @showCompanyDaysOffSettingsDialog="showCompanyDaysOffSettingsDialog"
+                  :daysOff="employee.id !== 0 ? employee.dayOffList : []"
+                  :listedDaysOff="companyDaysOff"
                 >
                 </days-off>
               </div>
@@ -420,6 +422,7 @@
             <div class="am-special-days">
               <special-days
                   @changeSpecialDays="changeSpecialDays"
+                  :active-tab="employeeTabs"
                   :specialDays="employee.specialDayList"
                   :locations="locations"
                   :categorizedServiceList="editCategorizedServiceList">

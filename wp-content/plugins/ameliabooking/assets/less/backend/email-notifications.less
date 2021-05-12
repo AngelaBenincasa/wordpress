@@ -18,7 +18,35 @@
   }
 
   .am-dialog-scrollable {
-    margin-bottom: 0;
+    margin-bottom: 40px;
+  }
+
+  .languages-list {
+    margin-top: @margin-medium;
+  }
+  .am-languages-delete {
+    padding: @padding-small + 1px;
+    border: 1px solid #E2E6EC;
+    border-radius: 4px;
+    display: block;
+    text-align: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .am-add-language-svg {
+    vertical-align: middle;
+  }
+
+  .am-add-language {
+    display: inline-block;
+    color: #1A84EE;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   #am-email-notifications, #am-sms-notifications {
@@ -76,6 +104,12 @@
 
       .el-textarea__inner {
         margin-bottom: @margin-medium;
+      }
+
+      .select-languages {
+        max-width: 208px;
+        width: 41%;
+        margin-top: @margin-small;
       }
 
       .el-input, .el-select {
@@ -178,6 +212,12 @@
       padding: @padding-small;
       background-color: @color-light-gray;
       border-radius: 2%;
+
+      .am-customize-notifications-combined-tooltip {
+        font-size: 16px;
+        margin: 0;
+        line-height: 1.5;
+      }
 
       p {
         margin: 0;
@@ -659,6 +699,17 @@
   }
 }
 
+.el-notification.no-title {
+  .el-notification__group {
+    display: flex;
+    align-items: center;
+
+    .el-notification__content {
+      margin: unset;
+    }
+  }
+}
+
 .amelia-dropdown {
   &.el-dropdown-menu {
     max-height: 400px;
@@ -672,5 +723,26 @@
   &.el-dropdown-menu::-webkit-scrollbar-thumb {
     background-color: #dddddd;
     border-radius: 10px;
+  }
+}
+
+.el-input {
+  .select-languages-flag {
+    position: absolute;
+    top: 35%;
+    left: 20%;
+    width: 20px;
+    height: 14px;
+    vertical-align: text-bottom;
+    padding: 0 5px 0 0;
+  }
+}
+
+.el-select-dropdown .el-select-dropdown__item {
+  .option-languages-flag {
+    width: 20px;
+    height: 14px;
+    vertical-align: text-bottom;
+    padding-right: 5px;
   }
 }

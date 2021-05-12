@@ -10,9 +10,13 @@ use AmeliaBooking\Application\Services\Notification\EmailNotificationService;
 use AmeliaBooking\Domain\Common\Exceptions\InvalidArgumentException;
 use AmeliaBooking\Domain\Entity\Entities;
 use AmeliaBooking\Application\Services\Settings\SettingsService;
+use AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException;
 use AmeliaBooking\Infrastructure\Services\Notification\MailgunService;
 use AmeliaBooking\Infrastructure\Services\Notification\PHPMailService;
 use AmeliaBooking\Infrastructure\Services\Notification\SMTPService;
+use Exception;
+use Interop\Container\Exception\ContainerException;
+use Slim\Exception\ContainerValueNotFoundException;
 
 /**
  * Class SendTestEmailCommandHandler
@@ -30,12 +34,12 @@ class SendTestEmailCommandHandler extends CommandHandler
      * @param SendTestEmailCommand $command
      *
      * @return CommandResult
-     * @throws \Slim\Exception\ContainerValueNotFoundException
+     * @throws ContainerValueNotFoundException
      * @throws AccessDeniedException
      * @throws InvalidArgumentException
-     * @throws \AmeliaBooking\Infrastructure\Common\Exceptions\QueryExecutionException
-     * @throws \Interop\Container\Exception\ContainerException
-     * @throws \Exception
+     * @throws QueryExecutionException
+     * @throws ContainerException
+     * @throws Exception
      */
     public function handle(SendTestEmailCommand $command)
     {
@@ -47,16 +51,30 @@ class SendTestEmailCommandHandler extends CommandHandler
 
         $this->checkMandatoryFields($command);
 
+        $type = $command->getField('type');
+
         /** @var PHPMailService|SMTPService|MailgunService $mailService */
         $mailService = $this->getContainer()->get('infrastructure.mail.service');
         /** @var EmailNotificationService $notificationService */
         $notificationService = $this->getContainer()->get('application.emailNotification.service');
         /** @var PlaceholderService $placeholderService */
-        $placeholderService = $this->getContainer()->get("application.placeholder.{$command->getField('type')}.service");
+        $placeholderService = $this->getContainer()->get("application.placeholder.{$type}.service");
         /** @var SettingsService $settingsAS*/
         $settingsAS = $this->container->get('application.settings.service');
+        /** @var \AmeliaBooking\Domain\Services\Settings\SettingsService $settingsService */
+        $settingsService = $this->container->get('domain.settings.service');
+
+        $notificationSettings = $settingsService->getCategorySettings('notifications');
+
+        if (!$notificationSettings['senderEmail'] || !$notificationSettings['senderName']) {
+            $result->setResult(CommandResult::RESULT_ERROR);
+            $result->setMessage('Test email not sent');
+
+            return $result;
+        }
 
         $notification = $notificationService->getByNameAndType($command->getField('notificationTemplate'), 'email');
+
         $dummyData = $placeholderService->getPlaceholdersDummyData();
 
         $subject = $placeholderService->applyPlaceholders(

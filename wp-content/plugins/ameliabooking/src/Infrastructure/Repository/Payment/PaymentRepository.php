@@ -6,6 +6,7 @@
 
 namespace AmeliaBooking\Infrastructure\Repository\Payment;
 
+use AmeliaBooking\Domain\Collection\Collection;
 use AmeliaBooking\Domain\Entity\Payment\Payment;
 use AmeliaBooking\Domain\Factory\Payment\PaymentFactory;
 use AmeliaBooking\Domain\Services\DateTime\DateTimeService;
@@ -197,6 +198,64 @@ class PaymentRepository extends AbstractRepository implements PaymentRepositoryI
     }
 
     /**
+     * @param array $ids
+     *
+     * @return Collection
+     * @throws QueryExecutionException
+     */
+    public function getByBookings($ids)
+    {
+        $result = new Collection();
+
+        $params = [];
+
+        $where = [];
+
+        if ($ids) {
+            $queryBookings = [];
+
+            foreach ($ids as $index => $value) {
+                $param = ':id' . $index;
+
+                $queryBookings[] = $param;
+
+                $params[$param] = $value;
+            }
+
+            $where[] = 'customerBookingId IN (' . implode(', ', $queryBookings) . ')';
+        }
+
+        $where = $where ? 'WHERE ' . implode(' AND ', $where) : '';
+
+        try {
+            $statement = $this->connection->prepare(
+                "SELECT
+                    id AS id,
+                    customerBookingId AS customerBookingId,
+                    packageCustomerId AS packageCustomerId,
+                    amount AS amount,
+                    dateTime AS dateTime,
+                    status AS status,
+                    gateway AS gateway,
+                    gatewayTitle AS gatewayTitle,
+                    data AS data
+                FROM {$this->table}
+                {$where}"
+            );
+
+            $statement->execute($params);
+
+            while ($row = $statement->fetch()) {
+                $result->addItem(call_user_func([static::FACTORY, 'create'], $row), $row['id']);
+            }
+        } catch (\Exception $e) {
+            throw new QueryExecutionException('Unable to find by id in ' . __CLASS__, $e->getCode(), $e);
+        }
+
+        return $result;
+    }
+
+    /**
      * @param array $criteria
      * @param int   $itemsPerPage
      *
@@ -306,6 +365,7 @@ class PaymentRepository extends AbstractRepository implements PaymentRepositoryI
                 cb.price AS bookedPrice,
                 a.providerId AS providerId,
                 cb.customerId AS customerId,
+                cb.info AS info,
                 a.serviceId AS serviceId,
                 a.id AS appointmentId,
                 a.bookingStart AS bookingStart,
@@ -337,6 +397,7 @@ class PaymentRepository extends AbstractRepository implements PaymentRepositoryI
                 pc.price AS bookedPrice,
                 NULL AS providerId,
                 pc.customerId AS customerId,
+                cb.info AS info,
                 NULL AS serviceId,
                 NULL AS appointmentId,
                 NULL AS bookingStart,
@@ -369,6 +430,7 @@ class PaymentRepository extends AbstractRepository implements PaymentRepositoryI
                 cb.price AS bookedPrice,
                 NULL AS providerId,
                 cb.customerId AS customerId,
+                cb.info AS info,
                 NULL AS serviceId,
                 NULL AS appointmentId,
                 NULL AS bookingStart,
@@ -422,6 +484,8 @@ class PaymentRepository extends AbstractRepository implements PaymentRepositoryI
         $result = [];
 
         foreach ($rows as &$row) {
+            $customerInfo = $row['info'] ? json_decode($row['info'], true) : null;
+
             $result[(int)$row['id']] = [
                 'id' =>  (int)$row['id'],
                 'dateTime' =>  DateTimeService::getCustomDateTimeFromUtc($row['dateTime']),
@@ -446,8 +510,9 @@ class PaymentRepository extends AbstractRepository implements PaymentRepositoryI
                 'packageId' =>  (int)$row['packageId'] ? (int)$row['packageId'] : null,
                 'bookedPrice' =>  $row['bookedPrice'] ? $row['bookedPrice'] : null,
                 'bookableName' => $row['bookableName'],
-                'customerFirstName' => $row['customerFirstName'],
-                'customerLastName' => $row['customerLastName'],
+                'customerFirstName' => $customerInfo ? $customerInfo['firstName'] : $row['customerFirstName'],
+                'customerLastName' => $customerInfo ? $customerInfo['lastName'] : $row['customerLastName'],
+                'info' => $row['info'],
                 'customerEmail' => $row['customerEmail']
             ];
         }

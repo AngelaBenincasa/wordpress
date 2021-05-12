@@ -112,8 +112,8 @@ class CustomerApplicationService
             // If email already exists, check if First Name and Last Name from request are same with the First Name
             // and Last Name from $userWithSameMail. If these are not same return error message.
             if ($settingsService->getSetting('roles', 'inspectCustomerInfo') &&
-                (trim($userWithSameMail->getFirstName()->getValue()) !== trim($user->getFirstName()->getValue()) ||
-                    trim($userWithSameMail->getLastName()->getValue()) !== trim($user->getLastName()->getValue()))
+                (strtolower(trim($userWithSameMail->getFirstName()->getValue())) !== strtolower(trim($user->getFirstName()->getValue())) ||
+                    strtolower(trim($userWithSameMail->getLastName()->getValue())) !== strtolower(trim($user->getLastName()->getValue())))
             ) {
                 $result->setResult(CommandResult::RESULT_ERROR);
                 $result->setData(['emailError' => true]);

@@ -14,6 +14,9 @@
         :categories="categories"
         :customFields="customFields"
         :coupons="coupons"
+        :passed-used-languages="passedUsedLanguages"
+        :languages-data="languagesData"
+        @manageLanguages="manageLanguages"
     >
     </dashboard>
 
@@ -41,6 +44,20 @@
       notifications: {
         default: () => [],
         type: Array
+      },
+      passedUsedLanguages: {
+        default: () => [],
+        type: Array
+      },
+      languagesData: {
+        default: () => {},
+        type: Object
+      }
+    },
+
+    methods: {
+      manageLanguages () {
+        this.$emit('manageLanguages')
       }
     },
 

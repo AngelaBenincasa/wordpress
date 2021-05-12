@@ -60,6 +60,9 @@ class GetEventsCommandHandler extends CommandHandler
         $user = null;
 
         $isFrontEnd = isset($params['page']);
+
+        $isCalendarPage = $isFrontEnd && (int)$params['page'] === 0;
+
         $isCabinetPage = $command->getPage() === 'cabinet';
 
         if (!$isFrontEnd) {
@@ -71,9 +74,11 @@ class GetEventsCommandHandler extends CommandHandler
                 );
             } catch (AuthorizationException $e) {
                 $result->setResult(CommandResult::RESULT_ERROR);
-                $result->setData([
-                    'reauthorize' => true
-                ]);
+                $result->setData(
+                    [
+                        'reauthorize' => true
+                    ]
+                );
 
                 return $result;
             }
@@ -108,9 +113,13 @@ class GetEventsCommandHandler extends CommandHandler
             $params['fetchCoupons'] = true;
         }
 
+        if ($isCalendarPage) {
+            $params['allProviders'] = true;
+        }
+
         /** @var Collection $events */
         $events = $filteredEventIds ?
-            $eventRepository->getFiltered(array_merge($params, ['ids' => array_column($filteredEventIds, 'id')])) :
+            $eventRepository->getFiltered(array_merge($params, ['dates' => [], 'ids' => array_column($filteredEventIds, 'id')])) :
             new Collection();
 
         $currentDateTime = DateTimeService::getNowDateTimeObject();
@@ -203,10 +212,12 @@ class GetEventsCommandHandler extends CommandHandler
 
         $result->setResult(CommandResult::RESULT_SUCCESS);
         $result->setMessage('Successfully retrieved events');
-        $result->setData([
-            Entities::EVENTS => $eventsArray,
-            'count'          => (int)$eventRepository->getFilteredIdsCount($params)
-        ]);
+        $result->setData(
+            [
+                Entities::EVENTS => $eventsArray,
+                'count'          => !$isCalendarPage ? (int)$eventRepository->getFilteredIdsCount($params) : null
+            ]
+        );
 
         return $result;
     }

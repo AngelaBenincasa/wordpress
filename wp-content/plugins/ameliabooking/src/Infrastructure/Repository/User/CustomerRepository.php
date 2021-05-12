@@ -39,9 +39,7 @@ class CustomerRepository extends UserRepository implements CustomerRepositoryInt
                 ':type_admin'           => AbstractUser::USER_ROLE_ADMIN,
             ];
 
-            if (empty($criteria['ignoredBookings'])) {
-                $params[':bookingPendingStatus'] = BookingStatus::PENDING;
-            }
+            $joinWithBookings = empty($criteria['ignoredBookings']);
 
             $where = [
                 'u.type IN (:type_customer, :type_admin)',
@@ -53,6 +51,8 @@ class CustomerRepository extends UserRepository implements CustomerRepositoryInt
                 $orderColumn = $column === 'customer' ? 'CONCAT(u.firstName, " ", u.lastName)' : 'lastAppointment';
                 $orderDirection = $criteria['sort'][0] === '-' ? 'DESC' : 'ASC';
                 $order = "ORDER BY {$orderColumn} {$orderDirection}";
+
+                $joinWithBookings = $column !== 'customer' ?  true : $joinWithBookings;
             }
 
             if (!empty($criteria['search'])) {
@@ -84,7 +84,9 @@ class CustomerRepository extends UserRepository implements CustomerRepositoryInt
 
             $statsJoins = '';
 
-            if (empty($criteria['ignoredBookings'])) {
+            if ($joinWithBookings) {
+                $params[':bookingPendingStatus'] = BookingStatus::PENDING;
+
                 $statsFields = '
                     MAX(app.bookingStart) as lastAppointment,
                     COUNT(cb.id) as totalAppointments,

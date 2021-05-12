@@ -56,6 +56,10 @@ class ServicesTable extends AbstractDatabaseTable
                    `recurringCycle` ENUM('disabled', 'all', 'daily', 'weekly', 'monthly') DEFAULT 'disabled',
                    `recurringSub` ENUM('disabled' ,'past', 'future', 'both') DEFAULT 'future',
                    `recurringPayment` int(3) DEFAULT 0,
+                   `translations` TEXT NULL DEFAULT NULL,
+                   `depositPayment` ENUM('disabled' , 'fixed', 'percentage') DEFAULT 'disabled',
+                   `depositPerPerson` TINYINT(1) DEFAULT 1,
+                   `deposit` double DEFAULT 0,
                     PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8 COLLATE utf8_general_ci";
     }
