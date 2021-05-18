@@ -1,5 +1,6 @@
 <?php
 $post_id = get_the_ID();
+$post_type = get_post_type();
 if( $post_type === 'product' ) {
     $post_id = get_post_meta( $post_id, '_meeting_id', true );
 }
@@ -61,20 +62,22 @@ if( !empty( $post_id ) ) {
                     <?php
                     $start_date = get_post_meta( $post_id, 'stm_date', true );
                     $start_time = get_post_meta( $post_id, 'stm_time', true );
-                    $meeting_start = strtotime( 'today', ( apply_filters('eroom_sanitize_stm_date', $start_date )  / 1000 ) );
-                    if( !empty( $start_time ) ) {
-                        $time = explode( ':', $start_time );
-                        if( is_array( $time ) and count( $time ) === 2 ) {
+                    if ( !empty( $start_date) ) {
+                        $meeting_start = strtotime( 'today', ( apply_filters('eroom_sanitize_stm_date', $start_date )  / 1000 ) );
+                        if( !empty( $start_time ) ) {
+                          $time = explode( ':', $start_time );
+                          if( is_array( $time ) and count( $time ) === 2 ) {
                             $meeting_start = strtotime( "+{$time[0]} hours +{$time[1]} minutes", $meeting_start );
+                          }
                         }
+                        $meeting_start = date( 'Y-m-d H:i:s', $meeting_start );
+                        $date_format = get_option( 'date_format', 'd M Y H:i' );
+                        $time_format = get_option( 'time_format', 'H:i' );
+                        $format = $date_format . ' ' . $time_format;
+                        $date = strtotime( $meeting_start );
+                        $date = date_i18n( $format, $date );
+                        echo esc_html( $date );
                     }
-                    $meeting_start = date( 'Y-m-d H:i:s', $meeting_start );
-                    $date_format = get_option( 'date_format', 'd M Y H:i' );
-                    $time_format = get_option( 'time_format', 'H:i' );
-                    $format = $date_format . ' ' . $time_format;
-                    $date = strtotime( $meeting_start );
-                    $date = date( $format, $date );
-                    echo esc_html( $date );
                     ?>
                     <?php
                     $price = '';

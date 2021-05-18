@@ -256,3 +256,146 @@ function get_current_timezone() {
 
     return $timezone;
 }
+
+/**
+ * Generate url link to Google Calendar
+ *
+ * @param $config
+ * @param $options
+ *
+ * @return string
+ * @throws Exception
+ */
+
+function stm_eroom_generate_google_calendar($config, $options) {
+
+    $url = 'https://calendar.google.com/calendar/render?action=TEMPLATE';
+
+    $url .= stm_eroom_generate_calendar_params( $config, false );
+
+    $url .= '&text='.urlencode($config['title']);
+    $url .= '&details='.urlencode($config['description']);
+    $url .= '&location='.urlencode($config['address']);
+    $url .= '&sf=true&output=xml';
+
+    if ( isset( $options['calendar_options']['rrule'] ) ) {
+        $url .= '&recur=RRULE:'.urlencode($options['calendar_options']['rrule']);
+    }
+
+    return $url;
+}
+
+function stm_eroom_generate_calendar_params( $config, $ics = false ) {
+
+    //set timezone
+    $timezone_set = isset( $config['timezone'] ) ? $config['timezone'] : 'UTC';
+    date_default_timezone_set( $timezone_set );
+
+    $duration = ! empty( $config['duration'] ) ? $config['duration'] : 60;
+
+    $startDateTime = strtotime( $config['start'] );
+    $endDateTime   = strtotime( "+{$duration} minutes", $startDateTime );
+
+    $utc_timezone     = new DateTimeZone( 'UTC' );
+    $utcStartDateTime = new DateTime( '@' . $startDateTime, $utc_timezone );
+    $utcEndDateTime   = new DateTime( '@' . $endDateTime, $utc_timezone );
+
+    $dateFormat     = 'Ymd'; //no fixed time
+    $dateTimeFormat = 'Ymd\THis\Z';
+
+    if ( $ics ) {
+
+        $utcStamp = new DateTime( 'now', $utc_timezone );
+
+        $props[] = 'DTSTART:' . $utcStartDateTime->format( $dateTimeFormat );
+        $props[] = 'DTEND:' . $utcEndDateTime->format( $dateTimeFormat );
+        $props[] = 'DTSTAMP:' . $utcStamp->format( $dateTimeFormat );
+
+        return $props;
+    }
+
+    $dateTimeFormat = ! empty( $config['allDay'] ) ? $dateFormat : $dateTimeFormat;
+
+    return $url = '&dates=' . $utcStartDateTime->format( $dateTimeFormat ) . '/' . $utcEndDateTime->format( $dateTimeFormat );
+
+}
+
+/**
+ * Generate iCal Calendar
+ *
+ * @param $post_id
+ *
+ * @return string
+ * @throws Exception
+ */
+function stm_eroom_generate_ics_calendar( $post_id='' ) {
+
+    if( empty( $post_id ) ) {
+        $post_id   = get_the_ID();
+    }
+
+    $zoom_data = get_post_meta( $post_id, 'stm_zoom_data', true );
+
+    if ( ! empty( $post_id ) && ! empty( $zoom_data ) && ! empty( $zoom_data['id'] ) ) {
+        $title         = get_the_title( $post_id );
+        $agenda        = get_post_meta( $post_id, 'stm_agenda', true );
+        $duration      = get_post_meta( $post_id, 'stm_duration', true );
+        $start_time    = get_post_meta( $post_id, 'stm_time', true );
+        $timezone      = get_post_meta( $post_id, 'stm_timezone', true );
+        $meeting_data  = StmZoom::meeting_time_data( $post_id );
+        $meeting_start = $meeting_data['meeting_start'];
+
+        $recurring_data = [];
+        if ( class_exists( 'StmZoomRecurring' ) ) {
+            $recurring_data = StmZoomRecurring::stm_product_recurring_meeting_data( $post_id, $zoom_data );
+        }
+
+        $config_calendar = [
+            'start'       => $meeting_start,
+            'allDay'      => isset( $zoom_data['type'] ) && in_array( $zoom_data['type'], StmZoomAPITypes::TYPES_NO_FIXED ),
+            'address'     => '',
+            'title'       => $title,
+            'duration'    => $duration,
+            'description' => $agenda,
+            'start_time'  => $start_time,
+            'timezone'    => $timezone,
+        ];
+
+        return stm_eroom_generate_ics_calendar_build( $config_calendar, $recurring_data );
+    }
+}
+
+
+function stm_eroom_generate_ics_calendar_build( $config, $recurring_data ) {
+    $ics_props = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-// eRoom plugin //NONSGML v1.0//EN',
+        'CALSCALE:GREGORIAN',
+        'BEGIN:VEVENT',
+        'UID:eRoom-'.time(),
+        'SUMMARY:' . $config['title'],
+        'LOCATION:' . $config['address'],
+        'DESCRIPTION' . $config['description'],
+        'URL;VALUE=URI:https://wordpress.org/plugins/eroom-zoom-meetings-webinar/',
+    ];
+
+
+    $ics_props_param = stm_eroom_generate_calendar_params( $config, true );
+    $ics_props       = array_merge( $ics_props, $ics_props_param );
+
+    if ( isset( $recurring_data['calendar_options']['rrule'] ) ) {
+        $ics_props[] = 'RRULE:' . $recurring_data['calendar_options']['rrule'];
+    }
+
+    $ics_props[]='BEGIN:VALARM';
+    $ics_props[]='ACTION:DISPLAY';
+    $ics_props[]='RIGGER;RELATED=START:-PT00H15M00S';
+    $ics_props[]='BEGIN:VALARM';
+
+    // Build ICS properties - add footer
+    $ics_props[] = 'END:VEVENT';
+    $ics_props[] = 'END:VCALENDAR';
+
+    return implode( "\r\n", $ics_props);
+}

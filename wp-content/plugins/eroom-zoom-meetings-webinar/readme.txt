@@ -4,8 +4,8 @@ Contributors: Stylemix
 Donate link: https://stylemixthemes.com
 Tags: zoom, video conference, zoom conference
 Requires at least: 4.6
-Tested up to: 5.6
-Stable tag: 1.2.0
+Tested up to: 5.7
+Stable tag: 1.2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -80,6 +80,13 @@ Features:
 For those who want to monetize the meetings or offer the customers something new, you can always upgrade eRoom plugin with the paid addon — [eRoom purchasable meetings](https://stylemixthemes.com/zoom-meetings-webinar-plugin/).
 
 eRoom purchasable meetings will add more value to your business. With this tool, you can make your video conferences and webinars available for purchase as WooCommerce products. A great way to monetize your services in a digital format. Offer your customers consultations, and training as live sessions or recorded webinars and let them choose and buy the favorite product.
+
+## Recurring Meetings
+
+[Recurring meetings and webinars](https://eroom.stylemixthemes.com/product/how-to-a-series-of-events-for-startups/) is another paid add-on that gives you the ability to create Zoom meetings with recurrency. 
+It is enough to create a single meeting and each occurrence will be using the same meeting ID and settings. 
+
+Recurring events Increase engagement and productivity. It is especially beneficial for managers and team leads. It also allows holding regular check-ins making sure every user or customer is involved.
 
 ## Simple in usage
 Interaction between eRoom and WooCommerce plugins makes it very easy to create a purchasable meeting. All you need to do is to add your meeting as a new WooCommerce product which makes it available for users to buy. Users can join the meeting directly from the browser or Zoom app. There is also a possibility for them to interact with the host via messages.
@@ -168,6 +175,24 @@ You can do it, just use the URL link of the video, so users could watch it later
 
 
 == Changelog ==
+= 1.2.3 =
+* new: iCal Export and Google Calendar added
+* fixed: Meeting grid styling on mobile devices
+* fixed: Checkbox fields "Require authentication to join for webinar"
+* updated: Shortcode for recurring meetings and category
+* updated: Meetings/webinars connected with Zoom Conference products excluded from the grid and hidden join button with password on single page
+
+= 1.2.2 =
+* added: Table Details for recurring on admin panel
+* added: Registration form for webinar type
+* updated: changed label/description for fields
+* updated: renamed wpcfto to nuxy
+* updated: Zoom Web SDK API updated to 1.9.1
+* fixed: changed priority for eroom single page and fixed countdown
+
+= 1.2.1 =
+* fixed: Meetings/webinars deleted from WordPress were not deleted from Zoom (now these will be deleted after deleted from trash)
+* fixed: Image appearance for eRoom shortcodes items
 
 = 1.2.0 =
 * updated: Pagination for Users section

@@ -16,6 +16,8 @@ class StmZoomPostTypes
 
         add_action( 'save_post', array( $this, 'update_meeting' ), 10 );
 
+        add_action( 'before_delete_post', array( $this, 'stm_zoom_delete_meeting' ), 10 );
+
         add_filter( 'wp_ajax_stm_zoom_sync_meetings_webinars', array( $this, 'stm_zoom_sync_meetings_webinars' ) );
 
         add_action( 'bookit_appointment_status_changed', array( $this, 'stm_zoom_bookit_edit_add_meeting' ), 100, 1 );
@@ -192,16 +194,18 @@ class StmZoomPostTypes
                             'label'     => esc_html__( 'Meeting duration (in min)', 'eroom-zoom-meetings-webinar' ),
                         ),
                         'stm_password' => array(
-                            'type'      => 'text',
-                            'label'     => esc_html__( 'Meeting password', 'eroom-zoom-meetings-webinar' ),
+                            'type'        => 'text',
+                            'label'       => esc_html__( 'Meeting password', 'eroom-zoom-meetings-webinar' ),
+                            'description' => esc_html__( 'Only users who have the invite link or passcode can join the meeting', 'eroom-zoom-meetings-webinar' ),
                         ),
                         'stm_waiting_room' => array(
-                            'type'      => 'checkbox',
-                            'label'     => esc_html__( 'Waiting room', 'eroom-zoom-meetings-webinar' ),
+                            'type'        => 'checkbox',
+                            'label'       => esc_html__( 'Waiting room', 'eroom-zoom-meetings-webinar' ),
+                            'description' => esc_html__( 'Only users admitted by the host can join the meeting', 'eroom-zoom-meetings-webinar' ),
                         ),
                         'stm_join_before_host' => array(
                             'type'      => 'checkbox',
-                            'label'     => esc_html__( 'Join Before Host', 'eroom-zoom-meetings-webinar' ),
+                            'label'     => esc_html__( 'Allow participants to join anytime', 'eroom-zoom-meetings-webinar' ),
                             'dependency' => array(
                                 'key' => 'stm_waiting_room',
                                 'value' => 'empty'
@@ -217,11 +221,12 @@ class StmZoomPostTypes
                         ),
                         'stm_mute_participants' => array(
                             'type'      => 'checkbox',
-                            'label'     => esc_html__( 'Mute Participants upon entry', 'eroom-zoom-meetings-webinar' ),
+                            'label'     => esc_html__( 'Mute participants upon entry', 'eroom-zoom-meetings-webinar' ),
                         ),
                         'stm_enforce_login' => array(
-                            'type'      => 'checkbox',
-                            'label'     => esc_html__( 'Enforce Login', 'eroom-zoom-meetings-webinar' ),
+                            'type'        => 'checkbox',
+                            'label'       => esc_html__( 'Require authentication to join: Sign in to Zoom', 'eroom-zoom-meetings-webinar' ),
+                            'description' => esc_html__( 'Only authenticated users can join meetings. This setting works only for Zoom accounts with Pro license or higher', 'eroom-zoom-meetings-webinar' ),
                         ),
                         'stm_alternative_hosts' => array(
                             'type'      => 'autocomplete',
@@ -266,16 +271,18 @@ class StmZoomPostTypes
                             'label'     => esc_html__( 'Webinar duration (in min)', 'eroom-zoom-meetings-webinar' ),
                         ),
                         'stm_password' => array(
-                            'type'      => 'text',
-                            'label'     => esc_html__( 'Webinar password', 'eroom-zoom-meetings-webinar' ),
+                            'type'        => 'text',
+                            'label'       => esc_html__( 'Webinar password', 'eroom-zoom-meetings-webinar' ),
+                            'description' => esc_html__( 'Only users who have the invite link or passcode can join the webinar', 'eroom-zoom-meetings-webinar' ),
                         ),
                         'stm_waiting_room' => array(
-                            'type'      => 'checkbox',
-                            'label'     => esc_html__( 'Waiting room', 'eroom-zoom-meetings-webinar' ),
+                            'type'        => 'checkbox',
+                            'label'       => esc_html__( 'Waiting room', 'eroom-zoom-meetings-webinar' ),
+                            'description' => esc_html__( 'Only users admitted by the host can join the meeting', 'eroom-zoom-meetings-webinar' ),
                         ),
                         'stm_join_before_host' => array(
                             'type'      => 'checkbox',
-                            'label'     => esc_html__( 'Join Before Host', 'eroom-zoom-meetings-webinar' ),
+                            'label'     => esc_html__( 'Allow participants to join anytime', 'eroom-zoom-meetings-webinar' ),
                             'dependency' => array(
                                 'key' => 'stm_waiting_room',
                                 'value' => 'empty'
@@ -291,11 +298,7 @@ class StmZoomPostTypes
                         ),
                         'stm_mute_participants' => array(
                             'type'      => 'checkbox',
-                            'label'     => esc_html__( 'Mute Participants upon entry', 'eroom-zoom-meetings-webinar' ),
-                        ),
-                        'stm_enforce_login' => array(
-                            'type'      => 'checkbox',
-                            'label'     => esc_html__( 'Enforce Login', 'eroom-zoom-meetings-webinar' ),
+                            'label'     => esc_html__( 'Mute participants upon entry', 'eroom-zoom-meetings-webinar' ),
                         ),
                         'stm_alternative_hosts' => array(
                             'type'      => 'autocomplete',
@@ -339,6 +342,8 @@ class StmZoomPostTypes
             echo '</p><p>';
             echo '<b>[stm_zoom_conference post_id="' . $post->ID . '" hide_content_before_start=""]</b>';
             echo '</p>';
+
+            do_action( 'stm_add_zoom_recurring_meeting_data_occurrences', $meeting_data);
         }
     }
 
@@ -356,6 +361,8 @@ class StmZoomPostTypes
             echo '</p><p>';
             echo '<b>[stm_zoom_webinar post_id="' . $post->ID . '" hide_content_before_start=""]</b>';
             echo '</p>';
+
+            do_action( 'stm_add_zoom_recurring_meeting_data_occurrences', $webinar_data);
         } elseif ( ! empty( $webinar_data ) && ! empty( $webinar_data[ 'message' ] ) ) {
             echo '<p><strong style="color: #f00;">';
             echo apply_filters('stm_zoom_escape_output', $webinar_data[ 'message' ]);
@@ -587,6 +594,20 @@ class StmZoomPostTypes
                     $zoom_endpoint = new \Zoom\Endpoint\Webinars( $api_key, $api_secret );
                 }
 
+                $data = apply_filters( 'stm_add_zoom_recurring_meeting_data', $data);
+
+                $option_recurring_ids = get_option( 'stm_recurring_meeting_ids', array() );
+
+                if ( ( $key = array_search( $post_id, $option_recurring_ids ) ) !== false ) {
+                    unset( $option_recurring_ids[ $key ] );
+                }
+
+                if ( isset( $_POST['stm_recurring_enabled'] ) && ( $_POST['stm_recurring_enabled'] === 'on' ) ) {
+                    $option_recurring_ids[] = $post_id;
+                }
+
+                update_option( 'stm_recurring_meeting_ids', $option_recurring_ids );
+
                 if ( empty( $meeting_data[ 'id' ] ) ) {
                     $new_meeting = $zoom_endpoint->create( $host_id, $data );
 
@@ -596,13 +617,44 @@ class StmZoomPostTypes
                 } else {
                     $meeting_id = $meeting_data[ 'id' ];
 
-                    $zoom_endpoint->update( $meeting_id, $data );
+                    $update_meeting = $zoom_endpoint->update( $meeting_id, $data );
+
+                    if( isset( $update_meeting['code'] ) && ( $update_meeting['code'] == 204 ) ) {
+                        $zoom_meeting_data = $zoom_endpoint->meeting( $meeting_id );
+                        update_post_meta( $post_id, 'stm_zoom_data', $zoom_meeting_data );
+                    }
 
                     do_action( 'stm_zoom_after_update_meeting', $post_id );
                 }
             }
         }
     }
+
+	/**
+	 * Delete Meeting & Webinar from Zoom
+	 * @param $post_id
+	 */
+	public function stm_zoom_delete_meeting($post_id)
+	{
+		$post_type = get_post_type($post_id);
+		if ($post_type === 'stm-zoom' || $post_type === 'stm-zoom-webinar') {
+			$settings     = get_option('stm_zoom_settings', array());
+			$meeting_data = get_post_meta($post_id, 'stm_zoom_data', true);
+
+			$api_key = !empty($settings['api_key']) ? $settings['api_key'] : '';
+			$api_secret = !empty($settings['api_secret']) ? $settings['api_secret'] : '';
+
+			if (!empty($api_key) && !empty($api_secret) && !empty($meeting_data['id'])) {
+
+				if ($post_type === 'stm-zoom') {
+					$zoom_endpoint = new \Zoom\Endpoint\Meetings($api_key, $api_secret);
+				} elseif ($post_type === 'stm-zoom-webinar') {
+					$zoom_endpoint = new \Zoom\Endpoint\Webinars($api_key, $api_secret);
+				}
+				$zoom_endpoint->remove($meeting_data['id']);
+			}
+		}
+	}
 
     /**
      * Synchronize Zoom Meetings and Webinars
@@ -685,6 +737,12 @@ class StmZoomPostTypes
                     )
                 );
 
+                $recurring_enabled = !empty(get_post_meta($post_id, 'stm_recurring_enabled', true)) ? true : false;
+
+                if ($recurring_enabled) {
+                    $data = $this->syn_meeting_webinar_set_data($post_id, $zoom_type, $data);
+                }
+
                 if ( empty( $meeting_data[ 'id' ] ) ) {
                     $new_meeting = $zoom_endpoint->create( $host_id, $data );
 
@@ -742,6 +800,10 @@ class StmZoomPostTypes
                     update_post_meta( $new_post_id, 'stm_start_after_participants', $zoom_meeting[ 'settings' ][ 'participant_video' ] );
                     update_post_meta( $new_post_id, 'stm_mute_participants', $zoom_meeting[ 'settings' ][ 'mute_upon_entry' ] );
                     update_post_meta( $new_post_id, 'stm_enforce_login', $zoom_meeting[ 'settings' ][ 'enforce_login' ] );
+
+                    if (in_array($zoom_meeting['type'], StmZoomAPITypes::TYPES_RECURRING_AND_NO_FIXED)) {
+                        $this->syn_meeting_webinar_update_data($new_post_id, $zoom_meeting);
+                    }
                 }
             }
 
@@ -759,4 +821,106 @@ class StmZoomPostTypes
 		return strtotime( 'today' ) . "000";
 	}
 
+	protected function syn_meeting_webinar_set_data($post_id, $zoom_type, $data)
+	{
+		$recurring_type = get_post_meta($post_id, 'stm_recurring_type', true);
+
+		if (in_array($recurring_type, StmZoomAPITypes::TYPES_RECURRENCE_ALL)) {
+			switch ($recurring_type) {
+				case StmZoomAPITypes::TYPE_RECURRENCE_DAILY:
+					$repeat_interval = get_post_meta($post_id, 'stm_recurring_daily_repeat_interval', true);
+					break;
+				case StmZoomAPITypes::TYPE_RECURRENCE_WEEKLY:
+					$repeat_interval = get_post_meta($post_id, 'stm_recurring_weekly_repeat_interval', true);
+					$weekly_days = get_post_meta($post_id, 'stm_recurring_weekly_days', true);
+					$weekly_days = preg_replace('/[^0-9,]/', '', $weekly_days);
+
+					$data['recurrence']['weekly_days'] = $weekly_days;
+					break;
+				case StmZoomAPITypes::TYPE_RECURRENCE_MONTHLY:
+					$repeat_interval = get_post_meta($post_id, 'stm_recurring_monthly_repeat_interval', true);
+					$recurring_monthly_occurs_type = get_post_meta($post_id, 'stm_recurring_monthly_occurs', true);
+
+					if ($recurring_monthly_occurs_type == 'by_day') {
+						$recurring_monthly_day = get_post_meta($post_id, 'stm_recurring_monthly_day', true);
+
+						$data['recurrence']['monthly_day'] = intval($recurring_monthly_day);
+					} elseif ($recurring_monthly_occurs_type == 'by_weekdays') {
+						$recurring_monthly_week = get_post_meta($post_id, 'stm_recurring_monthly_week', true);
+						$recurring_monthly_week_day = get_post_meta($post_id, 'stm_recurring_monthly_week_day', true);
+
+						$data['recurrence']['monthly_week'] = intval($recurring_monthly_week);
+						$data['recurrence']['monthly_week_day'] = intval($recurring_monthly_week_day);
+					}
+					break;
+				default:
+					$repeat_interval = 1;
+					break;
+			}
+
+			$data['type'] = ($zoom_type === 'webinars') ? StmZoomAPITypes::TYPE_WEBINAR_RECURRING : StmZoomAPITypes::TYPE_MEETING_RECURRING;
+			$data['recurrence']['type'] = intval($recurring_type);
+			$data['recurrence']['repeat_interval'] = intval($repeat_interval);
+
+			$end_time_type = get_post_meta($post_id, 'stm_recurring_end_time_type', true);
+
+			if ($end_time_type == 'by_occurrences') {
+				$end_times = get_post_meta($post_id, 'stm_recurring_end_times', true);
+
+				$data['recurrence']['end_times'] = $end_times;
+			} elseif ($end_time_type == 'by_date') {
+				$end_date_time = get_post_meta($post_id, 'stm_recurring_end_date_time', true);
+
+				$meeting_end = strtotime('today', (($end_date_time) / 1000));
+				$data['recurrence']['end_date_time'] = date('Y-m-d\TH:i:s\Z', $meeting_end);
+			}
+		} elseif ($recurring_type == 'no_fixed_time') {
+			$data['type'] = ($zoom_type === 'webinars') ? StmZoomAPITypes::TYPE_WEBINAR_NO_FIXED : StmZoomAPITypes::TYPE_MEETING_NO_FIXED;
+		}
+
+		return $data;
+	}
+
+	protected function syn_meeting_webinar_update_data($new_post_id, $zoom_meeting)
+	{
+		update_post_meta($new_post_id, 'stm_recurring_enabled', true);
+
+		if (in_array($zoom_meeting['type'], StmZoomAPITypes::TYPES_RECURRING) && isset($zoom_meeting['recurrence'])) {
+			update_post_meta($new_post_id, 'stm_recurring_type', $zoom_meeting['recurrence']['type']);
+			switch ($zoom_meeting['recurrence']['type']) {
+				case StmZoomAPITypes::TYPE_RECURRENCE_DAILY:
+					update_post_meta($new_post_id, 'stm_recurring_daily_repeat_interval', $zoom_meeting['recurrence']['repeat_interval']);
+					break;
+				case StmZoomAPITypes::TYPE_RECURRENCE_WEEKLY:
+					update_post_meta($new_post_id, 'stm_recurring_weekly_repeat_interval', $zoom_meeting['recurrence']['repeat_interval']);
+					$weekly_days = explode(',', $zoom_meeting['recurrence']['weekly_days']);
+					$weekly_days_encode = json_encode($weekly_days);
+					update_post_meta($new_post_id, 'stm_recurring_weekly_days', $weekly_days_encode);
+					break;
+				case StmZoomAPITypes::TYPE_RECURRENCE_MONTHLY:
+					update_post_meta($new_post_id, 'stm_recurring_monthly_repeat_interval', $zoom_meeting['recurrence']['repeat_interval']);
+					if ($zoom_meeting['recurrence']['monthly_day']) {
+						update_post_meta($new_post_id, 'stm_recurring_monthly_occurs', 'by_day');
+						update_post_meta($new_post_id, 'stm_recurring_monthly_day', $zoom_meeting['recurrence']['monthly_day']);
+					} elseif ($zoom_meeting['recurrence']['monthly_week']) {
+						update_post_meta($new_post_id, 'stm_recurring_monthly_occurs', 'by_weekdays');
+						update_post_meta($new_post_id, 'stm_recurring_monthly_week', $zoom_meeting['recurrence']['monthly_week']);
+						update_post_meta($new_post_id, 'stm_recurring_monthly_week_day', $zoom_meeting['recurrence']['monthly_week_day']);
+					}
+					break;
+				default:
+					break;
+			}
+			if (isset($zoom_meeting['recurrence']['end_date_time'])) {
+				update_post_meta($new_post_id, 'stm_recurring_end_time_type', 'by_date');
+				update_post_meta($new_post_id, 'stm_recurring_end_date_time', intval(strtotime(date('Y-m-d 00:00:00', strtotime($zoom_meeting['recurrence']['end_date_time']))) * 1000));
+			} elseif (isset($zoom_meeting['recurrence']['end_times'])) {
+				update_post_meta($new_post_id, 'stm_recurring_end_time_type', 'by_occurrences');
+				update_post_meta($new_post_id, 'stm_recurring_end_times', $zoom_meeting['recurrence']['end_times']);
+			}
+
+		} elseif (in_array($zoom_meeting['type'], StmZoomAPITypes::TYPES_NO_FIXED)) {
+			update_post_meta($new_post_id, 'stm_recurring_type', 'no_fixed_time');
+		}
+	}
 }

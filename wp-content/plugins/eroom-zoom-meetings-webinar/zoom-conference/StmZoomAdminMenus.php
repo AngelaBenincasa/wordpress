@@ -182,6 +182,10 @@ class StmZoomAdminMenus
 
         if ( ! defined( 'STM_ZOOM_PRO_PATH' ) ) {
 	        wp_enqueue_style( 'stm_zoom_admin_gopro', STM_ZOOM_URL . 'assets/css/admin/gopro.css', false, STM_ZOOM_VERSION );
+
+	        // tiny slider Admin Popup Pro features
+	        wp_enqueue_style( 'stm_zoom_admin_slider', STM_ZOOM_URL . 'assets/css/admin/admin-style.css', false, STM_ZOOM_VERSION );
+	        wp_enqueue_script( 'stm_zoom_admin_slider', STM_ZOOM_URL . 'assets/js/admin/admin-script.js', array(), STM_ZOOM_VERSION, false );
         }
 
         wp_enqueue_script( 'stm_zoom_admin', STM_ZOOM_URL . 'assets/js/admin/main.js', array( 'jquery' ), STM_ZOOM_VERSION, true );

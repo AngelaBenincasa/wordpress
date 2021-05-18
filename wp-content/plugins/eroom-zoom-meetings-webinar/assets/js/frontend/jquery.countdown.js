@@ -78,8 +78,8 @@
 					<span class="digit static h1">0</span>\
 				</span>').appendTo(elem);
 
-      if (this != "Seconds") {
-        elem.append('<span class="countDiv countDiv' + i + '"></span>');
+      if (key != "Seconds") {
+        elem.append('<span class="countDiv countDiv' + key + '"></span>');
       }
     });
   } // Creates an animated transition between the two numbers

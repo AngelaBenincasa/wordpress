@@ -7,12 +7,12 @@ The plugin is a free yet robust and reliable extension that enables direct integ
 Author: StylemixThemes
 Author URI: https://stylemixthemes.com/
 Text Domain: eroom-zoom-meetings-webinar
-Version: 1.2.0
+Version: 1.2.3
 */
 
 if( !defined( 'ABSPATH' ) ) exit; //Exit if accessed directly
 
-define( 'STM_ZOOM_VERSION', '1.2.0' );
+define( 'STM_ZOOM_VERSION', '1.2.3' );
 define( 'STM_ZOOM_DB_VERSION', '1.0.0' );
 define( 'STM_ZOOM_FILE', __FILE__ );
 define( 'STM_ZOOM_PATH', dirname( STM_ZOOM_FILE ) );
@@ -28,7 +28,7 @@ if ( ! is_textdomain_loaded( 'eroom-zoom-meetings-webinar' ) ) {
 
 require_once STM_ZOOM_PATH . '/zoom-app/vendor/autoload.php';
 require_once STM_ZOOM_PATH . '/includes/helpers.php';
-require_once STM_ZOOM_PATH . '/wpcfto/WPCFTO.php';
+require_once STM_ZOOM_PATH . '/nuxy/NUXY.php';
 require_once STM_ZOOM_PATH . '/zoom-conference/init.php';
 require_once STM_ZOOM_PATH . '/vc/main.php';
 

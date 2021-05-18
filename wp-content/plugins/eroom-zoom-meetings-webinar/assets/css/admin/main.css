@@ -95,8 +95,8 @@
   .stm_zoom_pro_popup .zoom_close {
     position: absolute;
     z-index: 3;
-    right: 10px;
-    top: 10px;
+    right: -34px;
+    top: 2px;
     width: 23px;
     height: 23px;
     cursor: pointer; }
@@ -106,7 +106,7 @@
       display: block;
       width: 5px;
       height: 25px;
-      background-color: #000;
+      background-color: #fff;
       -webkit-transform: rotate(45deg);
               transform: rotate(45deg);
       top: 0;
@@ -117,11 +117,17 @@
       display: block;
       width: 5px;
       height: 25px;
-      background-color: #000;
+      background-color: #fff;
       -webkit-transform: rotate(-45deg);
               transform: rotate(-45deg);
       top: 0;
       left: 9px; }
+    @media screen and (max-width: 900px) {
+      .stm_zoom_pro_popup .zoom_close {
+        top: 10px;
+        right: 10px; }
+        .stm_zoom_pro_popup .zoom_close:before, .stm_zoom_pro_popup .zoom_close:after {
+          background-color: #000; } }
     @media screen and (max-width: 500px) {
       .stm_zoom_pro_popup .zoom_close {
         top: 20px; } }
@@ -134,7 +140,7 @@
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
   border-radius: 5px;
-  width: 740px;
+  width: 738px;
   max-width: 100%;
   z-index: 3;
   text-align: center; }
@@ -146,21 +152,20 @@
     font-size: 30px;
     line-height: 30px;
     font-weight: 700;
-    padding-top: 55px;
+    padding-top: 15px;
     margin-top: 0;
-    margin-bottom: 25px; }
+    margin-bottom: 20px; }
     @media screen and (max-width: 320px) {
       .zoom_popup .popup_title h2 {
         font-size: 20px;
         line-height: 10px;
-        padding-top: 35px;
         margin-bottom: 10px; } }
   .zoom_popup .popup_subtitle {
     font-size: 15px;
     line-height: 24px;
     color: rgba(51, 51, 51, 0.6);
     margin-bottom: 35px;
-    width: 400px;
+    width: 390px;
     max-width: 100%;
     margin-right: auto;
     margin-left: auto; }
@@ -250,15 +255,16 @@ body.post-type-stm-zoom-webinar #sync_meetings {
     .eroom_page_stm_zoom_settings #wpbody-content .stm-lms-settings #shortcodes {
       width: 740px;
       max-width: 100%; }
-  .eroom_page_stm_zoom_settings #wpbody-content .zoom_popup {
-    position: relative;
-    height: 100%;
-    left: 0;
-    -webkit-transform: none;
-            transform: none;
-    top: 0;
-    margin-top: 40px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
+
+#wpbody-content > .zoom_popup {
+  position: relative;
+  height: 100%;
+  left: 0;
+  -webkit-transform: none;
+          transform: none;
+  top: 0;
+  margin-top: 40px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
 
 @-webkit-keyframes gradientAnimation {
   0% {
@@ -322,3 +328,17 @@ body.post-type-stm-zoom-webinar #sync_meetings {
   .stm_zoom_users_pagination ul span.current, .stm_zoom_users_pagination ul a:hover {
     background-color: #157ffc;
     color: #fff; }
+
+.zoom_popup .tns-nav {
+  padding-top: 28px; }
+
+.zoom_popup button {
+  width: 8px;
+  height: 8px;
+  margin: 0 6.5px;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: none;
+  border-radius: 50%; }
+  .zoom_popup button.tns-nav-active {
+    background-color: #4891fd; }

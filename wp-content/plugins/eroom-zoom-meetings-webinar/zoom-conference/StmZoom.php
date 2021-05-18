@@ -19,7 +19,7 @@ class StmZoom
 
         add_shortcode( 'stm_zoom_conference_grid', array( $this, 'add_meeting_grid_shortcode' ) );
 
-        add_filter( 'single_template', array( $this, 'single_zoom_template' ) );
+        add_filter( 'template_include', array( $this, 'single_zoom_template' ), 200 );
     }
 
     /**
@@ -40,11 +40,15 @@ class StmZoom
     public function single_zoom_template( $template )
     {
         global $post;
-        if ( $post->post_type == 'stm-zoom' ) {
-            $template = get_zoom_template( 'single/main.php' );
-        } elseif ( $post->post_type == 'stm-zoom-webinar' ) {
-            $template = get_zoom_template( 'single/main-webinar.php' );
+
+        if ( isset($post->post_type) ) {
+            if ( $post->post_type == 'stm-zoom' ) {
+                $template = get_zoom_template( 'single/main.php' );
+            } elseif ( $post->post_type == 'stm-zoom-webinar' ) {
+                $template = get_zoom_template( 'single/main-webinar.php' );
+            }
         }
+
         return $template;
     }
 
@@ -125,46 +129,97 @@ class StmZoom
     public function add_meeting_grid_shortcode( $atts )
     {
         $atts = shortcode_atts( array(
-            'count' => '',
-            'post_type' => '',
+            'count' => '3',
             'per_row' => '',
+            'category' => '',
+            'recurring' => '',
+            'post_type' => 'stm-zoom',
         ), $atts );
 
-        if ( !empty( $atts[ 'count' ] ) ) {
-            $count = intval( $atts[ 'count' ] );
-        } else {
-            $count = 3;
-        }
-
+        $count =  intval( $atts[ 'count' ] );
         $per_row = !empty( $atts[ 'per_row' ] ) ? intval( $atts[ 'per_row' ] ) : '';
+        $recurring = !empty( $atts[ 'recurring' ] );
 
-        $post_type = 'stm-zoom';
+        //clear all spaces
+        $post_type = preg_replace('/\s+/', '', $atts[ 'post_type' ]);
 
-        if ( ! empty( $atts[ 'post_type' ] ) ) {
-            if ( $atts[ 'post_type' ] != 'product' ) {
-                $post_type = $atts[ 'post_type' ];
-            } elseif ( class_exists( 'StmZoomPro' ) ) {
-                $post_type = 'product';
+        $post_type = explode(',', $post_type );
+
+        //all post types
+        $post_types = array('stm-zoom', 'stm-zoom-webinar', 'product');
+
+        //filter post type
+        $post_type   = array_filter($post_type, function($item) use ($post_types) {
+            return in_array($item, $post_types);
+        });
+
+        $exclude_ids = [];
+
+        if ( !class_exists( 'StmZoomPro' ) ) {
+            //delete product, If not Pro
+            if ( ($key = array_search('product', $post_type) ) !== false ) {
+                unset($post_type[$key]);
             }
+        } else {
+            //remove meeting if has in product
+            $option_ids = get_option( 'stm_wc_product_meeting_ids', array() );
+            $exclude_ids = array_keys($option_ids);
         }
+
+
 
         $args = array(
             'posts_per_page' => $count,
             'post_type' => $post_type,
+            'post__not_in' => $exclude_ids,
         );
 
-        if ( $post_type === 'product' ) {
-            $args = array(
-                'posts_per_page' => $count,
-                'post_type' => 'product',
-                'meta_query' => array(
-                    array(
-                        'key' => '_meeting_id',
-                        'value' => '',
-                        'compare' => '!='
-                    )
+
+        if ( $recurring ) {
+            $args['meta_query'] = array(
+                array(
+                    'key' => 'stm_recurring_enabled',
+                    'value' => 'on',
+                    'compare' => '='
                 )
             );
+
+            if ( in_array('product', $post_type ) ) {
+                $option_recurring_ids = get_option( 'stm_recurring_meeting_ids', array() );
+                $args['meta_query']['relation'] = 'OR';
+                $args['meta_query'][] = array(
+                    'key' => '_meeting_id',
+                    'value' => $option_recurring_ids,
+                    'compare' => 'IN'
+                );
+            }
+        } elseif ( in_array('product', $post_type ) ) {
+            $args['meta_query'] = array(
+                'relation' => 'OR',
+                array(
+                    'key' => '_meeting_id',
+                    'value' => '',
+                    'compare' => '!='
+                ),
+                array(
+                    'key' => 'stm_waiting_room',
+                    'compare' => 'EXISTS'
+                )
+            );
+        }
+
+        if( !empty( $atts[ 'category' ] ) ) {
+            $category = preg_replace('/\s+/', '', $atts[ 'category' ]);
+            $category = explode(',', $category );
+
+            $args['tax_query'] = [
+                [
+                    'taxonomy' => 'product_cat',
+                    'field'    => 'term_id',
+                    'terms'    => $category,
+                    'operator'      => 'IN'
+                ],
+            ];
         }
 
         ob_start();
@@ -211,14 +266,32 @@ class StmZoom
                 $meeting_start = $meeting_data[ 'meeting_start' ];
                 $meeting_date = $meeting_data[ 'meeting_date' ];
                 $is_started = $meeting_data[ 'is_started' ];
+
+                $zoom_data = get_post_meta( $post_id, 'stm_zoom_data', true );
+                $recurring_data = [];
+
+                if ( class_exists('StmZoomRecurring') ) {
+                  $recurring_data = StmZoomRecurring::stm_product_recurring_meeting_data( $post_id, $zoom_data );
+
+                  //no fixed time
+                  if ( isset( $zoom_data['type'] ) && in_array( $zoom_data['type'], StmZoomAPITypes::TYPES_NO_FIXED ) ) {
+                    $is_started = true;
+                  }
+                }
+
                 if ( ! $is_started ) {
                     $content = self::countdown( $meeting_date, false,  $webinar );
-                    if ( empty( $hide_content_before_start ) ) {
-                        $content .= self::zoom_content( $post_id, $meeting_start, $webinar );
-                    }
+                } elseif ( isset($recurring_data['next_meeting_start'] ) ){
+                    $content = self::countdown( $recurring_data['next_meeting_start'], false,  $webinar );
                 } else {
-                    $content = self::zoom_content( $post_id, $meeting_start, $webinar );
+                    $hide_content_before_start = '';
                 }
+
+                if ( empty( $hide_content_before_start )) {
+                    $content .= self::zoom_content( $post_id, $meeting_start, $webinar, $zoom_data, $recurring_data );
+                }
+
+
             }
         }
         return $content;
@@ -233,6 +306,9 @@ class StmZoom
     {
         if ( empty( $post_id ) )
             return false;
+
+        $has_post = get_post_status($post_id);
+        if ( empty( $has_post ) ) return false;
 
         $r = array();
         $post_id        = intval( $post_id );
@@ -287,47 +363,103 @@ class StmZoom
 
     /**
      * Zoom Meeting Content Template
+     *
      * @param $post_id
      * @param $meeting_start
+     * @param $webinar
+     * @param $zoom_data
+     * @param $recurring_data
+     *
      * @return string
+     * @throws Exception
      */
-    public static function zoom_content( $post_id, $meeting_start, $webinar = false )
+    public static function zoom_content( $post_id, $meeting_start, $webinar = false, $zoom_data=false, $recurring_data=false )
     {
-        if ( ! empty( $post_id ) ) {
-            $zoom_data = get_post_meta( $post_id, 'stm_zoom_data', true );
-            if ( ! empty( $zoom_data ) && ! empty( $zoom_data[ 'id' ] ) ) {
-                $meeting_id = sanitize_text_field( $zoom_data[ 'id' ] );
-                $title      = get_the_title( $post_id );
-                $agenda     = get_post_meta( $post_id, 'stm_agenda', true );
-                $password   = get_post_meta( $post_id, 'stm_password', true );
+        if ( ! empty( $post_id ) && ! empty( $zoom_data ) && ! empty( $zoom_data[ 'id' ] )) {
+            $meeting_id  = sanitize_text_field( $zoom_data['id'] );
+            $title       = get_the_title( $post_id );
+            $agenda      = get_post_meta( $post_id, 'stm_agenda', true );
+            $password    = get_post_meta( $post_id, 'stm_password', true );
+            $duration    = get_post_meta( $post_id, 'stm_duration', true );
+            $start_time  = get_post_meta( $post_id, 'stm_time', true );
+            $time_zone   = get_post_meta( $post_id, 'stm_timezone', true );
 
-                ob_start();
-                ?>
-                <div class="stm_zoom_content">
-                    <?php if ( has_post_thumbnail( $post_id ) ) { ?>
-                        <div class="zoom_image">
-                            <?php echo get_the_post_thumbnail( $post_id, 'large' ); ?>
+            $option_ids  = get_option( 'stm_wc_product_meeting_ids', array() );
+            $exclude_ids = array_keys( $option_ids );
+
+            $config_calendar = [
+                'start'       => $meeting_start,
+                'allDay'      => isset( $zoom_data['type'] ) && in_array( $zoom_data['type'], StmZoomAPITypes::TYPES_NO_FIXED ),
+                'address'     => '',
+                'title'       => $title,
+                'duration'    => $duration,
+                'description' => $agenda,
+                'start_time'  => $start_time,
+                'timezone'    => $time_zone,
+            ];
+
+            ob_start();
+            ?>
+            <div class="stm_zoom_content">
+                <?php if ( has_post_thumbnail( $post_id ) ) { ?>
+                    <div class="zoom_image">
+                        <?php echo get_the_post_thumbnail( $post_id, 'large' ); ?>
+                    </div>
+                <?php } ?>
+                <div class="zoom_info">
+                    <h2><?php esc_html_e( $title ); ?></h2>
+                    <?php if ( isset( $zoom_data['type'] ) && in_array( $zoom_data['type'], StmZoomAPITypes::TYPES_NO_FIXED ) ) {  ?>
+                        <div class="zoom-recurring-no_fixed_time"><?php echo esc_html( 'No fixed time', 'eroom-zoom-meetings-webinar' ); ?></div>
+                    <?php } elseif ( isset( $zoom_data['type'] ) && in_array( $zoom_data['type'], StmZoomAPITypes::TYPES_RECURRING ) && !empty( $recurring_data ) ) { ?>
+                        <div class="zoom-recurring">
+                            <?php if (isset($recurring_data['start_date'])): ?>
+                                <div class="zoom-recurring__from">
+                                    <span class="zoom-recurring--title"><?php echo esc_html( 'From:', 'eroom-zoom-meetings-webinar' ); ?></span>
+                                    <span class="zoom-recurring--content"><?php echo esc_html( $recurring_data['start_date'] ); ?></span>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ( isset( $recurring_data['end_date'] ) ): ?>
+                              <div class="zoom-recurring__to">
+                                <span class="zoom-recurring--title"><?php echo esc_html( 'To:', 'eroom-zoom-meetings-webinar' ); ?></span>
+                                <span class="zoom-recurring--content"><?php echo esc_html( $recurring_data['end_date'] ); ?></span>
+                              </div>
+                            <?php endif; ?>
+                            <?php if ( isset( $recurring_data['repeat_interval'] ) ): ?>
+                                <div class="zoom-recurring__interval">
+                                    <span class="zoom-recurring--title">
+                                        <?php echo ( $webinar ) ? esc_html_e( 'Webinar recurrence:', 'eroom-zoom-meetings-webinar' ) : esc_html_e( 'Meeting recurrence:', 'eroom-zoom-meetings-webinar' ); ?>
+                                    </span>
+                                    <span class="zoom-recurring--content">
+                                        <?php echo esc_html( $recurring_data['repeat_interval'] ); ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php } elseif ( !empty( $meeting_start ) ) { ?>
+                        <div class="date">
+                            <span><?php echo ( $webinar ) ? esc_html_e( 'Webinar date', 'eroom-zoom-meetings-webinar' ) : esc_html_e( 'Meeting date', 'eroom-zoom-meetings-webinar' ); ?> </span>
+                            <b>
+                                <?php
+
+                                $date_format    = get_option( 'date_format', 'd M Y H:i' );
+                                $time_format    = get_option( 'time_format', 'H:i' );
+                                $format         = $date_format . ' ' . $time_format;
+                                $date           = strtotime( $meeting_start );
+                                $date           = date_i18n($format, $date );
+                                esc_html_e( $date );
+
+                                ?>
+                            </b>
                         </div>
                     <?php } ?>
-                    <div class="zoom_info">
-                        <h2><?php esc_html_e( $title ); ?></h2>
-                        <?php if ( !empty( $meeting_start ) ) { ?>
-                            <div class="date">
-                                <span><?php echo ( $webinar ) ? esc_html_e( 'Webinar date', 'eroom-zoom-meetings-webinar' ) : esc_html_e( 'Meeting date', 'eroom-zoom-meetings-webinar' ); ?> </span>
-                                <b>
-                                    <?php
-
-                                    $date_format    = get_option( 'date_format', 'd M Y H:i' );
-                                    $time_format    = get_option( 'time_format', 'H:i' );
-                                    $format         = $date_format . ' ' . $time_format;
-                                    $date           = strtotime( $meeting_start );
-                                    $date           = date_i18n($format, $date );
-                                    esc_html_e( $date );
-
-                                    ?>
-                                </b>
-                            </div>
-                        <?php } ?>
+                    <div class="stm-calendar-links">
+                        <span><?php echo esc_html__('Add to:', 'eroom-zoom-meetings-webinar' ); ?></span>
+                        <a href="<?php echo esc_url( stm_eroom_generate_google_calendar($config_calendar, $recurring_data) ); ?>"><?php echo esc_html__('Google Calendar', 'eroom-zoom-meetings-webinar' ); ?></a> ,
+                        <a href="<?php echo add_query_arg( array( 'ical_export' => '1' ), get_permalink( $post_id ) ); ?>" class="" target="_blank">
+                            <?php echo esc_html__('iCal Export', 'eroom-zoom-meetings-webinar' ); ?>
+                        </a>
+                    </div>
+                    <?php if ( !in_array( $post_id, $exclude_ids ) ) : ?>
                         <?php if ( !empty( $password ) ) { ?>
                             <div class="password">
                                 <span><?php esc_html_e( 'Password: ', 'eroom-zoom-meetings-webinar' ); ?></span>
@@ -340,22 +472,22 @@ class StmZoom
                         <a href="https://zoom.us/j/<?php echo esc_attr( $meeting_id ); ?>" class="btn stm-join-btn outline" target="_blank">
                             <?php esc_html_e( 'Join in zoom app', 'eroom-zoom-meetings-webinar' ); ?>
                         </a>
-                    </div>
-                    <div class="zoom_description">
-                        <?php if ( ! empty( $agenda ) ) { ?>
-                            <div class="agenda">
-                                <?php echo wp_kses_post( $agenda ); ?>
-                            </div>
-                        <?php } ?>
-                        <div id="zmmtg-root"></div>
-                        <div id="aria-notify-area"></div>
-                    </div>
+                    <?php endif;?>
                 </div>
-                <?php
-                $content = ob_get_clean();
+                <div class="zoom_description">
+                    <?php if ( ! empty( $agenda ) ) { ?>
+                        <div class="agenda">
+                            <?php echo wp_kses_post( $agenda ); ?>
+                        </div>
+                    <?php } ?>
+                    <div id="zmmtg-root"></div>
+                    <div id="aria-notify-area"></div>
+                </div>
+            </div>
+            <?php
+            $content = ob_get_clean();
 
-                return $content;
-            }
+            return $content;
         }
     }
 
